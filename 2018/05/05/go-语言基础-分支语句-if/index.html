@@ -1,0 +1,212 @@
+<h1 id="go-语言基础-分支语句-if">go 语言基础 分支语句 if</h1>
+<p>2018年04月29日 13:43:36
+阅读数：12 编辑
+分支语句
+程序的流程结构：
+	顺序结构：代码是一行一行执行，除非有其他 关键字，比如defer，
+        选择结构：条件满足，某些代码才会被执行。仅执行一次。。0,1
+		分支语句：
+		if
+		switch
+if的结构：
+1.最简单if
+	if 条件表达式{
+		//条件满足就 执行。。
+	}
+package main</p>
+
+<p>import “fmt”</p>
+
+<p>func main()  {
+   /*
+   if语句：
+   语法结构：
+   if bool表达式{
+      条件为true，执行此处的代码。。
+   }
+    */
+    a := 10
+    if a &lt; 10{
+      fmt.Println(“数字a小于10的数。。”)
+    }
+    fmt.Println(“over…”)</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> num := -5
+ if num &lt; 0{
+  num = -num
+ }
+ fmt.Println(num)
+
+ score := 88
+ if score &gt;= 60{
+  fmt.Println("及格")
+ }
+</code></pre>
+</div>
+
+<p>}
+2.if…else
+二选一
+	if 条件表达式{
+		//A段代码。。
+	}else{
+		//B段代码。。
+	}</p>
+
+<p>package main</p>
+
+<p>import “fmt”</p>
+
+<p>func main()  {
+   /*
+   if 条件表达式{
+      //条件成立执行
+   }else{
+      //条件不成立执行。。
+   }
+    */
+    score := 48
+    if score &gt;= 60{
+      fmt.Println(score,” 成绩及格”)
+    }else {
+      fmt.Println(“不及格”)
+    }
+         age := 20
+     if age &gt;= 18{
+      fmt.Println(“不是小孩子了”)
+     }else {
+      fmt.Println(“未成年。。”)
+     }</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> num := 5
+ if num % 2 == 0{
+  fmt.Println(num," 是偶数。。")
+ }else {
+  fmt.Println("是奇数。。")
+ }
+</code></pre>
+</div>
+
+<p>}</p>
+
+<p>3.if语句的嵌套：
+多选一</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>if 条件1{
+
+
+}else if 条件2{
+
+
+}else if 条件3{
+
+
+}....
+else{
+	
+}
+</code></pre>
+</div>
+
+<p>package main</p>
+
+<p>import “fmt”</p>
+
+<p>func main()  {
+   /*
+   if 条件1{
+      if 条件2{
+         A段  // 条件1成立，条件2成立
+      }else{
+         B段 // 条件1成立，条件2不成立
+      }
+   }else{
+      if 条件3{
+         C段 // 条件1不成立，条件3成立
+      }else{
+         D段 // 条件1不成立，条件3也不成立
+      }</p>
+
+<p>}
+    <em>/
+   sex := “泰国”
+   if sex == “男”{
+      fmt.Println(“去男厕所。。”)
+   }else {
+      if sex == “女”{
+         fmt.Println(“去女厕所。。”)
+      }else {
+         fmt.Println(“我也不知道了，也许不去厕所。。”)
+      }
+   }
+   if sex == “男”{
+      fmt.Println(“男厕所。。。”)
+   }else if sex == “女”{
+      fmt.Println(“女厕所。。”)
+   }else{
+      fmt.Println(“不知道。。”)
+   }
+   /</em>
+   if 条件1{
+      A段
+   }else{
+      if 条件2{
+         B段
+      }else{
+         C段
+      }
+   }
+   //可以简写：
+   if 条件1{
+      A段
+   }else if 条件2{
+      B段
+   }else{
+      C段
+   }
+    */</p>
+
+<p>}</p>
+
+<p>4.if还可以包含一条初始化语句，用于初始化局部变量
+	if a:=0;a &lt; 10{</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>} package main
+</code></pre>
+</div>
+
+<p>import “fmt”</p>
+
+<p>func main()  {</p>
+
+<p>/*
+   if语句还支持，条件前再多一行，
+   注意变量的作用域问题。
+    */
+   if  num1 := 10; num1 &gt; 0{
+      fmt.Println(“是正数”)
+   }else if num1 &lt; 0 {
+      fmt.Println(“是负数”)
+   }else{
+      fmt.Println(“是零”)
+   }</p>
+
+<p>//fmt.Println(“num1,”, num1)</p>
+
+<p>month := 9
+   day := 0 // 表示月的天数
+   if month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12{
+      day = 31
+   }else if month == 4 || month == 6 || month == 9 || month == 11{
+      day = 30
+   }else if month == 2{
+      //2月
+   }else {
+      fmt.Println(“数据有误，无法计算。。”)
+   }
+   fmt.Println(month, “月，的天数是，”, day)
+}
+最后再普及一个小知识
+变量的作用域：
+    如果是在main函数里声明的变量，他的作用域就是整个main{}函数里，如果是在main函数外面声明，这个变量的作用域会是整个文件。</p>
+

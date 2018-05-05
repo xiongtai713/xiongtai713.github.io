@@ -1,0 +1,54 @@
+<h1 id="go语言环境搭建">go语言环境搭建</h1>
+<div class="highlighter-rouge"><pre class="highlight"><code>    安装：go 1.9.4安装包，一直next，直到完成
+
+            IDE工具安装，这里选择goland，简单方便，优点是不用下很多插件，也不用翻墙
+</code></pre>
+</div>
+
+<p>缺点是每个月都要激活一次。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    环境变量配置Windows系统：
+            1.我的电脑右键属性，进入环境变量
+
+            2.在path下 要配置两个目录goroot/bin;gopath/bin
+
+            3.在下面要新建两个目录goroot 和 gopath
+
+               goroot配置安装路径一般都是c:/go等等
+
+               gopath是工程目录，路径写你要保存go文件的目录比如C:/gocode等等
+
+       环境变量配置完成后可以在 dos下运行试试 win+r键，输入cmd
+
+                输入go 如果可以出现帮助，说明成功了
+
+                输入go env 看下刚才配置的gopath和goroot是不是刚才的地址
+
+  
+
+       环境变量配置mac
+             1.mac下基本不用配置，进入IDE工具试一下应该是可以之间编译的，网上有用
+
+        终端来配置环境变量的我们都可以用利用IDE工具来完成。
+
+              第一步 进入IDE    
+
+        
+
+        第二步 选择goroot 选择安装路径，图上就是默认安装路径
+</code></pre>
+</div>
+
+<p>下面还有个gopath，这个不用配置，你只要在go下的src下新建个文件夹就可以保存的你go文件了</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>packmain main  
+import "fmt"  
+    func main (){  
+        fmt.Println("Hello,world")  
+} 
+
+</code></pre>
+</div>
+
+<p>试试代码，go走起来</p>
+

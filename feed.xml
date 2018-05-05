@@ -5,9 +5,1363 @@
     <description>初级区块链工程师</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 05 May 2018 16:31:56 +0800</pubDate>
-    <lastBuildDate>Sat, 05 May 2018 16:31:56 +0800</lastBuildDate>
+    <pubDate>Sat, 05 May 2018 16:41:17 +0800</pubDate>
+    <lastBuildDate>Sat, 05 May 2018 16:41:17 +0800</lastBuildDate>
     <generator>Jekyll v3.5.1</generator>
+    
+      <item>
+        <title>Go语言基础 环境搭建</title>
+        <description>&lt;h1 id=&quot;go语言环境搭建&quot;&gt;go语言环境搭建&lt;/h1&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    安装：go 1.9.4安装包，一直next，直到完成
+
+            IDE工具安装，这里选择goland，简单方便，优点是不用下很多插件，也不用翻墙
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;缺点是每个月都要激活一次。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    环境变量配置Windows系统：
+            1.我的电脑右键属性，进入环境变量
+
+            2.在path下 要配置两个目录goroot/bin;gopath/bin
+
+            3.在下面要新建两个目录goroot 和 gopath
+
+               goroot配置安装路径一般都是c:/go等等
+
+               gopath是工程目录，路径写你要保存go文件的目录比如C:/gocode等等
+
+       环境变量配置完成后可以在 dos下运行试试 win+r键，输入cmd
+
+                输入go 如果可以出现帮助，说明成功了
+
+                输入go env 看下刚才配置的gopath和goroot是不是刚才的地址
+
+  
+
+       环境变量配置mac
+             1.mac下基本不用配置，进入IDE工具试一下应该是可以之间编译的，网上有用
+
+        终端来配置环境变量的我们都可以用利用IDE工具来完成。
+
+              第一步 进入IDE    
+
+        
+
+        第二步 选择goroot 选择安装路径，图上就是默认安装路径
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;下面还有个gopath，这个不用配置，你只要在go下的src下新建个文件夹就可以保存的你go文件了&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;packmain main  
+import &quot;fmt&quot;  
+    func main (){  
+        fmt.Println(&quot;Hello,world&quot;)  
+} 
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;试试代码，go走起来&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 05 May 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/05/05/go%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/05/05/go%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Go语言基础 常量</title>
+        <description>&lt;h1 id=&quot;go语言基础-常量&quot;&gt;go语言基础 常量&lt;/h1&gt;
+&lt;p&gt;2018年04月29日 12:09:54
+阅读数：11 编辑
+2.常量
+	概念：类似变量，数值不可以更改
+	语法：
+		const 常量名 数据类型 = 赋值
+		const 常量名 = 赋值
+	赋值：常数，常量表达式
+	常量的数值：布尔，数值，字符串&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;常量的名字，所有字母都大写。
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;[plain] view plain copy
+package main&lt;/p&gt;
+
+&lt;p&gt;import “fmt”&lt;/p&gt;
+
+&lt;p&gt;func main()  {&lt;br /&gt;
+    /*&lt;br /&gt;
+    常量：同变量类似，区别在于程序执行过程中，数值不可以改变&lt;br /&gt;
+    定义语法：&lt;br /&gt;
+        const 常量名 数据类型 = 常量值/常量表达式&lt;br /&gt;
+        const 常量名 = 常量值&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;常量的数值：布尔类型，数值类型(整数，浮点，复数),字符串  
+常量名：编码习惯：所有的字母都大写  
+  
+注意事项：  
+1.常量定义后，可以不使用，也不会报错  
+2.常量的值：布尔，数值，字符串  
+    常量表达式：常量的计算，内置函数：len(),cap()  
+3.常量组：定义了一组常量  
+    没有直接定义常量值，默认和上一行一致。  
+    常量组中定义的常量值是一组相关的数据，可以作为枚举  
+4.iota，特殊的常量，理解为计数器，  
+    定义const，iota的值从0开始。  
+    常量组中定义了常量就累加1.  
+ */  
+ // 1.定义常量  
+const cPATH string  = &quot;http://www.baidu.com&quot;  
+const PI  = 3.14  
+fmt.Println(cPATH)  
+fmt.Println(PI)  
+  
+//pi = 3.67 // 不能给常量重新赋值  
+  
+const LENGTH int = 10  
+const WIDTH int = 5  
+var area int  
+area = LENGTH * WIDTH  
+fmt.Println(area)  
+  
+//var a = 2  
+//var b = 7  
+//const area2  = LENGTH * WIDTH  
+//const area2  = a * b  
+//fmt.Println(area2)  
+  
+const c = &quot;memeda&quot;  
+const con2  = len(c)  
+  
+// 同时定义多个常量  
+const a2, b2, c2 = 1, false, &quot;str&quot; //多重赋值  
+  
+// 常量组  
+const (  
+    a3 = 10  
+    a4 = false  
+    a5 = 3.14  
+)  
+//定义常量组的时候，如果没有指定类型和数值，默认和上一行相同  
+const (  
+    x uint16 = 16 // 16  
+    y //16  
+    s = &quot;abc&quot; // &quot;abc&quot;  
+    z // &quot;abc&quot;  
+)  
+fmt.Println(x, y, s, z)  
+  
+// 用于枚举：一年四季，一周七天  
+const (  
+    Sunday = 0  
+    Monday = 1  
+    Tuesday = 2  
+    Wednesday = 3  
+    Thursday = 4  
+    Friday = 5  
+    Saturday = 6  
+)  
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;}&lt;br /&gt;
+iota，特殊的常量，计数器
+	定义const组时，iota初始为0，每定义一个常量累加1。直到下一个const，重新置为0。
+[plain] view plain copy
+package main&lt;/p&gt;
+
+&lt;p&gt;import “fmt”&lt;/p&gt;
+
+&lt;p&gt;func main()  {&lt;br /&gt;
+    // iota，特殊的常量值，每当定义了const，iota的值置为0，&lt;br /&gt;
+    // 每当定义一个常量，累加1。遇到const时，重新置为0&lt;br /&gt;
+    const  (&lt;br /&gt;
+        a = iota // 0&lt;br /&gt;
+        b = iota // 1&lt;br /&gt;
+        c = iota // 2&lt;br /&gt;
+    )&lt;br /&gt;
+    fmt.Println(a, b, c)&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// 简写成  
+const (  
+    d = iota  
+    e  
+    f  
+)  
+fmt.Println(d, e, f)  
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;}&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 05 May 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/05/05/go%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80-%E5%B8%B8%E9%87%8F/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/05/05/go%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80-%E5%B8%B8%E9%87%8F/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Go语言基础 变量</title>
+        <description>&lt;h1 id=&quot;go语言基础-变量&quot;&gt;go语言基础 变量&lt;/h1&gt;
+&lt;p&gt;2018年04月29日 12:09:07&lt;/p&gt;
+
+&lt;p&gt;变量
+	概念：本质就是一小块内存，用于存储数据。在程序执行过程中，数值可以改变。
+	语法：
+		A：var 变量名 数据类型
+			变量名=赋值
+		B：var 变量名 数据类型= 赋值
+		C：类型推断
+			var 变量名 = 赋值
+		D：省略var
+			变量名 := 赋值&lt;/p&gt;
+
+&lt;p&gt;多个变量：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;	var 变量名1，变量名2，变量名3.。数据类型
+	var 变量名1，变量名2，。。 数据类型= 赋值1，赋值2.。
+	var 变量名1，变量名2，。。 = 赋值1，赋值2.。
+	变量名1，变量名2，。。。:= 赋值1，赋值2.。。
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;变量集合：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;	var (
+		
+	)
+注意事项：
+	A：必须先声明，才能使用。注意变量名不能冲突
+	B：变量的声明类型，和赋值类型必须一致。
+	C： :=， 仅能声明局部变量
+	D：变量如果没有赋值，那么会使用零值(默认值)
+		数值：0，布尔：false，字符串：&quot;&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;package main  
+  
+import &quot;fmt&quot;  
+  
+func main()  {  
+    /*  
+    变量：  
+        概念：本质就是一小块内存，专门用于存储数据。在程序运行时，可以被改变。  
+        语法：  
+            1种：var 变量名 数据类型  
+                 变量名 = 数值  
+            2种：var 变量名 数据类型 = 数值  
+            3种：类型推断，omitted省略类型  
+            4种：省略var ，变量名 := 数值，限于函数内使用。  
+     */  
+     //1. 定义(声明，申请)变量  
+     var age int // 定义一个变量，变量名叫age，存储int类型的整数  
+     age = 100  
+     fmt.Println(&quot;age的数值是：&quot;, age)// 100  
+  
+     // 更改变量的数值  
+     age = 200  
+     fmt.Println(&quot;更改age的数值：&quot;, age)// 200  
+  
+     // 2.定义一个变量  
+     var age2 int = 30  
+     fmt.Println(&quot;age2的数值：&quot;, age2)  
+  
+     // 3. 类型推断，可以省略类型  
+     var num = 200  
+     fmt.Printf(&quot;num的数值是：%d，类型是：%T\n&quot;, num, num)  
+  
+     // 4.省略var  
+     num2 := 1000  
+     fmt.Println(&quot;num2的数值是：&quot;, num2)  
+  
+     // 5，同时定义多个变量：  
+     //类型一致  
+     var a, b, c int  
+     a = 3  
+     b = 4  
+     c = 5  
+     fmt.Println(a, b, c)  
+  
+     var d, e, f int = 6, 7, 8  
+     fmt.Println(d, e, f)  
+  
+     //类型不一致  
+     var h ,i = 100, &quot;memeda&quot;  
+     fmt.Println(h,i)  
+     name, age3 := &quot;王二狗&quot;, 28  
+     fmt.Println(name, age3)  
+  
+     // 变量的集合：  
+     var(  
+        name2 = &quot;老王&quot;  
+        age4 = 40  
+     )  
+     fmt.Println(name2, age4)  
+  
+}  
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+</description>
+        <pubDate>Sat, 05 May 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/05/05/go%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80-%E5%8F%98%E9%87%8F/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/05/05/go%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80-%E5%8F%98%E9%87%8F/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Go 语言基础 进制</title>
+        <description>&lt;h1 id=&quot;go-语言基础-进制&quot;&gt;go 语言基础 进制&lt;/h1&gt;
+&lt;p&gt;2018年04月29日 11:13:45&lt;/p&gt;
+
+&lt;p&gt;##进制
+二进制，二进制就是0和1组成的代码，是计算机唯一能看懂的语言，所有程序代码最终都会被转成二进制&lt;/p&gt;
+
+&lt;p&gt;代码让计算机去阅读，从而实现。&lt;/p&gt;
+
+&lt;p&gt;逢二进一 二进制中只有0和1，第一个数字是0，0+1=0001，0001+1=0010，0010+1=0011，0011+1=0100 。。。。依次类推&lt;/p&gt;
+
+&lt;p&gt;十进制，就是我们平时使用的进制，也是我们最熟悉的，日常生活中最常使用的进制，&lt;/p&gt;
+
+&lt;p&gt;逢十进一 十进制有0-9，没有10，十进制和二进制我们平时用的最多，也最简单，还有八进制和十六进制，我们后面再说&lt;/p&gt;
+
+&lt;p&gt;##二进制和十进制的转换
+我们把二进制4位一分，比如
+0001，0010，0011，0100，0101，0110，0111，1000，1001与之相对应的是
+ 1，       2，     3，    4，    5，    6，    7，    8，    9&lt;/p&gt;
+
+&lt;p&gt;我们发现规律拿7也就是0111来举例子 二进制的最末一位，1，他就相当于是十进制的1
+                                                           倒数第二位，1， 他就相当于是十进制的2
+                                                           倒数第三位，1， 他就相当于是十进制的4
+                                                                第一位 ，0，他就相当于是十进制的8，但是由于是0，所以这里也是0&lt;/p&gt;
+
+&lt;p&gt;1+2+4=7  所以0111就是7 通过这种方法我们可以迅速的用二进制转换成十进制，1111我们来快速计算下就是1+2+4+8=15,所以1111就是15。&lt;/p&gt;
+
+&lt;p&gt;再来一个0001 0001 突然出现了两个，怎么办。。聪明的你一定发现了规律，2，4，8，接下来就该16了，16后面就是32，32完了就是64，对就是这个规律，除了最末位是1，剩下的就是按这个顺序排的，所以0001 0001就是17。&lt;/p&gt;
+
+&lt;p&gt;当然 我们还有公式，由于不好理解我们就不详细去管他了，我可以把这些公式写下来&lt;/p&gt;
+
+&lt;p&gt;二进制—&amp;gt;十进制&lt;/p&gt;
+
+&lt;p&gt;A：二进制：每个位的数字，乘以权重(2的n次方)，累加求和&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;       1111 =从末尾开始1*2^0+1*2^1+1*2^2+1*2^3=1+2+4+8=15
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;##十进制转二进制
+            十进制20转换二进制咋转嘞我们先拆分下20恩可以分成16+4，看到16和4突然意识到了什么4不就是0010嘛，那16呢不就是 0001 0000那把16和4组合在一起那就是0001 0010，貌似这就是20哈，好像对了，十进制如果遇到二进制，我们就把它拆分，拆分成我们熟悉的1，2，4，8，16，32，64等等，这种方法比较适用于数字比较小的100以内应该都可以口算出来&lt;/p&gt;
+
+&lt;p&gt;我们来试一个88，看到88 首先应该想到64，88-64还剩下多少呢，还剩下24，这就好办了24拆分成16和8，88=64+16+8，我觉得我已经算出来二进制是多少了先从最小的开始写8=0000 1000 ，16=0001 0000  ，64=0100 0000我们来把这三个组合在一起，书0 的地方就还是0 有1的地方就改成1最后结果就是0101 1000，我们学过二进制转十进制，来验证一下验证下对不对，哈哈是对的，那碰上大数字咋办嘞&lt;/p&gt;
+
+&lt;p&gt;不要怕我们还有公式&lt;/p&gt;
+
+&lt;p&gt;B：十进制—&amp;gt;二进制、八进制、十六进制&lt;/p&gt;
+
+&lt;p&gt;十进制数，除以2、8、16，取余数，直到商为0，余数倒过来。&lt;/p&gt;
+
+&lt;p&gt;不过一般情况下，不会有人去让你去转换的，这都是计算机的工作，我们只要知道原理就可以了&lt;/p&gt;
+
+&lt;p&gt;##八进制转换二进制
+所谓八进制也就是逢八进一，1-7，到了8就10，然后继续往下&lt;/p&gt;
+
+&lt;p&gt;二进制也可以快速转换成八进制 我们把二进制分成三个一组，
+001，010，011，100，101，110，111           &lt;br /&gt;
+                                                              1，    2，   3，     4，    5，   6 ，    7&lt;/p&gt;
+
+&lt;p&gt;由于八进制没有8更没有9所以到了7就结束了那八以后怎么表示呢，001 000 这就对应8进制中的10，哦你又发现规律了，除了没有8以后的数字，这个跟二进制转换十进制算法是差不多的，但是结果是不一样的，我们来练习一个，111 100 转换八进制还是从最末三个开始 100=八进制中的4 111呢=八进制中的7，所以111 100=八进制的74，这么简单吗？，就是三位拼一个数？是的就是这么简单。&lt;/p&gt;
+
+&lt;p&gt;来个难一点的111 100 110 110=八进制多少一个一个来 111=7 100=4 110=6 110=6所以结果就是 7466，好了二进制转八进制你也学会了，我们还想用八进制转十进制，那就先用八进制转成二进制，在由二进制转换成十进制就可以了，什么你说麻烦，好吧我来给你公式，&lt;/p&gt;
+
+&lt;p&gt;八进制：每个位的数字，乘以权重(8的n次方)，累加求和&lt;/p&gt;
+
+&lt;p&gt;八进制：231—&amp;gt;十进制？
+=1&lt;em&gt;8^0 + 3 * 8^1 + 2 * 8 ^ 2
+=1&lt;/em&gt;1 + 3&lt;em&gt;8 + 2&lt;/em&gt;64
+=1+24+128
+=153&lt;/p&gt;
+
+&lt;p&gt;##十六进制转换二进制
+二八十我们都会互转了，还有个十六进制&lt;/p&gt;
+
+&lt;p&gt;十六进制包括&lt;/p&gt;
+
+&lt;p&gt;0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F
+A:10
+B:11
+C:12
+D:13
+E:14
+F:15&lt;/p&gt;
+
+&lt;p&gt;到了16咋表示呢，对就是10，&lt;/p&gt;
+
+&lt;p&gt;接下来是转换二进制转换十六进制，还是4位成一组，1000 1001，来算下1000=8，1001=9&lt;/p&gt;
+
+&lt;p&gt;所以合起来就是89。&lt;/p&gt;
+
+&lt;p&gt;那1000 1111等于多少呢 1000=8，1111=15吗？往上看下15用什么表示，原来是 F，所以就等于8F&lt;/p&gt;
+
+&lt;p&gt;十六进制转十进制我们也有公式哈&lt;/p&gt;
+
+&lt;p&gt;十六进制：每个位的数字，乘以权重(16的n次方)，累加求和
+十六进制：2C—&amp;gt;十进制？
+=C&lt;em&gt;16^0 + 2&lt;/em&gt;16^1
+=12&lt;em&gt;1+2&lt;/em&gt;16
+=12+32
+=44&lt;/p&gt;
+
+&lt;p&gt;到了这里我们基本都可以互相转换了，都可以先转换成二进制，然后再由二进制转换成各种进制。&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 05 May 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/05/05/go-%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80-%E8%BF%9B%E5%88%B6/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/05/05/go-%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80-%E8%BF%9B%E5%88%B6/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Go 语言基础 运算符</title>
+        <description>&lt;h1 id=&quot;go-语言基础-运算符&quot;&gt;go 语言基础 运算符&lt;/h1&gt;
+&lt;p&gt;2018年04月29日 13:15:22
+阅读数：9 编辑
+运算符
+A：算术运算符：+，-，*,/,%,++,–
+	/：取商
+	%：取余，取模
+	++：自增1
+	–：自减1
+[plain] view plain copy
+package main&lt;/p&gt;
+
+&lt;p&gt;import “fmt”&lt;/p&gt;
+
+&lt;p&gt;func main()  {&lt;br /&gt;
+    /*&lt;br /&gt;
+    算术运算符： arithmetic operator&lt;br /&gt;
+    +， -， * ,/ , % ， ++， –&lt;br /&gt;
+    /,取商&lt;br /&gt;
+    %，取余，取模&lt;br /&gt;
+     &lt;em&gt;/&lt;br /&gt;
+     a := 9&lt;br /&gt;
+     b := 4&lt;br /&gt;
+     sum := a + b // 求和&lt;br /&gt;
+     sub := a - b //做差&lt;br /&gt;
+     mul := a * b // 乘法&lt;br /&gt;
+     div := a / b // 除&lt;br /&gt;
+     fmt.Println(a, “+”, b, “=”, sum)&lt;br /&gt;
+     fmt.Println(sub, mul, div)&lt;br /&gt;
+     mod := a % b&lt;br /&gt;
+     fmt.Println(mod)&lt;br /&gt;
+     /&lt;/em&gt;&lt;br /&gt;
+     8/5 = 1&lt;br /&gt;
+     8%5 = 3&lt;br /&gt;
+     3/4 = 0&lt;br /&gt;
+     3%4 = 3&lt;br /&gt;
+     7/3 = 2&lt;br /&gt;
+     7%3 = 1&lt;br /&gt;
+     2/1 = 2&lt;br /&gt;
+     2%1 = 0&lt;br /&gt;
+      */&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  fmt.Println(&quot;a的数值：&quot;, a)  
+  a++ // 给a自增1   a = a + 1  
+  fmt.Println(&quot;a的数值：&quot;, a)  
+  a-- // 给a自减1  
+  fmt.Println(a)   }  
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;B：关系运算符：&amp;gt;,&amp;lt;,&amp;gt;=,&amp;lt;=,==,!=    计算结果是bool
+	==：判断两个数是否相等
+	!=：判断是否不等
+[plain] view plain copy
+package main&lt;/p&gt;
+
+&lt;p&gt;import “fmt”&lt;/p&gt;
+
+&lt;p&gt;func main(){&lt;br /&gt;
+    /*&lt;br /&gt;
+    关系运算符：运算结果是bool&lt;br /&gt;
+    &amp;gt;,&amp;lt;,&amp;gt;=,&amp;lt;=, ==, !=&lt;br /&gt;
+    ==,判断两个数值是否相等&lt;br /&gt;
+    !=,判断两个数值是否不等&lt;br /&gt;
+     */&lt;br /&gt;
+     a := 8&lt;br /&gt;
+     b := 5&lt;br /&gt;
+     fmt.Println(a &amp;lt; b)// 8 &amp;lt; 5,false&lt;br /&gt;
+     fmt.Println(a == b) // false&lt;br /&gt;
+     fmt.Println(a != b) // true&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; c := true  
+ d := false  
+ //fmt.Println(c &amp;lt; d) // bool类型不能比较大小  
+ fmt.Println(c == d) // false  
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;}&lt;/p&gt;
+
+&lt;p&gt;C：逻辑运算符：&amp;amp;&amp;amp;，||，！
+	&amp;amp;&amp;amp;，逻辑与，规则，操作数都为真才为真，有一个为假就为假。
+	||，逻辑或，规则，操作数都为假才为假，有一个为真就为真。
+	！，逻辑非，规则，取反&lt;/p&gt;
+
+&lt;p&gt;[plain] view plain copy
+package main&lt;/p&gt;
+
+&lt;p&gt;import “fmt”&lt;/p&gt;
+
+&lt;p&gt;func main()  {&lt;br /&gt;
+    /*&lt;br /&gt;
+    逻辑运算符：&lt;br /&gt;
+    &amp;amp;&amp;amp;，逻辑与，”并且”&lt;br /&gt;
+        所谓逻辑与运算符。如果两个操作数都非零，则条件变为真&lt;br /&gt;
+        如果两个操作数都为true，结果才为true。&lt;br /&gt;
+        逻辑与的判定规则：&lt;br /&gt;
+            所有的操作数从左向右运算，&lt;br /&gt;
+            如果遇到一个false就直接返回结果为false，&lt;br /&gt;
+            除非所有的操作数都为true，结果才为true。&lt;br /&gt;
+        “全真为真，一假为假”&lt;br /&gt;
+    ||，逻辑或，”或者”&lt;br /&gt;
+        所谓的逻辑或操作。如果任何两个操作数是非零，则条件变为真&lt;br /&gt;
+        逻辑或的判定规则：&lt;br /&gt;
+            所有的操作数从左向右运算，&lt;br /&gt;
+            如果遇到一个true就直接返回结果为true，&lt;br /&gt;
+            除非所有的操作数都为false，结果才为false。&lt;br /&gt;
+        “一真为真，全假为假”&lt;br /&gt;
+    !，逻辑非，”就是取反”&lt;br /&gt;
+        true，—&amp;gt;false&lt;br /&gt;
+        false,—&amp;gt;true&lt;br /&gt;
+     */&lt;br /&gt;
+     b1 := false&lt;br /&gt;
+     b2 := false&lt;br /&gt;
+     b3 := true&lt;br /&gt;
+     res1 := b1 &amp;amp;&amp;amp; b2 &amp;amp;&amp;amp; b3 // 逻辑与&lt;br /&gt;
+     fmt.Println(res1)&lt;br /&gt;
+     res2 := b1 || b2 || b3 // 逻辑或&lt;br /&gt;
+     fmt.Println(res2)&lt;br /&gt;
+     res3 := !b1 // 逻辑非–&amp;gt;取反&lt;br /&gt;
+     fmt.Println(res3)&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; a := 3  
+ b := 4  
+ c := true  
+  
+ res4 := a &amp;lt; 4 &amp;amp;&amp;amp; b / 2 &amp;gt;1 &amp;amp;&amp;amp; c  
+ //       T         T      T  
+ res5 := a * 2 &amp;lt; b &amp;amp;&amp;amp; b % 2 != 0 &amp;amp;&amp;amp; !c  
+ //         F           F           F  
+ res6 := (a + b)/b &amp;gt;= 0 || !c || b % 2 == 0  
+//        T             F           T  
+ res7 := !(a * 2 &amp;lt; b)  
+ //       !F  
+ fmt.Println(res4) // true  
+ fmt.Println(res5) // false  
+ fmt.Println(res6) // true  
+ fmt.Println(res7) // true  
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;}&lt;/p&gt;
+
+&lt;p&gt;D：位运算符：了解
+	将数值转为二进制，按位操作
+	&amp;amp;，按位与，都为1才为1，有一个为0就为0
+	|，按位或，都为0才为0，有一个为1就为1
+	^,异或，不同为1，相同为0
+	«,»，左移，右移，向左移动(放大2的n次方)，或向右移动(缩小2的n次方)
+[plain] view plain copy
+package main&lt;/p&gt;
+
+&lt;p&gt;import “fmt”&lt;/p&gt;
+
+&lt;p&gt;func main()  {&lt;br /&gt;
+    /*&lt;br /&gt;
+     位运算符：将数值转为二进制，按位操作&lt;br /&gt;
+    &amp;amp;：按位与，都为1才为1，有一个为0就为0&lt;br /&gt;
+    |：按位或，都为0才为0，有衣蛾为1就为1&lt;br /&gt;
+    ^：异或操作，不同为1，相同为0&lt;br /&gt;
+    «：左移， A « B,将A转为二进制，向左移动B位&lt;br /&gt;
+        相当于A*2的B次方&lt;br /&gt;
+    »：右移，A » B,向右移动B位&lt;br /&gt;
+     */&lt;br /&gt;
+     a := 60&lt;br /&gt;
+     b := 13&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; /*  
+ 60=32+16+8+4  
+ 13=8+4+1  
+ a: 0011 1100  
+ b: 0000 1101  
+ &amp;amp;: 0000 1100  
+ |：0011 1101  
+ ^：0011 0001  
+  */  
+res1 := a &amp;amp; b  
+res2 := a | b  
+res3 := a ^ b  
+ fmt.Println(res1) // 12  
+ fmt.Println(res2) // 61  
+ fmt.Println(res3) // 49  
+ fmt.Printf(&quot;%b,%b\n&quot;, a, b)  
+  
+ /*  
+ b = 13  
+ b:  0000 1101  
+ &amp;lt;&amp;lt;2:00 110100  = 32+16+4  
+ &amp;gt;&amp;gt;2:0000 0011  
+  */  
+  res4 := b &amp;lt;&amp;lt; 2  
+  b = 13  
+  res5 := b &amp;gt;&amp;gt; 2  
+  fmt.Println(res4, res5)  
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;}&lt;/p&gt;
+
+&lt;p&gt;E：赋值运算符：=，+=,-=,*=,/=,%=,&amp;amp;=,|=,^=,«=,»=
+	=,赋值
+	a+=b，相当于a = a + b&lt;/p&gt;
+
+&lt;p&gt;[plain] view plain copy
+package main&lt;/p&gt;
+
+&lt;p&gt;import “fmt”&lt;/p&gt;
+
+&lt;p&gt;func main()  {&lt;br /&gt;
+    /*&lt;br /&gt;
+    赋值运算符：=, +=,-=,*=,/=,%=,&amp;amp;=,|=,^=,«=,»=&lt;br /&gt;
+    =，a = b,将=右侧的数值b，赋值给=左边的变量a&lt;br /&gt;
+    +=, a += b,相当于：a = a + b&lt;br /&gt;
+    %=, a %= b,相当于：a = a % b&lt;br /&gt;
+     */&lt;br /&gt;
+     var a int&lt;br /&gt;
+     a = 4 // 将数值4赋值给变量a&lt;br /&gt;
+     b := 3&lt;br /&gt;
+     fmt.Println(a)&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; a += 2 // a=6,b=3  
+ a *= b // a=18,b=3  
+ b %= 3 // a=18,b=0  
+ //a &amp;amp;= 4  
+ //a /= b // 除零，runtime error: integer divide by zero  
+  
+ fmt.Println(a, b)  
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;}&lt;/p&gt;
+
+&lt;p&gt;运算符的优先级：
+	一元的高于二元的
+	&amp;amp;&amp;amp;高于||
+        使用()可以更改优先级&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 05 May 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/05/05/go-%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80-%E8%BF%90%E7%AE%97%E7%AC%A6/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/05/05/go-%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80-%E8%BF%90%E7%AE%97%E7%AC%A6/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Go 语言基础 数据类型</title>
+        <description>&lt;h1 id=&quot;go-语言基础-数据类型&quot;&gt;go 语言基础 数据类型&lt;/h1&gt;
+&lt;p&gt;2018年04月29日 13:13:37
+阅读数：15 编辑
+3.数据类型
+基本类型
+	布尔类型
+		bool，取值只有true，false
+	数值类型
+		整数型：有符号，无符号&lt;/p&gt;
+
+&lt;p&gt;int8/uint8	8bit,1byte	[-128,127]/[0,255]
+int16/uint16	16bit，2byte	
+int32/uint32	32bit，4byte
+int64/uint64	64bit，8byte
+byte，同uint8
+rune，同int32&lt;/p&gt;
+
+&lt;p&gt;int，uint–&amp;gt;操作系统 如果电脑书64位的，就是int64，32位的就是int32&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    浮点型 float32		32bit，4字节 float54		64bit，8字节
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;accii编码：
+A–&amp;gt;65
+a–&amp;gt;97&lt;/p&gt;
+
+&lt;p&gt;[plain] view plain copy
+package main&lt;/p&gt;
+
+&lt;p&gt;import “fmt”&lt;/p&gt;
+
+&lt;p&gt;func main()  {&lt;br /&gt;
+    /*&lt;br /&gt;
+    数据类型：基本数据类型，复合数据类型&lt;br /&gt;
+    基本数据类型：&lt;br /&gt;
+    1.布尔类型：bool，表示真和假&lt;br /&gt;
+        取值范围：true，false&lt;br /&gt;
+    2.数值型：整数，浮点，复数&lt;br /&gt;
+    整数：&lt;br /&gt;
+        有符号/无符号，位数，取值范围&lt;br /&gt;
+        int8/uint8,    8位   [-128,127]/[0,255]&lt;br /&gt;
+        int16/uint16,  16位   [-32768,32767]/[0,65535]&lt;br /&gt;
+        int32/uint32,  32位  (-2147483648 到 2147483647)/ (0 到 4294967295)&lt;br /&gt;
+        int64/uint64,  64位   (-9223372036854775808 到 9223372036854775807)/ (0 到 18446744073709551615)&lt;br /&gt;
+        byte,同uint8&lt;br /&gt;
+        rune，同int32&lt;br /&gt;
+        int/uint,同操作系统相关&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;浮点型：  
+    float32/float64, 32/64  
+  
+字符串：一个字符序列。  
+    字符个数可以0个，1个，多个。&quot;&quot;, &quot;a&quot;, &quot;abc&quot;  
+    &quot;&quot;, ``  
+ */  
+ //1. 布尔类型  
+ var b1 bool = false  
+ b2 := true  
+ fmt.Println(&quot;b1的值：&quot;, b1)  
+ fmt.Println(&quot;b2的值：&quot;, b2)  
+ fmt.Printf(&quot;b2的数值是：%t,类型是：%T\n&quot;, b2, b2)  
+ // 2.整数类型  
+ var num1 int8 = 100  
+ fmt.Printf(&quot;num1的数值：%d，类型是：%T\n&quot;, num1, num1)  
+ var num2 uint8 = 200  
+ fmt.Printf(&quot;num2的数值：%d，类型是：%T\n&quot;, num2, num2)  
+  
+ var num3 = 400  
+ fmt.Printf(&quot;num3的数值是：%d,类型是：%T\n&quot;, num3, num3)  
+ num4 := 'A' // int32  
+ fmt.Println(num4)  
+ //%v,原型，  
+ //%q,数值对应的utf8编码的字符  
+ fmt.Printf(&quot;num4的数值：%d，%v,%q,%T\n&quot;, num4,num4,num4,num4)  
+  
+ // 3.浮点类型：  
+ var num5 float32 = 3.14  
+ var num6 float64 = 8.99  
+ fmt.Printf(&quot;num5的数值是：%f，类型是：%T,num6的数值是：%f,类型：%T\n&quot;, num5,num5,num6,num6)  
+  
+ //4. 字符串  
+ var s1 string = &quot;memeda&quot;  
+ s2 := `helloworld`  
+ s3 := 'a' // int32  
+ s4 := &quot;a&quot; // string  
+ s5 := &quot;ab&quot; // string  
+ fmt.Println(s1, s2, s3, s4,s5)  
+ fmt.Printf(&quot;字符串：%s,类型：%T\n&quot;, s2, s2)  
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;}&lt;br /&gt;
+常用的占位符&lt;/p&gt;
+
+&lt;p&gt;%d代表整数&lt;/p&gt;
+
+&lt;p&gt;%f代表小数&lt;/p&gt;
+
+&lt;p&gt;%s代表字符串&lt;/p&gt;
+
+&lt;p&gt;%v匹配任意数据类型&lt;/p&gt;
+
+&lt;p&gt;%T代表表示当前数据类型&lt;/p&gt;
+
+&lt;p&gt;%q代表显示对应的accii码的值&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 05 May 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/05/05/go-%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/05/05/go-%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Go 语言基础 循环 for</title>
+        <description>&lt;h1 id=&quot;go-语言基础-循环-for&quot;&gt;go 语言基础 循环 for&lt;/h1&gt;
+
+&lt;p&gt;循环
+1.for循环
+	循环条件满足，循环体就会被执行，直到循环条件不满足为止。&lt;/p&gt;
+
+&lt;p&gt;2.for的语法结构
+	for 表达式1；表达式2；表达式3{
+		循环体；
+	}&lt;/p&gt;
+
+&lt;p&gt;3.for的执行流程：
+	表达式1：最开始执行，仅执行一次，惯用于变量的初始化。
+	表达式2：循环条件，是boo类型。
+	表达式3：循环体执行后执行，惯用于变量的变化。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;package main
+
+import &quot;fmt&quot;
+
+func main() {
+   /*
+
+使用for循环，计算5的阶乘：5!=5*4*3*2*1
+
+使用for循环，打印58-23数字
+
+使用for循环，打印'A'到'Z'字母
+      ‘A’--&amp;gt;int32，数值
+         65，'A'
+
+20.使用for循环，打印1-100内的数字，每行打印10个。
+    */
+   sum := 1
+   for i := 5; i &amp;gt; 0; i-- {
+      sum *= i
+   }
+   fmt.Println(sum)
+
+   for i := 58; i &amp;gt;= 23; i-- {
+      fmt.Println(i)
+   }
+
+   for i := 'A'; i &amp;lt;= 'Z'; i++ {
+      fmt.Printf(&quot;%q\t&quot;, i)
+   }
+   fmt.Println()
+   for i := 1; i &amp;lt;= 100; i++ {
+      fmt.Print(i, &quot;\t&quot;)
+      if i%10 == 0 {
+         fmt.Println() // print+line,直接换行
+      }
+   }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;4.for的变形：
+	表达式1,2,3都可以省略
+	表达式2省略，意味着永真
+	for 表达式1；表达式2；表达式3{}  正常for循环
+	for 表达式2{} 没有初始值，只有退出条件，满足一定条件后退出
+	for{}  死循环&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;package main
+
+import &quot;fmt&quot;
+
+func main()  {
+   /*
+   for 表达式1；表达式2；表达式3{
+      循环体
+   }
+
+    */
+    //1.省略表达式1
+   i := 1
+    for ;i&amp;lt;5;i++{
+      fmt.Println(i)//1,2,3,4
+    }
+    fmt.Println(i) // 5
+   // 2省略表达2，相当于条件永远为true
+   // for j:=0;;j++{
+   //     fmt.Println(j)
+   // }
+
+   // 3省略表达式3
+   for j:=0;j&amp;lt;10;{
+      fmt.Println(j)//0 0 0....
+      j++//1
+   }
+   // 4.3个表达式都省略
+   //for {//?for true
+   // fmt.Println(i)
+   // i++
+   //}
+   // 5. 省略表达式1和3
+   k :=0
+   for k &amp;lt; 5{ // for ; k&amp;lt;5;
+      fmt.Println(k) // 0 1 2 3 4
+      k++ // 1 2 3 4 5
+   }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;5.break，continue
+	break：用于结束循环，循环彻底结束了。
+	continue：用于结束某次循环，循环下次继续。
+	如果多层循环嵌套，break和continue默认结束里层循环，如果要结束外层循环，需要贴标签。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;package main
+
+import &quot;fmt&quot;
+
+func main()  {
+   /*
+   循环中的控制语句：break，continue
+   循环正常结束：循环条件不满足，
+   通过break和continue来结束循环。
+   break：用于强制结束循环，无论循环条件是否满足
+   continue：结束了某一次循环，循环下次继续。
+    */
+    for i := 1;i&amp;lt;=10;i++{
+      if i % 2==0{
+         fmt.Println(i)
+         break
+      }
+    }
+
+    for i := 1;i&amp;lt;=10;i++{
+      if i == 5{
+         //break
+         continue
+      }
+      fmt.Println(i)
+    }
+    // 1.练习1，统计1-100内能被3整除不能被5整除的数，仅要前5个。
+
+    // 2.打印从1开始的前20个奇数。
+    i:=1
+    count := 0
+    for {
+      if i % 2 != 0{
+         fmt.Print(i,&quot;\t&quot;) // 1
+         count++ // 1
+         if count == 20{
+            break
+         }
+      }
+      i++ // 2
+
+   }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;6.goto
+	跳转到指定位置。&lt;/p&gt;
+
+&lt;p&gt;package main&lt;/p&gt;
+
+&lt;p&gt;import “fmt”&lt;/p&gt;
+
+&lt;p&gt;func main()  {
+   haha: fmt.Println(“这是个标签”)  //这里是第6行
+   for i:=0;i&amp;lt;10;i++{
+      if i==5{
+         goto haha //这是标签 如果i=5就跳转到第6行，但是会造成死循环
+    }
+   fmt.Println(i)&lt;/p&gt;
+
+&lt;p&gt;}&lt;/p&gt;
+
+&lt;p&gt;}&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 05 May 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/05/05/go-%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80-%E5%BE%AA%E7%8E%AF-for/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/05/05/go-%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80-%E5%BE%AA%E7%8E%AF-for/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Go 语言基础 分支语句 switch</title>
+        <description>&lt;h1 id=&quot;go-语言基础-分支语句-switch&quot;&gt;go 语言基础 分支语句 switch&lt;/h1&gt;
+&lt;p&gt;2018年04月29日 13:45:16
+阅读数：11 编辑
+switch语句
+1.普通switch语句
+switch 变量{&lt;/p&gt;
+
+&lt;p&gt;case 数值1:
+	分支1
+case 数值2:
+	分支2
+case 数值3:
+	分支3
+…
+[default:
+	最后一个分支
+]
+}
+package main&lt;/p&gt;
+
+&lt;p&gt;import “fmt”&lt;/p&gt;
+
+&lt;p&gt;func main() {
+   /*
+   switch语句
+   switch var{
+   case num1:
+   case num2:
+   case num3:
+   …
+   default:
+   }
+    */
+   num1 := 4
+   switch num1 {&lt;/p&gt;
+
+&lt;p&gt;case 3:
+      fmt.Println(“第三季度”)
+   case 4:
+      fmt.Println(“第四季度”)&lt;/p&gt;
+
+&lt;p&gt;case 1: // num1 == 1
+      fmt.Println(“第一季度”)
+   case 2:
+      fmt.Println(“第二季度”)
+   default:
+      fmt.Println(“我也不知道啦。。”)
+   }&lt;/p&gt;
+
+&lt;p&gt;}&lt;/p&gt;
+
+&lt;p&gt;用变量的数值，依次匹配case后的数值，和哪个匹配上，就执行哪个分支，如果都没有匹配上就执行default。。
+case其实可以是无序的。
+case后的数值不能重复。&lt;/p&gt;
+
+&lt;p&gt;2.switch可以省略变量
+switch {//相当于true
+}&lt;/p&gt;
+
+&lt;p&gt;3.case后的数值可以是多个
+num:=0
+switch num{
+case 1,2,3,4:
+}
+4.switch也支持多一条初始化语句，用于初始化局部变量
+switch num:= 0;num{&lt;/p&gt;
+
+&lt;p&gt;}&lt;/p&gt;
+
+&lt;p&gt;package main&lt;/p&gt;
+
+&lt;p&gt;import (
+   “fmt”
+)&lt;/p&gt;
+
+&lt;p&gt;func main() {
+   //1.省略switch后的变量
+   switch { //相当于true
+   case true:
+      fmt.Println(“case后的数值是true。。”)
+   case false:
+      fmt.Println(“case后的数值是false。。”)
+   }
+   score := 48
+   switch {
+   case score &amp;gt;= 90 &amp;amp;&amp;amp; score &amp;lt;= 100:
+      fmt.Println(“优秀”)
+   case score &amp;gt;= 60 &amp;amp;&amp;amp; score &amp;lt; 70:
+      fmt.Println(“及格”)
+   case score &amp;gt;= 80 &amp;amp;&amp;amp; score &amp;lt; 90:
+      fmt.Println(“良好”)
+   case score &amp;gt;= 70 &amp;amp;&amp;amp; score &amp;lt; 80:
+      fmt.Println(“中”)
+   case score &amp;gt;= 0 &amp;amp;&amp;amp; score &amp;lt; 60:
+      fmt.Println(“不及格”)
+   }
+   //2.case后有多个数值
+   a := “A”
+   switch a {
+   case “A”, “B”,”C”,”D”:
+      fmt.Println(“A-D”)
+   case “E”,”F”,”G”:
+      fmt.Println(“E-G”)
+   }
+   score = 77
+   switch score/10 { // 0,1,2,3,4,5,6,7,8,9,10
+   case 9, 10:
+      fmt.Println(“优秀”)
+   case 8:
+      fmt.Println(“良好”)
+   case 7:
+      fmt.Println(“中”)
+   case 6:
+      fmt.Println(“及格”)
+   case 5,4,3,2,1,0: //default
+      fmt.Println(“不及格”)
+   }
+   //3.switch也可以多条初始化语句,一般用于初始化局部变量&lt;/p&gt;
+
+&lt;p&gt;switch s1:=”go”; s1 {
+   case “go”:
+      fmt.Println(“golang..”)
+   case “java”:
+      fmt.Println(“java”)
+   case “php”:
+      fmt.Println(“php”)
+   case “python”:
+      fmt.Println(“ptyhon”)
+   default:
+      fmt.Println(“玩去。。”)
+   }&lt;/p&gt;
+
+&lt;p&gt;}&lt;/p&gt;
+
+&lt;p&gt;swithc关键字
+case：switch的其中一个条件
+break：强制退出switch，无论匹配上的case分支，知否执行完毕。&lt;/p&gt;
+
+&lt;p&gt;default:如果所有case都不满足，就走default&lt;/p&gt;
+
+&lt;p&gt;fallthrough：用于穿透，&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;当匹配上某个case后，就执行该case内容，如果有fallthrough，下面紧邻的case直接执行
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;if和switch对比：
+	A：if语句仅作用在条件是bool，switch
+	B：if适合分支较少的情况。switch适合分支较多的情况。&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 05 May 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/05/05/go-%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80-%E5%88%86%E6%94%AF%E8%AF%AD%E5%8F%A5-switch/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/05/05/go-%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80-%E5%88%86%E6%94%AF%E8%AF%AD%E5%8F%A5-switch/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Go 语言基础 分支语句 if</title>
+        <description>&lt;h1 id=&quot;go-语言基础-分支语句-if&quot;&gt;go 语言基础 分支语句 if&lt;/h1&gt;
+&lt;p&gt;2018年04月29日 13:43:36
+阅读数：12 编辑
+分支语句
+程序的流程结构：
+	顺序结构：代码是一行一行执行，除非有其他 关键字，比如defer，
+        选择结构：条件满足，某些代码才会被执行。仅执行一次。。0,1
+		分支语句：
+		if
+		switch
+if的结构：
+1.最简单if
+	if 条件表达式{
+		//条件满足就 执行。。
+	}
+package main&lt;/p&gt;
+
+&lt;p&gt;import “fmt”&lt;/p&gt;
+
+&lt;p&gt;func main()  {
+   /*
+   if语句：
+   语法结构：
+   if bool表达式{
+      条件为true，执行此处的代码。。
+   }
+    */
+    a := 10
+    if a &amp;lt; 10{
+      fmt.Println(“数字a小于10的数。。”)
+    }
+    fmt.Println(“over…”)&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; num := -5
+ if num &amp;lt; 0{
+  num = -num
+ }
+ fmt.Println(num)
+
+ score := 88
+ if score &amp;gt;= 60{
+  fmt.Println(&quot;及格&quot;)
+ }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;}
+2.if…else
+二选一
+	if 条件表达式{
+		//A段代码。。
+	}else{
+		//B段代码。。
+	}&lt;/p&gt;
+
+&lt;p&gt;package main&lt;/p&gt;
+
+&lt;p&gt;import “fmt”&lt;/p&gt;
+
+&lt;p&gt;func main()  {
+   /*
+   if 条件表达式{
+      //条件成立执行
+   }else{
+      //条件不成立执行。。
+   }
+    */
+    score := 48
+    if score &amp;gt;= 60{
+      fmt.Println(score,” 成绩及格”)
+    }else {
+      fmt.Println(“不及格”)
+    }
+         age := 20
+     if age &amp;gt;= 18{
+      fmt.Println(“不是小孩子了”)
+     }else {
+      fmt.Println(“未成年。。”)
+     }&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; num := 5
+ if num % 2 == 0{
+  fmt.Println(num,&quot; 是偶数。。&quot;)
+ }else {
+  fmt.Println(&quot;是奇数。。&quot;)
+ }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;}&lt;/p&gt;
+
+&lt;p&gt;3.if语句的嵌套：
+多选一&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;if 条件1{
+
+
+}else if 条件2{
+
+
+}else if 条件3{
+
+
+}....
+else{
+	
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;package main&lt;/p&gt;
+
+&lt;p&gt;import “fmt”&lt;/p&gt;
+
+&lt;p&gt;func main()  {
+   /*
+   if 条件1{
+      if 条件2{
+         A段  // 条件1成立，条件2成立
+      }else{
+         B段 // 条件1成立，条件2不成立
+      }
+   }else{
+      if 条件3{
+         C段 // 条件1不成立，条件3成立
+      }else{
+         D段 // 条件1不成立，条件3也不成立
+      }&lt;/p&gt;
+
+&lt;p&gt;}
+    &lt;em&gt;/
+   sex := “泰国”
+   if sex == “男”{
+      fmt.Println(“去男厕所。。”)
+   }else {
+      if sex == “女”{
+         fmt.Println(“去女厕所。。”)
+      }else {
+         fmt.Println(“我也不知道了，也许不去厕所。。”)
+      }
+   }
+   if sex == “男”{
+      fmt.Println(“男厕所。。。”)
+   }else if sex == “女”{
+      fmt.Println(“女厕所。。”)
+   }else{
+      fmt.Println(“不知道。。”)
+   }
+   /&lt;/em&gt;
+   if 条件1{
+      A段
+   }else{
+      if 条件2{
+         B段
+      }else{
+         C段
+      }
+   }
+   //可以简写：
+   if 条件1{
+      A段
+   }else if 条件2{
+      B段
+   }else{
+      C段
+   }
+    */&lt;/p&gt;
+
+&lt;p&gt;}&lt;/p&gt;
+
+&lt;p&gt;4.if还可以包含一条初始化语句，用于初始化局部变量
+	if a:=0;a &amp;lt; 10{&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;} package main
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;import “fmt”&lt;/p&gt;
+
+&lt;p&gt;func main()  {&lt;/p&gt;
+
+&lt;p&gt;/*
+   if语句还支持，条件前再多一行，
+   注意变量的作用域问题。
+    */
+   if  num1 := 10; num1 &amp;gt; 0{
+      fmt.Println(“是正数”)
+   }else if num1 &amp;lt; 0 {
+      fmt.Println(“是负数”)
+   }else{
+      fmt.Println(“是零”)
+   }&lt;/p&gt;
+
+&lt;p&gt;//fmt.Println(“num1,”, num1)&lt;/p&gt;
+
+&lt;p&gt;month := 9
+   day := 0 // 表示月的天数
+   if month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12{
+      day = 31
+   }else if month == 4 || month == 6 || month == 9 || month == 11{
+      day = 30
+   }else if month == 2{
+      //2月
+   }else {
+      fmt.Println(“数据有误，无法计算。。”)
+   }
+   fmt.Println(month, “月，的天数是，”, day)
+}
+最后再普及一个小知识
+变量的作用域：
+    如果是在main函数里声明的变量，他的作用域就是整个main{}函数里，如果是在main函数外面声明，这个变量的作用域会是整个文件。&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 05 May 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/05/05/go-%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80-%E5%88%86%E6%94%AF%E8%AF%AD%E5%8F%A5-if/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/05/05/go-%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80-%E5%88%86%E6%94%AF%E8%AF%AD%E5%8F%A5-if/</guid>
+        
+        
+      </item>
     
   </channel>
 </rss>

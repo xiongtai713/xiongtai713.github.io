@@ -1,0 +1,125 @@
+<h1 id="go语言基础-常量">go语言基础 常量</h1>
+<p>2018年04月29日 12:09:54
+阅读数：11 编辑
+2.常量
+	概念：类似变量，数值不可以更改
+	语法：
+		const 常量名 数据类型 = 赋值
+		const 常量名 = 赋值
+	赋值：常数，常量表达式
+	常量的数值：布尔，数值，字符串</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>常量的名字，所有字母都大写。
+</code></pre>
+</div>
+
+<p>[plain] view plain copy
+package main</p>
+
+<p>import “fmt”</p>
+
+<p>func main()  {<br />
+    /*<br />
+    常量：同变量类似，区别在于程序执行过程中，数值不可以改变<br />
+    定义语法：<br />
+        const 常量名 数据类型 = 常量值/常量表达式<br />
+        const 常量名 = 常量值</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>常量的数值：布尔类型，数值类型(整数，浮点，复数),字符串  
+常量名：编码习惯：所有的字母都大写  
+  
+注意事项：  
+1.常量定义后，可以不使用，也不会报错  
+2.常量的值：布尔，数值，字符串  
+    常量表达式：常量的计算，内置函数：len(),cap()  
+3.常量组：定义了一组常量  
+    没有直接定义常量值，默认和上一行一致。  
+    常量组中定义的常量值是一组相关的数据，可以作为枚举  
+4.iota，特殊的常量，理解为计数器，  
+    定义const，iota的值从0开始。  
+    常量组中定义了常量就累加1.  
+ */  
+ // 1.定义常量  
+const cPATH string  = "http://www.baidu.com"  
+const PI  = 3.14  
+fmt.Println(cPATH)  
+fmt.Println(PI)  
+  
+//pi = 3.67 // 不能给常量重新赋值  
+  
+const LENGTH int = 10  
+const WIDTH int = 5  
+var area int  
+area = LENGTH * WIDTH  
+fmt.Println(area)  
+  
+//var a = 2  
+//var b = 7  
+//const area2  = LENGTH * WIDTH  
+//const area2  = a * b  
+//fmt.Println(area2)  
+  
+const c = "memeda"  
+const con2  = len(c)  
+  
+// 同时定义多个常量  
+const a2, b2, c2 = 1, false, "str" //多重赋值  
+  
+// 常量组  
+const (  
+    a3 = 10  
+    a4 = false  
+    a5 = 3.14  
+)  
+//定义常量组的时候，如果没有指定类型和数值，默认和上一行相同  
+const (  
+    x uint16 = 16 // 16  
+    y //16  
+    s = "abc" // "abc"  
+    z // "abc"  
+)  
+fmt.Println(x, y, s, z)  
+  
+// 用于枚举：一年四季，一周七天  
+const (  
+    Sunday = 0  
+    Monday = 1  
+    Tuesday = 2  
+    Wednesday = 3  
+    Thursday = 4  
+    Friday = 5  
+    Saturday = 6  
+)  
+</code></pre>
+</div>
+
+<p>}<br />
+iota，特殊的常量，计数器
+	定义const组时，iota初始为0，每定义一个常量累加1。直到下一个const，重新置为0。
+[plain] view plain copy
+package main</p>
+
+<p>import “fmt”</p>
+
+<p>func main()  {<br />
+    // iota，特殊的常量值，每当定义了const，iota的值置为0，<br />
+    // 每当定义一个常量，累加1。遇到const时，重新置为0<br />
+    const  (<br />
+        a = iota // 0<br />
+        b = iota // 1<br />
+        c = iota // 2<br />
+    )<br />
+    fmt.Println(a, b, c)</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>// 简写成  
+const (  
+    d = iota  
+    e  
+    f  
+)  
+fmt.Println(d, e, f)  
+</code></pre>
+</div>
+
+<p>}</p>
+
