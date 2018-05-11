@@ -1,0 +1,66 @@
+<p>#星云链转账
+###启动创始区块</p>
+<blockquote>
+  <p>./neb -c conf/default/config.conf</p>
+</blockquote>
+
+<p>###启动挖矿</p>
+
+<blockquote>
+  <p>./neb -c conf/example/miner.conf</p>
+</blockquote>
+
+<p>###查询账户状态</p>
+<blockquote>
+  <p>curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d ‘{“address”:”n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE”}’</p>
+</blockquote>
+
+<p>nonce值下次交易要加1</p>
+
+<p>##签名发送
+###准备发的交易签名</p>
+<blockquote>
+  <p>curl -i -H ‘Content-Type: application/json’ -X POST http://localhost:8685/v1/admin/sign -d ‘{“transaction”:{“from”:”n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE”,”to”:”n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5”, “value”:”1000000000000000000”,”nonce”:1,”gasPrice”:”1000000”,”gasLimit”:”2000000”}, “passphrase”:”passphrase”}’</p>
+</blockquote>
+
+<p>from是转账地址
+to  是收款地址
+result得到data
+要注意nonce值,每次累加1</p>
+
+<p>###将签好名的交易原始数据提交到本地私有链里的星云节点</p>
+<blockquote>
+  <p>curl -i -H ‘Content-Type: application/json’ -X POST http://localhost:8685/v1/user/rawtransaction -d ‘{“data”:”CiAbjMP5dyVsTWILfXL1MbwZ8Q6xOgX/JKinks1dpToSdxIaGVcH+WT/SVMkY18ix7SG4F1+Z8evXJoA35caGhlXbip8PupTNxwV4SRM87r798jXWADXpWngIhAAAAAAAAAAAA3gtrOnZAAAKAEwuKuC1wU6CAoGYmluYXJ5QGRKEAAAAAAAAAAAAAAAAAAPQkBSEAAAAAAAAAAAAAAAAAAehIBYAWJBVVuRHWSNY1e3bigbVKd9i6ci4f1LruDC7AUtXDLirHlsmTDZXqjSMGLio1ziTmxYJiLj+Jht5RoZxFKqFncOIQA=”}’</p>
+</blockquote>
+
+<p>转账完毕后,再次查询账户
+result转账完毕后可以得到txhash值用来查询交易状态
+data后面输入 上面得到的data</p>
+
+<p>###密码交易</p>
+<blockquote>
+  <p>curl -i -H ‘Content-Type: application/json’ -X POST http://localhost:8685/v1/admin/transactionWithPassphrase -d ‘{“transaction”:{“from”:”n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE”,”to”:”n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5”, “value”:”1000000000000000000”,”nonce”:2,”gasPrice”:”1000000”,”gasLimit”:”2000000”},”passphrase”:”passphrase”}’</p>
+</blockquote>
+
+<p>同样要注意nonce值 
+passphrase后面是密码
+result转账完毕后可以得到txhash值用来查询交易状态</p>
+
+<p>##交易状态查询</p>
+<blockquote>
+  <p>curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/getTransactionReceipt -d ‘{“hash”:”8d69dea784f0edfb2ee678c464d99e155bca04b3d7e6cdba6c5c189f731110cf”}’</p>
+</blockquote>
+
+<p>hash里面输入上面交易的txhash 可以看到交易信息
+这里的status可能有三种状态值，0，1和2。
+0: 交易失败. 表示当前交易已经上链，但是执行失败了。可能是因为部署合约或者调用合约参数错误。
+1: 交易成功. 表示当前交易已经上链，而且执行成功了。
+2: 交易待定. 表示当前交易还没有上链。可能是因为当前交易还没有被打包；如果长时间处于当前状态，可能是因为当前交易的发送者账户的余额不够支付上链手续费。</p>
+
+<p>###再次查询下账户信息</p>
+<blockquote>
+  <p>curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d ‘{“address”:”n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE”}’</p>
+</blockquote>
+
+<p>可以得到结果</p>
+

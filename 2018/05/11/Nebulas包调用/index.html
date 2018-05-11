@@ -1,0 +1,69 @@
+<h1 id="nebulas包调用">Nebulas包调用</h1>
+<div class="highlighter-rouge"><pre class="highlight"><code>var Nebulas = require('nebulas'); //es5 调包
+</code></pre>
+</div>
+<p>###取包中的Neb
+new Neb(request)</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var Neb = Nebulas.Neb;  //把Nebulas里面的Neb单独取出`
+var neb = new Neb(new Nebulas.HttpRequest("https://testnet.nebulas.io")) 
+//传入测试网地址 
+</code></pre>
+</div>
+<p>有了Neb 我们就可以调用Neb里面的API了</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var api = neb.api; //调用Neb里的api
+</code></pre>
+</div>
+<p>##API里的方法
+###getNebState() 查询当前区块链状态 
+ state就是的得到的结果 可以打印看看</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>api.getNebState().then(function(state) {  // 利用api 查询当前区块链状态
+//console.log(state) 查询区块状态
+});
+</code></pre>
+</div>
+
+<p>###latestIrreversibleBlock()   查询当前链上最新区块信息
+blockData可以得到区块信息</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>api.latestIrreversibleBlock().then(function(blockData) {
+console.log(blockData)
+});
+</code></pre>
+</div>
+<p>###getAccountState(options) 查询某一个(type: 87)账号信息 也可以查智能合约(type: 88)的信息
+address里可以地址
+state就是当前账号信息</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>api.getAccountState({address: "n1QsosVXKxiV3B4iDWNmxfN4VqpHn2TeUcn"}).then(function(state) {
+console.log(state)
+});
+</code></pre>
+</div>
+
+<p>###call(options) 调用智能合约方法
+方法必须已经被提交
+to:智能合约地址
+function:智能合约方法
+得到的tx就是</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>api.call({
+   chainID: 1,
+   from: "n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5",
+   to: "n1SAeQRVn33bamxN4ehWUT7JGdxipwn8b17",
+   value: 10,  //给智能合约转账,一般情况填0
+   nonce: 12,  //交易次数
+   gasPrice: 1000000,  //小费
+   gasLimit: 2000000,   //消费上限
+   contract: {
+       function: "save",  //方法名称
+       args: "[0]" //给智能合约传参 
+   }
+}).then(function(tx) {  //结果
+    //code
+});
+</code></pre>
+</div>
+
