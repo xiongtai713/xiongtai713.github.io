@@ -5,17 +5,13 @@
     <description>初级区块链工程师</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 11 May 2018 20:28:33 +0800</pubDate>
-    <lastBuildDate>Fri, 11 May 2018 20:28:33 +0800</lastBuildDate>
+    <pubDate>Mon, 14 May 2018 10:33:48 +0800</pubDate>
+    <lastBuildDate>Mon, 14 May 2018 10:33:48 +0800</lastBuildDate>
     <generator>Jekyll v3.5.1</generator>
     
       <item>
-        <title>星云链nebulas钱包安装</title>
-        <description>&lt;blockquote&gt;
-  &lt;p&gt;作者:刘蛟&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h1 id=&quot;星云链钱包安装&quot;&gt;星云链钱包安装&lt;/h1&gt;
+        <title>星云链钱包安装</title>
+        <description>&lt;h1 id=&quot;星云链钱包安装&quot;&gt;星云链钱包安装&lt;/h1&gt;
 &lt;p&gt;1.进入github克隆地址
 https://github.com/nebulasio/web-wallet
 新建文件夹打开命令行 输入命令&lt;/p&gt;
@@ -38,20 +34,18 @@ https://github.com/ChengOrangeJu/WebExtensionWallet
 安装完毕,右上角发现小图标没,&lt;/p&gt;
 
 </description>
-        <pubDate>Fri, 11 May 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/05/11/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E9%92%B1%E5%8C%85%E5%AE%89%E8%A3%85/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/05/11/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E9%92%B1%E5%8C%85%E5%AE%89%E8%A3%85/</guid>
+        <pubDate>Sun, 06 May 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/05/06/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E9%92%B1%E5%8C%85%E5%AE%89%E8%A3%85/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/05/06/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E9%92%B1%E5%8C%85%E5%AE%89%E8%A3%85/</guid>
+        
+        <category>星云链</category>
         
         
       </item>
     
       <item>
-        <title>星云链nebulas转账命令</title>
-        <description>&lt;blockquote&gt;
-  &lt;p&gt;作者:刘蛟&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;#星云链转账
+        <title>星云链js通过RPC接口与星云链交互(1)</title>
+        <description>&lt;p&gt;#星云链转账
 ###启动创始区块&lt;/p&gt;
 &lt;blockquote&gt;
   &lt;p&gt;./neb -c conf/default/config.conf&lt;/p&gt;
@@ -118,20 +112,18 @@ result转账完毕后可以得到txhash值用来查询交易状态&lt;/p&gt;
 &lt;p&gt;可以得到结果&lt;/p&gt;
 
 </description>
-        <pubDate>Fri, 11 May 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/05/11/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E8%BD%AC%E8%B4%A6%E5%91%BD%E4%BB%A4/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/05/11/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E8%BD%AC%E8%B4%A6%E5%91%BD%E4%BB%A4/</guid>
+        <pubDate>Sun, 06 May 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/05/06/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E8%BD%AC%E8%B4%A6%E5%91%BD%E4%BB%A4/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/05/06/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E8%BD%AC%E8%B4%A6%E5%91%BD%E4%BB%A4/</guid>
+        
+        <category>星云链</category>
         
         
       </item>
     
       <item>
-        <title>星云链nebulas智能合约部署和调用</title>
-        <description>&lt;blockquote&gt;
-  &lt;p&gt;作者:刘蛟&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h1 id=&quot;星云链智能合约部署和调用&quot;&gt;星云链智能合约部署和调用&lt;/h1&gt;
+        <title>星云链智能合约部署和调用</title>
+        <description>&lt;h1 id=&quot;星云链智能合约部署和调用&quot;&gt;星云链智能合约部署和调用&lt;/h1&gt;
 &lt;p&gt;1.首先打开星云钱包
 先确认下网络,是要部署到主链,测试链,还是本地,
 选择合约(Contract),然后选择部署(Deploy)
@@ -163,20 +155,18 @@ result:前面是init方法的值后面是预计要花的Gas
 &lt;p&gt;&lt;img src=&quot;http://p8ka0wokw.bkt.clouddn.com/WX20180511-192648@2x.png&quot; alt=&quot;GitHub set up&quot; /&gt;&lt;/p&gt;
 
 </description>
-        <pubDate>Fri, 11 May 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/05/11/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6%E9%83%A8%E7%BD%B2%E5%92%8C%E8%B0%83%E7%94%A8/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/05/11/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6%E9%83%A8%E7%BD%B2%E5%92%8C%E8%B0%83%E7%94%A8/</guid>
+        <pubDate>Sun, 06 May 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/05/06/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6%E9%83%A8%E7%BD%B2%E5%92%8C%E8%B0%83%E7%94%A8/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/05/06/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6%E9%83%A8%E7%BD%B2%E5%92%8C%E8%B0%83%E7%94%A8/</guid>
+        
+        <category>星云链</category>
         
         
       </item>
     
       <item>
-        <title>星云链nebulas合约调用</title>
-        <description>&lt;blockquote&gt;
-  &lt;p&gt;作者:刘蛟&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h1 id=&quot;星云链合约调用&quot;&gt;星云链合约调用&lt;/h1&gt;
+        <title>星云链js通过RPC接口与星云链交互(1)</title>
+        <description>&lt;h1 id=&quot;星云链合约调用&quot;&gt;星云链合约调用&lt;/h1&gt;
 &lt;p&gt;交易hash:
 f4c0cff0f8e812b6da5d63c973f22e4ec740f189bd0e2502d732a145405bb90e
 合约地址(Contract address):
@@ -201,20 +191,18 @@ n1jgZAYD5dUuT8sWPsv4mGxdysC2ZR9VkTh
 当然我们还可以通过takeout方法再把钱取出来&lt;/p&gt;
 
 </description>
-        <pubDate>Fri, 11 May 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/05/11/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E5%90%88%E7%BA%A6%E8%B0%83%E7%94%A8/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/05/11/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E5%90%88%E7%BA%A6%E8%B0%83%E7%94%A8/</guid>
+        <pubDate>Sun, 06 May 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/05/06/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E5%90%88%E7%BA%A6%E8%B0%83%E7%94%A8/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/05/06/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E5%90%88%E7%BA%A6%E8%B0%83%E7%94%A8/</guid>
+        
+        <category>星云链</category>
         
         
       </item>
     
       <item>
         <title>星云链nebulas包安装</title>
-        <description>&lt;blockquote&gt;
-  &lt;p&gt;作者:刘蛟&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h1 id=&quot;星云链nebulas包安装&quot;&gt;星云链nebulas包安装&lt;/h1&gt;
+        <description>&lt;h1 id=&quot;星云链nebulas包安装&quot;&gt;星云链nebulas包安装&lt;/h1&gt;
 &lt;p&gt;https://github.com/nebulasio/go-nebulas&lt;/p&gt;
 
 &lt;p&gt;1.执行命令&lt;/p&gt;
@@ -226,20 +214,18 @@ n1jgZAYD5dUuT8sWPsv4mGxdysC2ZR9VkTh
 2.安装完毕之后,可以去node_modules里的package里去看下 是否安装成功,成功会显示包名和版本号,安装成功后,就可以调用包下面的方法啦&lt;/p&gt;
 
 </description>
-        <pubDate>Fri, 11 May 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/05/11/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E5%8C%85%E5%AE%89%E8%A3%85/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/05/11/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E5%8C%85%E5%AE%89%E8%A3%85/</guid>
+        <pubDate>Sun, 06 May 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/05/06/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E5%8C%85%E5%AE%89%E8%A3%85/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/05/06/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E5%8C%85%E5%AE%89%E8%A3%85/</guid>
+        
+        <category>星云链</category>
         
         
       </item>
     
       <item>
-        <title>星云链dappmac开发必装软件 </title>
-        <description>&lt;blockquote&gt;
-  &lt;p&gt;作者:刘蛟&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;#星云链mac开发必装软件 
+        <title>星云链mac开发必装软件 </title>
+        <description>&lt;p&gt;#星云链mac开发必装软件 
 ###1.Homebrew 安装
 这是官网https://brew.sh/
 可以直接通过命令&lt;/p&gt;
@@ -326,20 +312,18 @@ git reset - -hard HEAD^  回到上一个版本
 &lt;p&gt;gulp可以把整个文件夹打包成一个文件&lt;/p&gt;
 
 </description>
-        <pubDate>Fri, 11 May 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/05/11/%E6%98%9F%E4%BA%91%E9%93%BEDAPPmac%E5%BC%80%E5%8F%91%E5%BF%85%E8%A3%85%E8%BD%AF%E4%BB%B6/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/05/11/%E6%98%9F%E4%BA%91%E9%93%BEDAPPmac%E5%BC%80%E5%8F%91%E5%BF%85%E8%A3%85%E8%BD%AF%E4%BB%B6/</guid>
+        <pubDate>Sun, 06 May 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/05/06/%E6%98%9F%E4%BA%91%E9%93%BEDAPPmac%E5%BC%80%E5%8F%91%E5%BF%85%E8%A3%85%E8%BD%AF%E4%BB%B6/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/05/06/%E6%98%9F%E4%BA%91%E9%93%BEDAPPmac%E5%BC%80%E5%8F%91%E5%BF%85%E8%A3%85%E8%BD%AF%E4%BB%B6/</guid>
+        
+        <category>星云链</category>
         
         
       </item>
     
       <item>
         <title>React安装</title>
-        <description>&lt;blockquote&gt;
-  &lt;p&gt;作者:刘蛟&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h1 id=&quot;react安装&quot;&gt;React安装&lt;/h1&gt;
+        <description>&lt;h1 id=&quot;react安装&quot;&gt;React安装&lt;/h1&gt;
 &lt;p&gt;官网  https://reactjs.org/
 主要用来编写JS和XML,前后端结合
 1.全局安装&lt;/p&gt;
@@ -375,20 +359,18 @@ git reset - -hard HEAD^  回到上一个版本
 &lt;p&gt;包就还原了&lt;/p&gt;
 
 </description>
-        <pubDate>Fri, 11 May 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/05/11/React%E5%AE%89%E8%A3%85/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/05/11/React%E5%AE%89%E8%A3%85/</guid>
+        <pubDate>Sun, 06 May 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/05/06/React%E5%AE%89%E8%A3%85/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/05/06/React%E5%AE%89%E8%A3%85/</guid>
+        
+        <category>React</category>
         
         
       </item>
     
       <item>
         <title>Nebulas包调用</title>
-        <description>&lt;blockquote&gt;
-  &lt;p&gt;作者:刘蛟&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h1 id=&quot;nebulas包调用&quot;&gt;Nebulas包调用&lt;/h1&gt;
+        <description>&lt;h1 id=&quot;nebulas包调用&quot;&gt;Nebulas包调用&lt;/h1&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var Nebulas = require('nebulas'); //es5 调包
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
@@ -458,9 +440,11 @@ function:智能合约方法
 &lt;/div&gt;
 
 </description>
-        <pubDate>Fri, 11 May 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/05/11/Nebulas%E5%8C%85%E8%B0%83%E7%94%A8/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/05/11/Nebulas%E5%8C%85%E8%B0%83%E7%94%A8/</guid>
+        <pubDate>Sun, 06 May 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/05/06/Nebulas%E5%8C%85%E8%B0%83%E7%94%A8/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/05/06/Nebulas%E5%8C%85%E8%B0%83%E7%94%A8/</guid>
+        
+        <category>星云链</category>
         
         
       </item>
