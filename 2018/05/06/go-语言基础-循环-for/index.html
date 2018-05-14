@@ -6,21 +6,21 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <title>React安装</title>
-  <meta name="description" content="React手记">
+  <title>go 语言基础 循环 for</title>
+  <meta name="description" content="go语言手记&quot;">
   <meta name="author" content="黎跃春">
 
-  <meta name="keywords" content="React"
+  <meta name="keywords" content="go语言"
   />
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="React安装">
-  <meta name="twitter:description" content="React手记">
+  <meta name="twitter:title" content="go 语言基础 循环 for">
+  <meta name="twitter:description" content="go语言手记&quot;">
 
   <meta property="og:type" content="article">
-  <meta property="og:title" content="React安装">
-  <meta property="og:description" content="React手记">
-  <meta property="og:site_name" content="Reacte"
+  <meta property="og:title" content="go 语言基础 循环 for">
+  <meta property="og:description" content="go语言手记&quot;">
+  <meta property="og:site_name" content="go语言e"
   />
 
 
@@ -31,7 +31,7 @@
   <link rel="stylesheet" href=" /css/main.css ">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="http://localhost:4000/2018/05/06/React%E5%AE%89%E8%A3%85/">
+  <link rel="canonical" href="http://localhost:4000/2018/05/06/go-%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80-%E5%BE%AA%E7%8E%AF-for/">
   <link rel="alternate" type="application/rss+xml" title="刘蛟区块链博客" href="http://localhost:4000 /feed.xml
     ">
 
@@ -195,7 +195,7 @@
     <div class="content-wrapper__inner">
       <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
-    <h1 class="post-title">React安装</h1>
+    <h1 class="post-title">go 语言基础 循环 for</h1>
     <div class="post-meta">
       <img src="/images/calendar.png" width="20px"/>
       <time datetime="2018-05-06 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2018-05-06</time>
@@ -206,40 +206,181 @@
   </header>
 
   <section class="post">
-    <h1 id="react安装">React安装</h1>
-<p>官网  https://reactjs.org/
-主要用来编写JS和XML,前后端结合
-1.全局安装</p>
+    <h1 id="go-语言基础-循环-for">go 语言基础 循环 for</h1>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>npm install -g create-react-app  
+<p>循环
+1.for循环
+	循环条件满足，循环体就会被执行，直到循环条件不满足为止。</p>
+
+<p>2.for的语法结构
+	for 表达式1；表达式2；表达式3{
+		循环体；
+	}</p>
+
+<p>3.for的执行流程：
+	表达式1：最开始执行，仅执行一次，惯用于变量的初始化。
+	表达式2：循环条件，是boo类型。
+	表达式3：循环体执行后执行，惯用于变量的变化。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>package main
+
+import "fmt"
+
+func main() {
+   /*
+
+使用for循环，计算5的阶乘：5!=5*4*3*2*1
+
+使用for循环，打印58-23数字
+
+使用for循环，打印'A'到'Z'字母
+      ‘A’--&gt;int32，数值
+         65，'A'
+
+20.使用for循环，打印1-100内的数字，每行打印10个。
+    */
+   sum := 1
+   for i := 5; i &gt; 0; i-- {
+      sum *= i
+   }
+   fmt.Println(sum)
+
+   for i := 58; i &gt;= 23; i-- {
+      fmt.Println(i)
+   }
+
+   for i := 'A'; i &lt;= 'Z'; i++ {
+      fmt.Printf("%q\t", i)
+   }
+   fmt.Println()
+   for i := 1; i &lt;= 100; i++ {
+      fmt.Print(i, "\t")
+      if i%10 == 0 {
+         fmt.Println() // print+line,直接换行
+      }
+   }
+}
 </code></pre>
 </div>
 
-<p>2.使用命令创建文件myapp
-不能有大写字母哦</p>
+<p>4.for的变形：
+	表达式1,2,3都可以省略
+	表达式2省略，意味着永真
+	for 表达式1；表达式2；表达式3{}  正常for循环
+	for 表达式2{} 没有初始值，只有退出条件，满足一定条件后退出
+	for{}  死循环</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>create-react-app myapp 
+<div class="highlighter-rouge"><pre class="highlight"><code>package main
+
+import "fmt"
+
+func main()  {
+   /*
+   for 表达式1；表达式2；表达式3{
+      循环体
+   }
+
+    */
+    //1.省略表达式1
+   i := 1
+    for ;i&lt;5;i++{
+      fmt.Println(i)//1,2,3,4
+    }
+    fmt.Println(i) // 5
+   // 2省略表达2，相当于条件永远为true
+   // for j:=0;;j++{
+   //     fmt.Println(j)
+   // }
+
+   // 3省略表达式3
+   for j:=0;j&lt;10;{
+      fmt.Println(j)//0 0 0....
+      j++//1
+   }
+   // 4.3个表达式都省略
+   //for {//?for true
+   // fmt.Println(i)
+   // i++
+   //}
+   // 5. 省略表达式1和3
+   k :=0
+   for k &lt; 5{ // for ; k&lt;5;
+      fmt.Println(k) // 0 1 2 3 4
+      k++ // 1 2 3 4 5
+   }
+}
 </code></pre>
 </div>
-<p>3.启动项目</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>npm start 
+<p>5.break，continue
+	break：用于结束循环，循环彻底结束了。
+	continue：用于结束某次循环，循环下次继续。
+	如果多层循环嵌套，break和continue默认结束里层循环，如果要结束外层循环，需要贴标签。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>package main
+
+import "fmt"
+
+func main()  {
+   /*
+   循环中的控制语句：break，continue
+   循环正常结束：循环条件不满足，
+   通过break和continue来结束循环。
+   break：用于强制结束循环，无论循环条件是否满足
+   continue：结束了某一次循环，循环下次继续。
+    */
+    for i := 1;i&lt;=10;i++{
+      if i % 2==0{
+         fmt.Println(i)
+         break
+      }
+    }
+
+    for i := 1;i&lt;=10;i++{
+      if i == 5{
+         //break
+         continue
+      }
+      fmt.Println(i)
+    }
+    // 1.练习1，统计1-100内能被3整除不能被5整除的数，仅要前5个。
+
+    // 2.打印从1开始的前20个奇数。
+    i:=1
+    count := 0
+    for {
+      if i % 2 != 0{
+         fmt.Print(i,"\t") // 1
+         count++ // 1
+         if count == 20{
+            break
+         }
+      }
+      i++ // 2
+
+   }
+}
 </code></pre>
 </div>
-<p>进入项目,启动后看到logo 证明安装成功啦</p>
 
-<p>4.删除项目中的包</p>
+<p>6.goto
+	跳转到指定位置。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>npm uninstall 包名
-</code></pre>
-</div>
-<p>就可删除了,在看下package文件里,包就被删除了
-如果还想还原,就在执行下</p>
+<p>package main</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>npm install
-</code></pre>
-</div>
-<p>包就还原了</p>
+<p>import “fmt”</p>
+
+<p>func main()  {
+   haha: fmt.Println(“这是个标签”)  //这里是第6行
+   for i:=0;i&lt;10;i++{
+      if i==5{
+         goto haha //这是标签 如果i=5就跳转到第6行，但是会造成死循环
+    }
+   fmt.Println(i)</p>
+
+<p>}</p>
+
+<p>}</p>
 
 
   </section>
@@ -248,7 +389,7 @@
 
 <section class="post-comments">
   <!--PC和WAP自适应版-->
-<div id="SOHUCS" sid=React安装 ></div>
+<div id="SOHUCS" sid=go 语言基础 循环 for ></div>
 <script type="text/javascript">
 (function(){
 var appid = 'cytfSz8yx';

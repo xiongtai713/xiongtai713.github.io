@@ -6,21 +6,21 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <title>React安装</title>
-  <meta name="description" content="React手记">
+  <title>go语言基础 常量</title>
+  <meta name="description" content="go语言手记&quot;">
   <meta name="author" content="黎跃春">
 
-  <meta name="keywords" content="React"
+  <meta name="keywords" content="go语言"
   />
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="React安装">
-  <meta name="twitter:description" content="React手记">
+  <meta name="twitter:title" content="go语言基础 常量">
+  <meta name="twitter:description" content="go语言手记&quot;">
 
   <meta property="og:type" content="article">
-  <meta property="og:title" content="React安装">
-  <meta property="og:description" content="React手记">
-  <meta property="og:site_name" content="Reacte"
+  <meta property="og:title" content="go语言基础 常量">
+  <meta property="og:description" content="go语言手记&quot;">
+  <meta property="og:site_name" content="go语言e"
   />
 
 
@@ -31,7 +31,7 @@
   <link rel="stylesheet" href=" /css/main.css ">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="http://localhost:4000/2018/05/06/React%E5%AE%89%E8%A3%85/">
+  <link rel="canonical" href="http://localhost:4000/2018/05/06/go%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80-%E5%B8%B8%E9%87%8F/">
   <link rel="alternate" type="application/rss+xml" title="刘蛟区块链博客" href="http://localhost:4000 /feed.xml
     ">
 
@@ -195,7 +195,7 @@
     <div class="content-wrapper__inner">
       <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
-    <h1 class="post-title">React安装</h1>
+    <h1 class="post-title">go语言基础 常量</h1>
     <div class="post-meta">
       <img src="/images/calendar.png" width="20px"/>
       <time datetime="2018-05-06 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2018-05-06</time>
@@ -206,40 +206,130 @@
   </header>
 
   <section class="post">
-    <h1 id="react安装">React安装</h1>
-<p>官网  https://reactjs.org/
-主要用来编写JS和XML,前后端结合
-1.全局安装</p>
+    <h1 id="go语言基础-常量">go语言基础 常量</h1>
+<p>2018年04月29日 12:09:54
+阅读数：11 编辑
+2.常量
+	概念：类似变量，数值不可以更改
+	语法：
+		const 常量名 数据类型 = 赋值
+		const 常量名 = 赋值
+	赋值：常数，常量表达式
+	常量的数值：布尔，数值，字符串</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>npm install -g create-react-app  
+<div class="highlighter-rouge"><pre class="highlight"><code>常量的名字，所有字母都大写。
 </code></pre>
 </div>
 
-<p>2.使用命令创建文件myapp
-不能有大写字母哦</p>
+<p>[plain] view plain copy
+package main</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>create-react-app myapp 
+<p>import “fmt”</p>
+
+<p>func main()  {<br />
+    /*<br />
+    常量：同变量类似，区别在于程序执行过程中，数值不可以改变<br />
+    定义语法：<br />
+        const 常量名 数据类型 = 常量值/常量表达式<br />
+        const 常量名 = 常量值</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>常量的数值：布尔类型，数值类型(整数，浮点，复数),字符串  
+常量名：编码习惯：所有的字母都大写  
+  
+注意事项：  
+1.常量定义后，可以不使用，也不会报错  
+2.常量的值：布尔，数值，字符串  
+    常量表达式：常量的计算，内置函数：len(),cap()  
+3.常量组：定义了一组常量  
+    没有直接定义常量值，默认和上一行一致。  
+    常量组中定义的常量值是一组相关的数据，可以作为枚举  
+4.iota，特殊的常量，理解为计数器，  
+    定义const，iota的值从0开始。  
+    常量组中定义了常量就累加1.  
+ */  
+ // 1.定义常量  
+const cPATH string  = "http://www.baidu.com"  
+const PI  = 3.14  
+fmt.Println(cPATH)  
+fmt.Println(PI)  
+  
+//pi = 3.67 // 不能给常量重新赋值  
+  
+const LENGTH int = 10  
+const WIDTH int = 5  
+var area int  
+area = LENGTH * WIDTH  
+fmt.Println(area)  
+  
+//var a = 2  
+//var b = 7  
+//const area2  = LENGTH * WIDTH  
+//const area2  = a * b  
+//fmt.Println(area2)  
+  
+const c = "memeda"  
+const con2  = len(c)  
+  
+// 同时定义多个常量  
+const a2, b2, c2 = 1, false, "str" //多重赋值  
+  
+// 常量组  
+const (  
+    a3 = 10  
+    a4 = false  
+    a5 = 3.14  
+)  
+//定义常量组的时候，如果没有指定类型和数值，默认和上一行相同  
+const (  
+    x uint16 = 16 // 16  
+    y //16  
+    s = "abc" // "abc"  
+    z // "abc"  
+)  
+fmt.Println(x, y, s, z)  
+  
+// 用于枚举：一年四季，一周七天  
+const (  
+    Sunday = 0  
+    Monday = 1  
+    Tuesday = 2  
+    Wednesday = 3  
+    Thursday = 4  
+    Friday = 5  
+    Saturday = 6  
+)  
 </code></pre>
 </div>
-<p>3.启动项目</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>npm start 
+<p>}<br />
+iota，特殊的常量，计数器
+	定义const组时，iota初始为0，每定义一个常量累加1。直到下一个const，重新置为0。
+[plain] view plain copy
+package main</p>
+
+<p>import “fmt”</p>
+
+<p>func main()  {<br />
+    // iota，特殊的常量值，每当定义了const，iota的值置为0，<br />
+    // 每当定义一个常量，累加1。遇到const时，重新置为0<br />
+    const  (<br />
+        a = iota // 0<br />
+        b = iota // 1<br />
+        c = iota // 2<br />
+    )<br />
+    fmt.Println(a, b, c)</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>// 简写成  
+const (  
+    d = iota  
+    e  
+    f  
+)  
+fmt.Println(d, e, f)  
 </code></pre>
 </div>
-<p>进入项目,启动后看到logo 证明安装成功啦</p>
 
-<p>4.删除项目中的包</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>npm uninstall 包名
-</code></pre>
-</div>
-<p>就可删除了,在看下package文件里,包就被删除了
-如果还想还原,就在执行下</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>npm install
-</code></pre>
-</div>
-<p>包就还原了</p>
+<p>}</p>
 
 
   </section>
@@ -248,7 +338,7 @@
 
 <section class="post-comments">
   <!--PC和WAP自适应版-->
-<div id="SOHUCS" sid=React安装 ></div>
+<div id="SOHUCS" sid=go语言基础 常量 ></div>
 <script type="text/javascript">
 (function(){
 var appid = 'cytfSz8yx';

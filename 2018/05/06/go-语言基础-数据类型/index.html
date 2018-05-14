@@ -6,21 +6,21 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <title>React安装</title>
-  <meta name="description" content="React手记">
+  <title>go 语言基础 数据类型</title>
+  <meta name="description" content="go语言手记&quot;">
   <meta name="author" content="黎跃春">
 
-  <meta name="keywords" content="React"
+  <meta name="keywords" content="go语言"
   />
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="React安装">
-  <meta name="twitter:description" content="React手记">
+  <meta name="twitter:title" content="go 语言基础 数据类型">
+  <meta name="twitter:description" content="go语言手记&quot;">
 
   <meta property="og:type" content="article">
-  <meta property="og:title" content="React安装">
-  <meta property="og:description" content="React手记">
-  <meta property="og:site_name" content="Reacte"
+  <meta property="og:title" content="go 语言基础 数据类型">
+  <meta property="og:description" content="go语言手记&quot;">
+  <meta property="og:site_name" content="go语言e"
   />
 
 
@@ -31,7 +31,7 @@
   <link rel="stylesheet" href=" /css/main.css ">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="http://localhost:4000/2018/05/06/React%E5%AE%89%E8%A3%85/">
+  <link rel="canonical" href="http://localhost:4000/2018/05/06/go-%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">
   <link rel="alternate" type="application/rss+xml" title="刘蛟区块链博客" href="http://localhost:4000 /feed.xml
     ">
 
@@ -195,7 +195,7 @@
     <div class="content-wrapper__inner">
       <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
-    <h1 class="post-title">React安装</h1>
+    <h1 class="post-title">go 语言基础 数据类型</h1>
     <div class="post-meta">
       <img src="/images/calendar.png" width="20px"/>
       <time datetime="2018-05-06 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2018-05-06</time>
@@ -206,40 +206,112 @@
   </header>
 
   <section class="post">
-    <h1 id="react安装">React安装</h1>
-<p>官网  https://reactjs.org/
-主要用来编写JS和XML,前后端结合
-1.全局安装</p>
+    <h1 id="go-语言基础-数据类型">go 语言基础 数据类型</h1>
+<p>2018年04月29日 13:13:37
+阅读数：15 编辑
+3.数据类型
+基本类型
+	布尔类型
+		bool，取值只有true，false
+	数值类型
+		整数型：有符号，无符号</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>npm install -g create-react-app  
+<p>int8/uint8	8bit,1byte	[-128,127]/[0,255]
+int16/uint16	16bit，2byte	
+int32/uint32	32bit，4byte
+int64/uint64	64bit，8byte
+byte，同uint8
+rune，同int32</p>
+
+<p>int，uint–&gt;操作系统 如果电脑书64位的，就是int64，32位的就是int32</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    浮点型 float32		32bit，4字节 float54		64bit，8字节
 </code></pre>
 </div>
 
-<p>2.使用命令创建文件myapp
-不能有大写字母哦</p>
+<p>accii编码：
+A–&gt;65
+a–&gt;97</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>create-react-app myapp 
+<p>[plain] view plain copy
+package main</p>
+
+<p>import “fmt”</p>
+
+<p>func main()  {<br />
+    /*<br />
+    数据类型：基本数据类型，复合数据类型<br />
+    基本数据类型：<br />
+    1.布尔类型：bool，表示真和假<br />
+        取值范围：true，false<br />
+    2.数值型：整数，浮点，复数<br />
+    整数：<br />
+        有符号/无符号，位数，取值范围<br />
+        int8/uint8,    8位   [-128,127]/[0,255]<br />
+        int16/uint16,  16位   [-32768,32767]/[0,65535]<br />
+        int32/uint32,  32位  (-2147483648 到 2147483647)/ (0 到 4294967295)<br />
+        int64/uint64,  64位   (-9223372036854775808 到 9223372036854775807)/ (0 到 18446744073709551615)<br />
+        byte,同uint8<br />
+        rune，同int32<br />
+        int/uint,同操作系统相关</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>浮点型：  
+    float32/float64, 32/64  
+  
+字符串：一个字符序列。  
+    字符个数可以0个，1个，多个。"", "a", "abc"  
+    "", ``  
+ */  
+ //1. 布尔类型  
+ var b1 bool = false  
+ b2 := true  
+ fmt.Println("b1的值：", b1)  
+ fmt.Println("b2的值：", b2)  
+ fmt.Printf("b2的数值是：%t,类型是：%T\n", b2, b2)  
+ // 2.整数类型  
+ var num1 int8 = 100  
+ fmt.Printf("num1的数值：%d，类型是：%T\n", num1, num1)  
+ var num2 uint8 = 200  
+ fmt.Printf("num2的数值：%d，类型是：%T\n", num2, num2)  
+  
+ var num3 = 400  
+ fmt.Printf("num3的数值是：%d,类型是：%T\n", num3, num3)  
+ num4 := 'A' // int32  
+ fmt.Println(num4)  
+ //%v,原型，  
+ //%q,数值对应的utf8编码的字符  
+ fmt.Printf("num4的数值：%d，%v,%q,%T\n", num4,num4,num4,num4)  
+  
+ // 3.浮点类型：  
+ var num5 float32 = 3.14  
+ var num6 float64 = 8.99  
+ fmt.Printf("num5的数值是：%f，类型是：%T,num6的数值是：%f,类型：%T\n", num5,num5,num6,num6)  
+  
+ //4. 字符串  
+ var s1 string = "memeda"  
+ s2 := `helloworld`  
+ s3 := 'a' // int32  
+ s4 := "a" // string  
+ s5 := "ab" // string  
+ fmt.Println(s1, s2, s3, s4,s5)  
+ fmt.Printf("字符串：%s,类型：%T\n", s2, s2)  
 </code></pre>
 </div>
-<p>3.启动项目</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>npm start 
-</code></pre>
-</div>
-<p>进入项目,启动后看到logo 证明安装成功啦</p>
+<p>}<br />
+常用的占位符</p>
 
-<p>4.删除项目中的包</p>
+<p>%d代表整数</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>npm uninstall 包名
-</code></pre>
-</div>
-<p>就可删除了,在看下package文件里,包就被删除了
-如果还想还原,就在执行下</p>
+<p>%f代表小数</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>npm install
-</code></pre>
-</div>
-<p>包就还原了</p>
+<p>%s代表字符串</p>
+
+<p>%v匹配任意数据类型</p>
+
+<p>%T代表表示当前数据类型</p>
+
+<p>%q代表显示对应的accii码的值</p>
 
 
   </section>
@@ -248,7 +320,7 @@
 
 <section class="post-comments">
   <!--PC和WAP自适应版-->
-<div id="SOHUCS" sid=React安装 ></div>
+<div id="SOHUCS" sid=go 语言基础 数据类型 ></div>
 <script type="text/javascript">
 (function(){
 var appid = 'cytfSz8yx';

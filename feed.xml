@@ -5,9 +5,104 @@
     <description>初级区块链工程师</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 14 May 2018 10:33:48 +0800</pubDate>
-    <lastBuildDate>Mon, 14 May 2018 10:33:48 +0800</lastBuildDate>
+    <pubDate>Mon, 14 May 2018 11:00:53 +0800</pubDate>
+    <lastBuildDate>Mon, 14 May 2018 11:00:53 +0800</lastBuildDate>
     <generator>Jekyll v3.5.1</generator>
+    
+      <item>
+        <title>星云链环境搭建mac版</title>
+        <description>&lt;p&gt;#星云链环境搭建mac版&lt;/p&gt;
+
+&lt;h2 id=&quot;golang环境搭建&quot;&gt;Golang环境搭建&lt;/h2&gt;
+&lt;p&gt;Components	Version	Description
+Golang	&amp;gt;= 1.9.2	The Go Programming Language
+我们会分别介绍Mac OSX和Linux两种系统下golang环境的搭建。&lt;/p&gt;
+
+&lt;p&gt;Mac OSX
+在Mac OSX里，我们推荐使用Homebrew来安装Golang.&lt;/p&gt;
+
+&lt;h2 id=&quot;安装&quot;&gt;安装&lt;/h2&gt;
+&lt;p&gt;brew install go&lt;/p&gt;
+
+&lt;h2 id=&quot;配置环境变量&quot;&gt;配置环境变量&lt;/h2&gt;
+&lt;p&gt;export GOPATH=/path/to/workspace
+提示: 在golang的开发中，GOPATH是必须的，它指定了我们使用golang开发的工作空间。所有的源码都应放在GOPATH之下。
+编译星云链
+下载源码
+可以使用如下指令直接下载最新版本的星云链源码。&lt;/p&gt;
+
+&lt;h2 id=&quot;进入工作目录&quot;&gt;进入工作目录&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;mkdir -p $GOPATH/src/github.com/nebulasio&lt;/strong&gt;
+&lt;strong&gt;cd $GOPATH/src/github.com/nebulasio&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;下载源码&quot;&gt;下载源码&lt;/h2&gt;
+&lt;p&gt;git clone https://github.com/nebulasio/go-nebulas.git&lt;/p&gt;
+
+&lt;h2 id=&quot;进入项目目录&quot;&gt;进入项目目录&lt;/h2&gt;
+&lt;p&gt;cd go-nebulas&lt;/p&gt;
+
+&lt;h2 id=&quot;切换到最稳定的master分支&quot;&gt;切换到最稳定的master分支&lt;/h2&gt;
+&lt;p&gt;git checkout master&lt;/p&gt;
+
+&lt;p&gt;##安装rocksdb依赖库
+同样我们会介绍如何在MAC OSX和Linux正确安装RocksDB。&lt;/p&gt;
+
+&lt;p&gt;Mac OSX
+可以直接通过Homebrew安装，运行&lt;/p&gt;
+
+&lt;p&gt;命令brew install rocksdb
+##安装Go依赖库
+在Go-Nebulas中，Go的三方库都通过Dep来做管理。&lt;/p&gt;
+
+&lt;p&gt;Components	Version	Description
+Dep	&amp;gt;= 0.3.1	Dep is a dependency management tool for Go.&lt;/p&gt;
+
+&lt;p&gt;##安装Dep工具
+我们同样分别介绍Mac OSX和Linux下Dep的安装方法。&lt;/p&gt;
+
+&lt;p&gt;Mac OSX
+通过Homebrew直接安装并升级Dep
+安装命令
+brew install dep
+brew upgrade dep&lt;/p&gt;
+
+&lt;p&gt;##下载Go三方库
+我们切换到Go-Nebulas项目根目录，然后使用Dep来下载三方库。&lt;/p&gt;
+
+&lt;p&gt;cd $GOPATH/src/github.com/nebulasio/go-nebulas
+make dep
+提示: make dep将会下载很多依赖库。在部分地区，这个过程可能比较耗时。所以，我们提供了依赖库的压缩包vendor.tar.gz。可以使用下列指令通过压缩包来安装GO依赖库。&lt;/p&gt;
+
+&lt;p&gt;下载命令
+wget http://ory7cn4fx.bkt.clouddn.com/vendor.tar.gz
+切换到文件夹
+cd $GOPATH/src/github.com/nebulasio/go-nebulas
+解压缩
+tar zxf vendor.tar.gz&lt;/p&gt;
+
+&lt;p&gt;##安装Chrome V8依赖库
+星云虚拟机目前依赖于Chrome的V8引擎，为了大家使用方便，我们已经为Mac OSX和Linux编译好了V8的动态库。运行如下指令就可以完成安装。&lt;/p&gt;
+
+&lt;p&gt;切换文件夹
+cd $GOPATH/src/github.com/nebulasio/go-nebulas
+安装v8
+make deploy-v8&lt;/p&gt;
+
+&lt;p&gt;##编译可执行文件
+完成所有上述依赖库的安装后，现在我们可以进入Go-Nebulas根目录编译星云链的可执行文件了。&lt;/p&gt;
+
+&lt;p&gt;切换文件夹
+cd $GOPATH/src/github.com/nebulasio/go-nebulas
+编译文件
+make build&lt;/p&gt;
+
+</description>
+        <pubDate>Mon, 14 May 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/05/14/%E6%98%9F%E4%BA%91%E9%93%BE%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BAmac%E7%89%88/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/05/14/%E6%98%9F%E4%BA%91%E9%93%BE%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BAmac%E7%89%88/</guid>
+        
+        
+      </item>
     
       <item>
         <title>星云链钱包安装</title>
@@ -44,7 +139,7 @@ https://github.com/ChengOrangeJu/WebExtensionWallet
       </item>
     
       <item>
-        <title>星云链js通过RPC接口与星云链交互(1)</title>
+        <title>星云链转账</title>
         <description>&lt;p&gt;#星云链转账
 ###启动创始区块&lt;/p&gt;
 &lt;blockquote&gt;
@@ -165,7 +260,7 @@ result:前面是init方法的值后面是预计要花的Gas
       </item>
     
       <item>
-        <title>星云链js通过RPC接口与星云链交互(1)</title>
+        <title>星云链合约调用</title>
         <description>&lt;h1 id=&quot;星云链合约调用&quot;&gt;星云链合约调用&lt;/h1&gt;
 &lt;p&gt;交易hash:
 f4c0cff0f8e812b6da5d63c973f22e4ec740f189bd0e2502d732a145405bb90e
@@ -450,7 +545,7 @@ function:智能合约方法
       </item>
     
       <item>
-        <title>Go语言基础 环境搭建</title>
+        <title>go语言环境搭建 </title>
         <description>&lt;h1 id=&quot;go语言环境搭建&quot;&gt;go语言环境搭建&lt;/h1&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    安装：go 1.9.4安装包，一直next，直到完成
 
@@ -506,144 +601,11 @@ import &quot;fmt&quot;
 &lt;p&gt;试试代码，go走起来&lt;/p&gt;
 
 </description>
-        <pubDate>Sat, 05 May 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/05/05/go%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/05/05/go%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
+        <pubDate>Sun, 06 May 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/05/06/go%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/05/06/go%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
         
-        
-      </item>
-    
-      <item>
-        <title>Go语言基础 常量</title>
-        <description>&lt;h1 id=&quot;go语言基础-常量&quot;&gt;go语言基础 常量&lt;/h1&gt;
-&lt;p&gt;2018年04月29日 12:09:54
-阅读数：11 编辑
-2.常量
-	概念：类似变量，数值不可以更改
-	语法：
-		const 常量名 数据类型 = 赋值
-		const 常量名 = 赋值
-	赋值：常数，常量表达式
-	常量的数值：布尔，数值，字符串&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;常量的名字，所有字母都大写。
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;[plain] view plain copy
-package main&lt;/p&gt;
-
-&lt;p&gt;import “fmt”&lt;/p&gt;
-
-&lt;p&gt;func main()  {&lt;br /&gt;
-    /*&lt;br /&gt;
-    常量：同变量类似，区别在于程序执行过程中，数值不可以改变&lt;br /&gt;
-    定义语法：&lt;br /&gt;
-        const 常量名 数据类型 = 常量值/常量表达式&lt;br /&gt;
-        const 常量名 = 常量值&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;常量的数值：布尔类型，数值类型(整数，浮点，复数),字符串  
-常量名：编码习惯：所有的字母都大写  
-  
-注意事项：  
-1.常量定义后，可以不使用，也不会报错  
-2.常量的值：布尔，数值，字符串  
-    常量表达式：常量的计算，内置函数：len(),cap()  
-3.常量组：定义了一组常量  
-    没有直接定义常量值，默认和上一行一致。  
-    常量组中定义的常量值是一组相关的数据，可以作为枚举  
-4.iota，特殊的常量，理解为计数器，  
-    定义const，iota的值从0开始。  
-    常量组中定义了常量就累加1.  
- */  
- // 1.定义常量  
-const cPATH string  = &quot;http://www.baidu.com&quot;  
-const PI  = 3.14  
-fmt.Println(cPATH)  
-fmt.Println(PI)  
-  
-//pi = 3.67 // 不能给常量重新赋值  
-  
-const LENGTH int = 10  
-const WIDTH int = 5  
-var area int  
-area = LENGTH * WIDTH  
-fmt.Println(area)  
-  
-//var a = 2  
-//var b = 7  
-//const area2  = LENGTH * WIDTH  
-//const area2  = a * b  
-//fmt.Println(area2)  
-  
-const c = &quot;memeda&quot;  
-const con2  = len(c)  
-  
-// 同时定义多个常量  
-const a2, b2, c2 = 1, false, &quot;str&quot; //多重赋值  
-  
-// 常量组  
-const (  
-    a3 = 10  
-    a4 = false  
-    a5 = 3.14  
-)  
-//定义常量组的时候，如果没有指定类型和数值，默认和上一行相同  
-const (  
-    x uint16 = 16 // 16  
-    y //16  
-    s = &quot;abc&quot; // &quot;abc&quot;  
-    z // &quot;abc&quot;  
-)  
-fmt.Println(x, y, s, z)  
-  
-// 用于枚举：一年四季，一周七天  
-const (  
-    Sunday = 0  
-    Monday = 1  
-    Tuesday = 2  
-    Wednesday = 3  
-    Thursday = 4  
-    Friday = 5  
-    Saturday = 6  
-)  
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;}&lt;br /&gt;
-iota，特殊的常量，计数器
-	定义const组时，iota初始为0，每定义一个常量累加1。直到下一个const，重新置为0。
-[plain] view plain copy
-package main&lt;/p&gt;
-
-&lt;p&gt;import “fmt”&lt;/p&gt;
-
-&lt;p&gt;func main()  {&lt;br /&gt;
-    // iota，特殊的常量值，每当定义了const，iota的值置为0，&lt;br /&gt;
-    // 每当定义一个常量，累加1。遇到const时，重新置为0&lt;br /&gt;
-    const  (&lt;br /&gt;
-        a = iota // 0&lt;br /&gt;
-        b = iota // 1&lt;br /&gt;
-        c = iota // 2&lt;br /&gt;
-    )&lt;br /&gt;
-    fmt.Println(a, b, c)&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// 简写成  
-const (  
-    d = iota  
-    e  
-    f  
-)  
-fmt.Println(d, e, f)  
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;}&lt;/p&gt;
-
-</description>
-        <pubDate>Sat, 05 May 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/05/05/go%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80-%E5%B8%B8%E9%87%8F/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/05/05/go%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80-%E5%B8%B8%E9%87%8F/</guid>
+        <category>go</category>
         
         
       </item>

@@ -1,0 +1,85 @@
+<p>#星云链环境搭建mac版</p>
+
+<h2 id="golang环境搭建">Golang环境搭建</h2>
+<p>Components	Version	Description
+Golang	&gt;= 1.9.2	The Go Programming Language
+我们会分别介绍Mac OSX和Linux两种系统下golang环境的搭建。</p>
+
+<p>Mac OSX
+在Mac OSX里，我们推荐使用Homebrew来安装Golang.</p>
+
+<h2 id="安装">安装</h2>
+<p>brew install go</p>
+
+<h2 id="配置环境变量">配置环境变量</h2>
+<p>export GOPATH=/path/to/workspace
+提示: 在golang的开发中，GOPATH是必须的，它指定了我们使用golang开发的工作空间。所有的源码都应放在GOPATH之下。
+编译星云链
+下载源码
+可以使用如下指令直接下载最新版本的星云链源码。</p>
+
+<h2 id="进入工作目录">进入工作目录</h2>
+<p><strong>mkdir -p $GOPATH/src/github.com/nebulasio</strong>
+<strong>cd $GOPATH/src/github.com/nebulasio</strong></p>
+
+<h2 id="下载源码">下载源码</h2>
+<p>git clone https://github.com/nebulasio/go-nebulas.git</p>
+
+<h2 id="进入项目目录">进入项目目录</h2>
+<p>cd go-nebulas</p>
+
+<h2 id="切换到最稳定的master分支">切换到最稳定的master分支</h2>
+<p>git checkout master</p>
+
+<p>##安装rocksdb依赖库
+同样我们会介绍如何在MAC OSX和Linux正确安装RocksDB。</p>
+
+<p>Mac OSX
+可以直接通过Homebrew安装，运行</p>
+
+<p>命令brew install rocksdb
+##安装Go依赖库
+在Go-Nebulas中，Go的三方库都通过Dep来做管理。</p>
+
+<p>Components	Version	Description
+Dep	&gt;= 0.3.1	Dep is a dependency management tool for Go.</p>
+
+<p>##安装Dep工具
+我们同样分别介绍Mac OSX和Linux下Dep的安装方法。</p>
+
+<p>Mac OSX
+通过Homebrew直接安装并升级Dep
+安装命令
+brew install dep
+brew upgrade dep</p>
+
+<p>##下载Go三方库
+我们切换到Go-Nebulas项目根目录，然后使用Dep来下载三方库。</p>
+
+<p>cd $GOPATH/src/github.com/nebulasio/go-nebulas
+make dep
+提示: make dep将会下载很多依赖库。在部分地区，这个过程可能比较耗时。所以，我们提供了依赖库的压缩包vendor.tar.gz。可以使用下列指令通过压缩包来安装GO依赖库。</p>
+
+<p>下载命令
+wget http://ory7cn4fx.bkt.clouddn.com/vendor.tar.gz
+切换到文件夹
+cd $GOPATH/src/github.com/nebulasio/go-nebulas
+解压缩
+tar zxf vendor.tar.gz</p>
+
+<p>##安装Chrome V8依赖库
+星云虚拟机目前依赖于Chrome的V8引擎，为了大家使用方便，我们已经为Mac OSX和Linux编译好了V8的动态库。运行如下指令就可以完成安装。</p>
+
+<p>切换文件夹
+cd $GOPATH/src/github.com/nebulasio/go-nebulas
+安装v8
+make deploy-v8</p>
+
+<p>##编译可执行文件
+完成所有上述依赖库的安装后，现在我们可以进入Go-Nebulas根目录编译星云链的可执行文件了。</p>
+
+<p>切换文件夹
+cd $GOPATH/src/github.com/nebulasio/go-nebulas
+编译文件
+make build</p>
+

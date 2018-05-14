@@ -6,21 +6,21 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <title>React安装</title>
-  <meta name="description" content="React手记">
+  <title>go 语言基础 运算符</title>
+  <meta name="description" content="go语言手记&quot;">
   <meta name="author" content="黎跃春">
 
-  <meta name="keywords" content="React"
+  <meta name="keywords" content="go语言"
   />
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="React安装">
-  <meta name="twitter:description" content="React手记">
+  <meta name="twitter:title" content="go 语言基础 运算符">
+  <meta name="twitter:description" content="go语言手记&quot;">
 
   <meta property="og:type" content="article">
-  <meta property="og:title" content="React安装">
-  <meta property="og:description" content="React手记">
-  <meta property="og:site_name" content="Reacte"
+  <meta property="og:title" content="go 语言基础 运算符">
+  <meta property="og:description" content="go语言手记&quot;">
+  <meta property="og:site_name" content="go语言e"
   />
 
 
@@ -31,7 +31,7 @@
   <link rel="stylesheet" href=" /css/main.css ">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="http://localhost:4000/2018/05/06/React%E5%AE%89%E8%A3%85/">
+  <link rel="canonical" href="http://localhost:4000/2018/05/06/go-%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80-%E8%BF%90%E7%AE%97%E7%AC%A6/">
   <link rel="alternate" type="application/rss+xml" title="刘蛟区块链博客" href="http://localhost:4000 /feed.xml
     ">
 
@@ -195,7 +195,7 @@
     <div class="content-wrapper__inner">
       <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
-    <h1 class="post-title">React安装</h1>
+    <h1 class="post-title">go 语言基础 运算符</h1>
     <div class="post-meta">
       <img src="/images/calendar.png" width="20px"/>
       <time datetime="2018-05-06 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2018-05-06</time>
@@ -206,40 +206,242 @@
   </header>
 
   <section class="post">
-    <h1 id="react安装">React安装</h1>
-<p>官网  https://reactjs.org/
-主要用来编写JS和XML,前后端结合
-1.全局安装</p>
+    <h1 id="go-语言基础-运算符">go 语言基础 运算符</h1>
+<p>2018年04月29日 13:15:22
+阅读数：9 编辑
+运算符
+A：算术运算符：+，-，*,/,%,++,–
+	/：取商
+	%：取余，取模
+	++：自增1
+	–：自减1
+[plain] view plain copy
+package main</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>npm install -g create-react-app  
+<p>import “fmt”</p>
+
+<p>func main()  {<br />
+    /*<br />
+    算术运算符： arithmetic operator<br />
+    +， -， * ,/ , % ， ++， –<br />
+    /,取商<br />
+    %，取余，取模<br />
+     <em>/<br />
+     a := 9<br />
+     b := 4<br />
+     sum := a + b // 求和<br />
+     sub := a - b //做差<br />
+     mul := a * b // 乘法<br />
+     div := a / b // 除<br />
+     fmt.Println(a, “+”, b, “=”, sum)<br />
+     fmt.Println(sub, mul, div)<br />
+     mod := a % b<br />
+     fmt.Println(mod)<br />
+     /</em><br />
+     8/5 = 1<br />
+     8%5 = 3<br />
+     3/4 = 0<br />
+     3%4 = 3<br />
+     7/3 = 2<br />
+     7%3 = 1<br />
+     2/1 = 2<br />
+     2%1 = 0<br />
+      */</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  fmt.Println("a的数值：", a)  
+  a++ // 给a自增1   a = a + 1  
+  fmt.Println("a的数值：", a)  
+  a-- // 给a自减1  
+  fmt.Println(a)   }  
 </code></pre>
 </div>
 
-<p>2.使用命令创建文件myapp
-不能有大写字母哦</p>
+<p>B：关系运算符：&gt;,&lt;,&gt;=,&lt;=,==,!=    计算结果是bool
+	==：判断两个数是否相等
+	!=：判断是否不等
+[plain] view plain copy
+package main</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>create-react-app myapp 
+<p>import “fmt”</p>
+
+<p>func main(){<br />
+    /*<br />
+    关系运算符：运算结果是bool<br />
+    &gt;,&lt;,&gt;=,&lt;=, ==, !=<br />
+    ==,判断两个数值是否相等<br />
+    !=,判断两个数值是否不等<br />
+     */<br />
+     a := 8<br />
+     b := 5<br />
+     fmt.Println(a &lt; b)// 8 &lt; 5,false<br />
+     fmt.Println(a == b) // false<br />
+     fmt.Println(a != b) // true</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> c := true  
+ d := false  
+ //fmt.Println(c &lt; d) // bool类型不能比较大小  
+ fmt.Println(c == d) // false  
 </code></pre>
 </div>
-<p>3.启动项目</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>npm start 
+<p>}</p>
+
+<p>C：逻辑运算符：&amp;&amp;，||，！
+	&amp;&amp;，逻辑与，规则，操作数都为真才为真，有一个为假就为假。
+	||，逻辑或，规则，操作数都为假才为假，有一个为真就为真。
+	！，逻辑非，规则，取反</p>
+
+<p>[plain] view plain copy
+package main</p>
+
+<p>import “fmt”</p>
+
+<p>func main()  {<br />
+    /*<br />
+    逻辑运算符：<br />
+    &amp;&amp;，逻辑与，”并且”<br />
+        所谓逻辑与运算符。如果两个操作数都非零，则条件变为真<br />
+        如果两个操作数都为true，结果才为true。<br />
+        逻辑与的判定规则：<br />
+            所有的操作数从左向右运算，<br />
+            如果遇到一个false就直接返回结果为false，<br />
+            除非所有的操作数都为true，结果才为true。<br />
+        “全真为真，一假为假”<br />
+    ||，逻辑或，”或者”<br />
+        所谓的逻辑或操作。如果任何两个操作数是非零，则条件变为真<br />
+        逻辑或的判定规则：<br />
+            所有的操作数从左向右运算，<br />
+            如果遇到一个true就直接返回结果为true，<br />
+            除非所有的操作数都为false，结果才为false。<br />
+        “一真为真，全假为假”<br />
+    !，逻辑非，”就是取反”<br />
+        true，—&gt;false<br />
+        false,—&gt;true<br />
+     */<br />
+     b1 := false<br />
+     b2 := false<br />
+     b3 := true<br />
+     res1 := b1 &amp;&amp; b2 &amp;&amp; b3 // 逻辑与<br />
+     fmt.Println(res1)<br />
+     res2 := b1 || b2 || b3 // 逻辑或<br />
+     fmt.Println(res2)<br />
+     res3 := !b1 // 逻辑非–&gt;取反<br />
+     fmt.Println(res3)</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> a := 3  
+ b := 4  
+ c := true  
+  
+ res4 := a &lt; 4 &amp;&amp; b / 2 &gt;1 &amp;&amp; c  
+ //       T         T      T  
+ res5 := a * 2 &lt; b &amp;&amp; b % 2 != 0 &amp;&amp; !c  
+ //         F           F           F  
+ res6 := (a + b)/b &gt;= 0 || !c || b % 2 == 0  
+//        T             F           T  
+ res7 := !(a * 2 &lt; b)  
+ //       !F  
+ fmt.Println(res4) // true  
+ fmt.Println(res5) // false  
+ fmt.Println(res6) // true  
+ fmt.Println(res7) // true  
 </code></pre>
 </div>
-<p>进入项目,启动后看到logo 证明安装成功啦</p>
 
-<p>4.删除项目中的包</p>
+<p>}</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>npm uninstall 包名
+<p>D：位运算符：了解
+	将数值转为二进制，按位操作
+	&amp;，按位与，都为1才为1，有一个为0就为0
+	|，按位或，都为0才为0，有一个为1就为1
+	^,异或，不同为1，相同为0
+	«,»，左移，右移，向左移动(放大2的n次方)，或向右移动(缩小2的n次方)
+[plain] view plain copy
+package main</p>
+
+<p>import “fmt”</p>
+
+<p>func main()  {<br />
+    /*<br />
+     位运算符：将数值转为二进制，按位操作<br />
+    &amp;：按位与，都为1才为1，有一个为0就为0<br />
+    |：按位或，都为0才为0，有衣蛾为1就为1<br />
+    ^：异或操作，不同为1，相同为0<br />
+    «：左移， A « B,将A转为二进制，向左移动B位<br />
+        相当于A*2的B次方<br />
+    »：右移，A » B,向右移动B位<br />
+     */<br />
+     a := 60<br />
+     b := 13</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> /*  
+ 60=32+16+8+4  
+ 13=8+4+1  
+ a: 0011 1100  
+ b: 0000 1101  
+ &amp;: 0000 1100  
+ |：0011 1101  
+ ^：0011 0001  
+  */  
+res1 := a &amp; b  
+res2 := a | b  
+res3 := a ^ b  
+ fmt.Println(res1) // 12  
+ fmt.Println(res2) // 61  
+ fmt.Println(res3) // 49  
+ fmt.Printf("%b,%b\n", a, b)  
+  
+ /*  
+ b = 13  
+ b:  0000 1101  
+ &lt;&lt;2:00 110100  = 32+16+4  
+ &gt;&gt;2:0000 0011  
+  */  
+  res4 := b &lt;&lt; 2  
+  b = 13  
+  res5 := b &gt;&gt; 2  
+  fmt.Println(res4, res5)  
 </code></pre>
 </div>
-<p>就可删除了,在看下package文件里,包就被删除了
-如果还想还原,就在执行下</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>npm install
+<p>}</p>
+
+<p>E：赋值运算符：=，+=,-=,*=,/=,%=,&amp;=,|=,^=,«=,»=
+	=,赋值
+	a+=b，相当于a = a + b</p>
+
+<p>[plain] view plain copy
+package main</p>
+
+<p>import “fmt”</p>
+
+<p>func main()  {<br />
+    /*<br />
+    赋值运算符：=, +=,-=,*=,/=,%=,&amp;=,|=,^=,«=,»=<br />
+    =，a = b,将=右侧的数值b，赋值给=左边的变量a<br />
+    +=, a += b,相当于：a = a + b<br />
+    %=, a %= b,相当于：a = a % b<br />
+     */<br />
+     var a int<br />
+     a = 4 // 将数值4赋值给变量a<br />
+     b := 3<br />
+     fmt.Println(a)</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> a += 2 // a=6,b=3  
+ a *= b // a=18,b=3  
+ b %= 3 // a=18,b=0  
+ //a &amp;= 4  
+ //a /= b // 除零，runtime error: integer divide by zero  
+  
+ fmt.Println(a, b)  
 </code></pre>
 </div>
-<p>包就还原了</p>
+
+<p>}</p>
+
+<p>运算符的优先级：
+	一元的高于二元的
+	&amp;&amp;高于||
+        使用()可以更改优先级</p>
 
 
   </section>
@@ -248,7 +450,7 @@
 
 <section class="post-comments">
   <!--PC和WAP自适应版-->
-<div id="SOHUCS" sid=React安装 ></div>
+<div id="SOHUCS" sid=go 语言基础 运算符 ></div>
 <script type="text/javascript">
 (function(){
 var appid = 'cytfSz8yx';
