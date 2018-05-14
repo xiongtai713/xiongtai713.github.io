@@ -5,8 +5,8 @@
     <description>初级区块链工程师</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 14 May 2018 19:43:26 +0800</pubDate>
-    <lastBuildDate>Mon, 14 May 2018 19:43:26 +0800</lastBuildDate>
+    <pubDate>Mon, 14 May 2018 19:50:31 +0800</pubDate>
+    <lastBuildDate>Mon, 14 May 2018 19:50:31 +0800</lastBuildDate>
     <generator>Jekyll v3.5.1</generator>
     
       <item>
@@ -105,18 +105,8 @@ make build&lt;/p&gt;
       </item>
     
       <item>
-        <title>Mac下zookeeper安装</title>
-        <description>
-&lt;hr /&gt;
-&lt;p&gt;layout: post
-title: “mac下zookeeper安装 “
-date: 2018-05-14
-description: mac下zookeeper安装”
-tag:zookeeper
-keywords: “React”
-  —&lt;/p&gt;
-
-&lt;p&gt;#安装zookeeper&lt;/p&gt;
+        <title>mac下zookeeper安装 </title>
+        <description>&lt;p&gt;#安装zookeeper&lt;/p&gt;
 
 &lt;h3 id=&quot;10-前提工作&quot;&gt;1.0 前提工作：&lt;/h3&gt;
 
@@ -161,22 +151,14 @@ $ zkServer start
         <link>http://localhost:4000/2018/05/14/mac%E4%B8%8Bzookeeper%E5%AE%89%E8%A3%85/</link>
         <guid isPermaLink="true">http://localhost:4000/2018/05/14/mac%E4%B8%8Bzookeeper%E5%AE%89%E8%A3%85/</guid>
         
+        <category>zookeeper</category>
+        
         
       </item>
     
       <item>
-        <title>Json处理</title>
-        <description>
-&lt;hr /&gt;
-&lt;p&gt;layout: post
-title: “json数据处理 “
-date: 2018-05-14
-description: “json数据处理”
-tag:zookeeper
-keywords: “json”
-  —&lt;/p&gt;
-
-&lt;h1 id=&quot;json数据处理&quot;&gt;json数据处理&lt;/h1&gt;
+        <title>json数据处理 </title>
+        <description>&lt;h1 id=&quot;json数据处理&quot;&gt;json数据处理&lt;/h1&gt;
 
 &lt;h3 id=&quot;31-编码json&quot;&gt;3.1 &lt;strong&gt;编码JSON&lt;/strong&gt;&lt;/h3&gt;
 
@@ -450,6 +432,8 @@ keywords: “json”
         <pubDate>Mon, 14 May 2018 00:00:00 +0800</pubDate>
         <link>http://localhost:4000/2018/05/14/JSON%E5%A4%84%E7%90%86/</link>
         <guid isPermaLink="true">http://localhost:4000/2018/05/14/JSON%E5%A4%84%E7%90%86/</guid>
+        
+        <category>json</category>
         
         
       </item>
