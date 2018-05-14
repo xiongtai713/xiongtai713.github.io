@@ -1,0 +1,50 @@
+
+<hr />
+<p>layout: post
+title: “mac下zookeeper安装 “
+date: 2018-05-14
+description: mac下zookeeper安装”
+tag:zookeeper
+keywords: “React”
+  —</p>
+
+<p>#安装zookeeper</p>
+
+<h3 id="10-前提工作">1.0 前提工作：</h3>
+
+<p>安装jdk 配置环境变量，自行百度</p>
+
+<p>jdk下载地址：<a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html">http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html</a></p>
+
+<hr />
+
+<p>###1.1 查看zookeeper信息</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ brew info zookeeper
+</code></pre>
+</div>
+<p>###1.2 安装zookeeper</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  $ brew install zookeeper
+</code></pre>
+</div>
+<p>###1.3 启动服务</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ zkServer
+$ zkServer status
+$ zkServer start
+</code></pre>
+</div>
+<p>###1.4 查看zookeeper运行状态</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ zkCli
+</code></pre>
+</div>
+<p>##1.5 Go-zookeeper基本使用</p>
+
+<p>CSDN：<a href="https://blog.csdn.net/zhaominpro/article/details/77543543">https://blog.csdn.net/zhaominpro/article/details/77543543</a></p>
+
+<p>zookeeper教程：<a href="https://www.w3cschool.cn/zookeeper/">https://www.w3cschool.cn/zookeeper/</a></p>
+
+<p>zookeeper GODOC(翻墙):<a href="https://godoc.org/github.com/samuel/go-zookeeper/zk">https://godoc.org/github.com/samuel/go-zookeeper/zk</a></p>
+

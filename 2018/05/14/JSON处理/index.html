@@ -1,0 +1,280 @@
+
+<hr />
+<p>layout: post
+title: “json数据处理 “
+date: 2018-05-14
+description: “json数据处理”
+tag:zookeeper
+keywords: “json”
+  —</p>
+
+<h1 id="json数据处理">json数据处理</h1>
+
+<h3 id="31-编码json">3.1 <strong>编码JSON</strong></h3>
+
+<p>使用json.Marshal()函数可以对一组数据进行JSON格式的编码。</p>
+
+<p> json.Marshal()函数的声明如下：</p>
+
+<div class="language-go highlighter-rouge"><pre class="highlight"><code><span class="k">func</span><span class="x"> </span><span class="n">Marshal</span><span class="p">(</span><span class="n">v</span><span class="x"> </span><span class="k">interface</span><span class="p">{})</span><span class="x"> </span><span class="p">([]</span><span class="kt">byte</span><span class="p">,</span><span class="x"> </span><span class="kt">error</span><span class="p">)</span><span class="x">
+</span></code></pre>
+</div>
+
+<p>还有一个格式化输出：</p>
+
+<div class="language-go highlighter-rouge"><pre class="highlight"><code><span class="c">// MarshalIndent 很像 Marshal，只是用缩进对输出进行格式化</span><span class="x">
+
+</span><span class="k">func</span><span class="x"> </span><span class="n">MarshalIndent</span><span class="p">(</span><span class="n">v</span><span class="x"> </span><span class="k">interface</span><span class="p">{},</span><span class="x"> </span><span class="n">prefix</span><span class="p">,</span><span class="x"> </span><span class="n">indent</span><span class="x"> </span><span class="kt">string</span><span class="p">)</span><span class="x"> </span><span class="p">([]</span><span class="kt">byte</span><span class="p">,</span><span class="x"> </span><span class="kt">error</span><span class="p">)</span><span class="x">
+
+</span></code></pre>
+</div>
+
+<p>编码JSON</p>
+
+<h4 id="311-通过结构体生成json">3.1.1 通过结构体生成json</h4>
+
+<p>实例代码</p>
+
+<div class="language-go highlighter-rouge"><pre class="highlight"><code><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
+
+</span><span class="k">import</span><span class="x"> </span><span class="p">(</span><span class="x">
+	</span><span class="s">"encoding/json"</span><span class="x">
+	</span><span class="s">"fmt"</span><span class="x">
+</span><span class="p">)</span><span class="x">
+
+</span><span class="k">type</span><span class="x"> </span><span class="n">person</span><span class="x"> </span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">First</span><span class="x"> </span><span class="kt">string</span><span class="x">  </span><span class="c">//正常</span><span class="x">
+	</span><span class="n">Last</span><span class="x">  </span><span class="kt">string</span><span class="x"> </span><span class="s">`json:"-"`</span><span class="x">  </span><span class="c">//加了json标签"-"代表忽略</span><span class="x">
+	</span><span class="n">Age</span><span class="x">   </span><span class="kt">int</span><span class="x">    </span><span class="s">`json:"wisdom score"`</span><span class="c">// 填加json标签 在json字符串里显示</span><span class="x">
+</span><span class="p">}</span><span class="x">
+
+</span><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">p1</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">person</span><span class="p">{</span><span class="s">"James"</span><span class="p">,</span><span class="x"> </span><span class="s">"Bond"</span><span class="p">,</span><span class="x"> </span><span class="m">20</span><span class="p">}</span><span class="x">
+	</span><span class="n">bs</span><span class="p">,</span><span class="x"> </span><span class="n">_</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">json</span><span class="o">.</span><span class="n">Marshal</span><span class="p">(</span><span class="n">p1</span><span class="p">)</span><span class="x">
+	</span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="kt">string</span><span class="p">(</span><span class="n">bs</span><span class="p">))</span><span class="x">
+</span><span class="p">}</span><span class="x">
+</span></code></pre>
+</div>
+
+<p><strong>注意：</strong>结构体的字段(首字母是大写)才会被输出</p>
+
+<p><strong>关于  _ 、别名、类型转换、空数据的使用</strong></p>
+
+<p>1、_  可做忽略对应的字段</p>
+
+<p>2、 <code class="highlighter-rouge">json:"subjects"</code>     json：‘’ 取别名完成映射</p>
+
+<p>3、<code class="highlighter-rouge">json:",string"</code>    类型转换</p>
+
+<p>4、 <code class="highlighter-rouge">json:"price, omitempty"</code></p>
+
+<h4 id="312-通过map生成json">3.1.2 通过map生成JSON</h4>
+
+<div class="language-go highlighter-rouge"><pre class="highlight"><code><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
+
+</span><span class="k">import</span><span class="x"> </span><span class="p">(</span><span class="x">
+	</span><span class="s">"encoding/json"</span><span class="x">
+	</span><span class="s">"fmt"</span><span class="x">
+</span><span class="p">)</span><span class="x">
+
+</span><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="x"> </span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="c">//创建一个map</span><span class="x">
+	</span><span class="n">m</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="nb">make</span><span class="p">(</span><span class="k">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="k">interface</span><span class="p">{},</span><span class="x"> </span><span class="m">4</span><span class="p">)</span><span class="x">
+	</span><span class="n">m</span><span class="p">[</span><span class="s">"company"</span><span class="p">]</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="s">"我爱编程"</span><span class="x">
+	</span><span class="n">m</span><span class="p">[</span><span class="s">"subjects"</span><span class="p">]</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">"语文"</span><span class="p">,</span><span class="x"> </span><span class="s">"数学"</span><span class="p">,</span><span class="x"> </span><span class="s">"英语"</span><span class="p">,</span><span class="x"> </span><span class="s">"化学"</span><span class="p">}</span><span class="x">
+	</span><span class="n">m</span><span class="p">[</span><span class="s">"isok"</span><span class="p">]</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="no">true</span><span class="x">
+	</span><span class="n">m</span><span class="p">[</span><span class="s">"price"</span><span class="p">]</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="m">1.1</span><span class="x">
+
+	</span><span class="c">//编码成json</span><span class="x">
+	</span><span class="n">result</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">json</span><span class="o">.</span><span class="n">MarshalIndent</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="x"> </span><span class="s">""</span><span class="p">,</span><span class="x"> </span><span class="s">"	"</span><span class="p">)</span><span class="x">
+	</span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"err = "</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="p">)</span><span class="x">
+		</span><span class="k">return</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+	</span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"result = "</span><span class="p">,</span><span class="x"> </span><span class="kt">string</span><span class="p">(</span><span class="n">result</span><span class="p">))</span><span class="x">
+</span><span class="p">}</span><span class="x">
+
+</span></code></pre>
+</div>
+
+<h3 id="32-解码json">3.2 解码JSON</h3>
+
+<p>可以使用json.Unmarshal()函数将JSON格式的文本解码为Go里面预期的数据结构。</p>
+
+<h4 id="321-json字符串解析到结构体">3.2.1 json字符串解析到结构体</h4>
+
+<div class="language-go highlighter-rouge"><pre class="highlight"><code><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
+
+</span><span class="k">import</span><span class="x"> </span><span class="p">(</span><span class="x">
+	</span><span class="s">"encoding/json"</span><span class="x">
+	</span><span class="s">"fmt"</span><span class="x">
+</span><span class="p">)</span><span class="x">
+
+</span><span class="k">type</span><span class="x"> </span><span class="n">Test02</span><span class="x"> </span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">Company</span><span class="x">  </span><span class="kt">string</span><span class="x">   </span><span class="s">`json:"company"`</span><span class="x">
+	</span><span class="n">Subjects</span><span class="x"> </span><span class="p">[]</span><span class="kt">string</span><span class="x"> </span><span class="s">`json:"subjects"`</span><span class="x"> </span><span class="c">//二次编码</span><span class="x">
+	</span><span class="n">IsOk</span><span class="x">     </span><span class="kt">bool</span><span class="x">     </span><span class="s">`json:"isok"`</span><span class="x">
+	</span><span class="n">Price</span><span class="x">    </span><span class="kt">float64</span><span class="x">  </span><span class="s">`json:"price"`</span><span class="x">
+</span><span class="p">}</span><span class="x">
+
+</span><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+
+	</span><span class="n">jsonBuf</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="s">`
+	{
+    "company": "我爱编程",
+    "subjects": [
+        "语文",
+        "数学",
+        "英语",
+        "化学"
+    ],
+    "isok": true,
+    "price": 1.1
+}`</span><span class="x">
+	</span><span class="c">//定义一个结构体变量</span><span class="x">
+	</span><span class="k">var</span><span class="x"> </span><span class="n">tmp</span><span class="x"> </span><span class="n">Test02</span><span class="x">
+	</span><span class="n">err</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">json</span><span class="o">.</span><span class="n">Unmarshal</span><span class="p">([]</span><span class="kt">byte</span><span class="p">(</span><span class="n">jsonBuf</span><span class="p">),</span><span class="x"> </span><span class="o">&amp;</span><span class="n">tmp</span><span class="p">)</span><span class="x"> </span><span class="c">//第二个参数要地址传递</span><span class="x">
+	</span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"err = "</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="p">)</span><span class="x">
+		</span><span class="k">return</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+	</span><span class="c">//fmt.Println("tmp = ", tmp)</span><span class="x">
+	</span><span class="n">fmt</span><span class="o">.</span><span class="n">Printf</span><span class="p">(</span><span class="s">"tmp = %+v</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="x"> </span><span class="n">tmp</span><span class="p">)</span><span class="x">
+
+	</span><span class="k">type</span><span class="x"> </span><span class="n">Test03</span><span class="x"> </span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="n">Subjects</span><span class="x"> </span><span class="p">[]</span><span class="kt">string</span><span class="x"> </span><span class="s">`json:"subjects"`</span><span class="x"> </span><span class="c">//二次编码</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+
+	</span><span class="k">var</span><span class="x"> </span><span class="n">tmp2</span><span class="x"> </span><span class="n">Test03</span><span class="x">
+	</span><span class="n">err</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="n">json</span><span class="o">.</span><span class="n">Unmarshal</span><span class="p">([]</span><span class="kt">byte</span><span class="p">(</span><span class="n">jsonBuf</span><span class="p">),</span><span class="x"> </span><span class="o">&amp;</span><span class="n">tmp2</span><span class="p">)</span><span class="x"> </span><span class="c">//第二个参数要地址传递</span><span class="x">
+	</span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"err = "</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="p">)</span><span class="x">
+		</span><span class="k">return</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+	</span><span class="n">fmt</span><span class="o">.</span><span class="n">Printf</span><span class="p">(</span><span class="s">"tmp2 = %+v</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="x"> </span><span class="n">tmp2</span><span class="p">)</span><span class="x">
+
+</span><span class="p">}</span><span class="x">
+</span></code></pre>
+</div>
+
+<h4 id="321-json字符串解析到map集合中">3.2.1 json字符串解析到Map集合中</h4>
+
+<div class="language-js highlighter-rouge"><pre class="highlight"><code><span class="kr">package</span> <span class="nx">main</span>
+
+<span class="kr">import</span> <span class="p">(</span>
+	<span class="s2">"encoding/json"</span>
+	<span class="s2">"fmt"</span>
+<span class="p">)</span>
+
+<span class="nx">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">//定义json字符串</span>
+	<span class="nl">jsonBuf</span> <span class="p">:</span><span class="o">=</span> <span class="err">`</span>
+	<span class="p">{</span>
+    <span class="s2">"company"</span><span class="err">:</span> <span class="s2">"我爱编程"</span><span class="p">,</span>
+    <span class="s2">"subjects"</span><span class="err">:</span> <span class="p">[</span>
+        <span class="s2">"语文"</span><span class="p">,</span>
+        <span class="s2">"数学"</span><span class="p">,</span>
+        <span class="s2">"英语"</span><span class="p">,</span>
+        <span class="s2">"化学"</span>
+    <span class="p">],</span>
+    <span class="s2">"isok"</span><span class="err">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="s2">"price"</span><span class="err">:</span> <span class="mf">1.1</span>
+	<span class="p">}</span><span class="err">`</span>
+
+	<span class="c1">//创建一个map</span>
+	<span class="nl">m</span> <span class="p">:</span><span class="o">=</span> <span class="nx">make</span><span class="p">(</span><span class="nx">map</span><span class="p">[</span><span class="nx">string</span><span class="p">]</span><span class="kr">interface</span><span class="p">{},</span> <span class="mi">4</span><span class="p">)</span>
+
+	<span class="nl">err</span> <span class="p">:</span><span class="o">=</span> <span class="nx">json</span><span class="p">.</span><span class="nx">Unmarshal</span><span class="p">([]</span><span class="kr">byte</span><span class="p">(</span><span class="nx">jsonBuf</span><span class="p">),</span> <span class="o">&amp;</span><span class="nx">m</span><span class="p">)</span> <span class="c1">//第二个参数要地址传递</span>
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="nx">nil</span> <span class="p">{</span>
+		<span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s2">"err = "</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+		<span class="k">return</span>
+	<span class="p">}</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s2">"m = %+v\n"</span><span class="p">,</span> <span class="nx">m</span><span class="p">)</span>
+
+	<span class="c1">//	var str string</span>
+	<span class="c1">//	str = string(m["company"]) //err， 无法转换</span>
+	<span class="c1">//	fmt.Println("str = ", str)</span>
+
+
+	<span class="c1">//遍历map集合，判断类型</span>
+	<span class="kd">var</span> <span class="nx">str</span> <span class="nx">string</span>
+
+	<span class="c1">//类型断言, 值，它是value类型</span>
+	<span class="k">for</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">value</span> <span class="err">:</span><span class="o">=</span> <span class="nx">range</span> <span class="nx">m</span> <span class="p">{</span>
+		<span class="c1">//fmt.Printf("%v ============&gt; %v\n", key, value)</span>
+		<span class="k">switch</span> <span class="nx">data</span> <span class="err">:</span><span class="o">=</span> <span class="nx">value</span><span class="p">.(</span><span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">case</span> <span class="nx">string</span><span class="err">:</span>
+			<span class="nx">str</span> <span class="o">=</span> <span class="nx">data</span>
+			<span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s2">"map[%s]的值类型为string, value = %s\n"</span><span class="p">,</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">str</span><span class="p">)</span>
+		<span class="k">case</span> <span class="nx">bool</span><span class="err">:</span>
+			<span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s2">"map[%s]的值类型为bool, value = %v\n"</span><span class="p">,</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span>
+		<span class="k">case</span> <span class="nx">float64</span><span class="err">:</span>
+			<span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s2">"map[%s]的值类型为float64, value = %f\n"</span><span class="p">,</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span>
+		<span class="k">case</span> <span class="p">[]</span><span class="nx">string</span><span class="err">:</span>
+			<span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s2">"map[%s]的值类型为[]string, value = %v\n"</span><span class="p">,</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span>
+		<span class="k">case</span> <span class="p">[]</span><span class="kr">interface</span><span class="p">{}</span><span class="err">:</span>
+			<span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s2">"map[%s]的值类型为[]interface, value = %v\n"</span><span class="p">,</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span>
+		<span class="p">}</span>
+
+	<span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<h3 id="33-decoder和encoder-的使用">3.3 Decoder和Encoder 的使用</h3>
+
+<p>Encode：对象转换成json字符串</p>
+
+<div class="language-go highlighter-rouge"><pre class="highlight"><code><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
+
+</span><span class="k">import</span><span class="x"> </span><span class="p">(</span><span class="x">
+	</span><span class="s">"encoding/json"</span><span class="x">
+	</span><span class="s">"os"</span><span class="x">
+</span><span class="p">)</span><span class="x">
+
+</span><span class="k">type</span><span class="x"> </span><span class="n">person</span><span class="x"> </span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">Name</span><span class="x"> </span><span class="kt">string</span><span class="x">
+	</span><span class="n">Age</span><span class="x"> </span><span class="kt">string</span><span class="x">
+	</span><span class="n">sex</span><span class="x"> </span><span class="kt">string</span><span class="x">
+</span><span class="p">}</span><span class="x">
+
+</span><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="x"> </span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">p1</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">person</span><span class="p">{</span><span class="s">"liubei"</span><span class="p">,</span><span class="s">"18"</span><span class="p">,</span><span class="s">"nan"</span><span class="p">}</span><span class="x">
+
+	</span><span class="n">json</span><span class="o">.</span><span class="n">NewEncoder</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">Stdout</span><span class="p">)</span><span class="o">.</span><span class="n">Encode</span><span class="p">(</span><span class="n">p1</span><span class="p">)</span><span class="x">
+</span><span class="p">}</span><span class="x">
+
+</span><span class="c">//{"Name":"liubei","Age":"18"}</span><span class="x">
+</span></code></pre>
+</div>
+
+<p>Decoder: json字符串转对象</p>
+
+<div class="language-go highlighter-rouge"><pre class="highlight"><code><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
+
+</span><span class="k">import</span><span class="x"> </span><span class="p">(</span><span class="x">
+	</span><span class="s">"encoding/json"</span><span class="x">
+	</span><span class="s">"strings"</span><span class="x">
+	</span><span class="s">"fmt"</span><span class="x">
+</span><span class="p">)</span><span class="x">
+
+</span><span class="k">type</span><span class="x"> </span><span class="n">person01</span><span class="x"> </span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">Name</span><span class="x"> </span><span class="kt">string</span><span class="x">
+	</span><span class="n">Age</span><span class="x"> </span><span class="kt">string</span><span class="x">
+	</span><span class="n">sex</span><span class="x"> </span><span class="kt">string</span><span class="x">
+</span><span class="p">}</span><span class="x">
+
+</span><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="x"> </span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="k">var</span><span class="x"> </span><span class="n">p2</span><span class="x"> </span><span class="n">person01</span><span class="x">
+
+	</span><span class="n">str</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">strings</span><span class="o">.</span><span class="n">NewReader</span><span class="p">(</span><span class="s">`{"Name":"lixunhuan","Age":"22"}`</span><span class="p">)</span><span class="x">
+
+	</span><span class="n">json</span><span class="o">.</span><span class="n">NewDecoder</span><span class="p">(</span><span class="n">str</span><span class="p">)</span><span class="o">.</span><span class="n">Decode</span><span class="p">(</span><span class="o">&amp;</span><span class="n">p2</span><span class="p">)</span><span class="x">
+
+	</span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span><span class="x">
+</span><span class="p">}</span><span class="x">
+</span><span class="c">//{lixunhuan 22 }</span><span class="x">
+</span></code></pre>
+</div>
+
