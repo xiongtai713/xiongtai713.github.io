@@ -5,12 +5,584 @@
     <description>初级区块链工程师</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 14 May 2018 19:50:31 +0800</pubDate>
-    <lastBuildDate>Mon, 14 May 2018 19:50:31 +0800</lastBuildDate>
+    <pubDate>Thu, 17 May 2018 20:25:12 +0800</pubDate>
+    <lastBuildDate>Thu, 17 May 2018 20:25:12 +0800</lastBuildDate>
     <generator>Jekyll v3.5.1</generator>
     
       <item>
-        <title>星云链环境搭建mac版</title>
+        <title>密码学密码学对称加密算法DES和3DES</title>
+        <description>&lt;h1 id=&quot;go密码学对称加密算法des和3des&quot;&gt;go密码学对称加密算法DES和3DES&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;加密模式&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;&lt;strong&gt;ECB模式&lt;/strong&gt; 全称Electronic Codebook模式，译为电子密码本模式(由于安全性差,已经被淘汰)&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;CBC模式&lt;/strong&gt; 全称Cipher Block Chaining模式，译为密文分组链接模式(分组模式)&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;CFB模式&lt;/strong&gt; 全称Cipher FeedBack模式，译为密文反馈模式(流模式)&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;OFB模式&lt;/strong&gt; 全称Output Feedback模式，译为输出反馈模式。(流模式)&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;CTR模式&lt;/strong&gt; 全称Counter模式，译为计数器模式。(流模式)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;des加密算法可解密可加密&quot;&gt;DES加密算法(可解密可加密)&lt;/h2&gt;
+&lt;p&gt;DES是以64比特的明文为一个单位来进行加密的，超过64比特的数据，要求按固定的64比特的大小分组，分组有很多模式，后续单独总结，暂时先介绍DES加密算法。DES使用的密钥长度为64比特，但由于每隔7个比特设置一个奇偶校验位，因此其密钥长度实际为56比特。奇偶校验为最简单的错误检测码，即根据一组二进制代码中1的个数是奇数或偶数来检测错误。&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;DES加密需要先将密码分组,然后把要加密的明文进行PKCS5Padding进行补码,既8位取余,余几位,补几位,解密后同样要把后面补的几位去掉,&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;strong&gt;go语言实现&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;加密&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//DES对称性加密
+//DES 有不同的加密模式(5种)本次采用CBC加密模式
+func MyDesEncrypt(origData,key []byte)  {  //origData 明文
+	//把钥匙传进来加密 换成block块
+	block,_:=des.NewCipher(key) //密钥分组
+	//将明文按密钥长度做补码运算
+	origData=PKCS5Padding(origData,block.BlockSize())
+	//设置加密方式
+	blockMode :=cipher.NewCBCEncrypter(block,key) //CBC加密方式
+	//创建明文长度的字节数组
+	crypted:=make([]byte,len(origData))
+	//加密明文
+	blockMode.CryptBlocks(crypted,origData)
+	//将字节数组转换成字符串 转成base64 类型
+	fmt.Printf(base64.StdEncoding.EncodeToString(crypted))
+
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;补码&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//实现去除补码
+func PKCS5Unpandding(origData []byte) []byte {
+	length:=len(origData) //计算长度
+	unpadding:=int(origData[length-1])//把最后一个值拿出来
+	return origData[:(length-unpadding)]
+
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;解密&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//DES解密方法
+func MyDESDecrypt(data string,key []byte)  {
+	//将字符串转换成字节数组[]byte
+	crypted, _ := base64.StdEncoding.DecodeString(data)//将字符串转成[]byte数组
+	//fmt.Println(crypted)
+	block,_:=des.NewCipher(key)//将字节密钥转换成block块 ,密钥分组
+	//设置解密方式
+	blockMode:=cipher.NewCBCDecrypter(block,key)
+	//创建密文大小的[]byte切片
+	origData:=make([]byte,len(crypted))
+	//解密密文到数组origData中
+	blockMode.CryptBlocks(origData,crypted)
+	//除去补码
+	origData=PKCS5Unpandding(origData)
+	//打印明文
+	fmt.Println(string(origData))
+
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;去码&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;func PKCS5Padding(ciphertext []byte,blockSize int)  []byte{ //实现明文的补码
+	padding:=blockSize-len(ciphertext)%blockSize //查看需要补几位 比如差3位
+	padtext:=bytes.Repeat([]byte{byte(padding)},padding)//重复几位将里面的 这里就补333
+	return append(ciphertext,padtext...)  //append[]byte 后面需要加...
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;方法调用&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;func main()  {
+//声明密钥 利用此密钥 实现明文的加密和密文的解密
+key:=[]byte(&quot;12345678&quot;) //长度为8
+	//加密
+	MyDesEncrypt([]byte(&quot;hello kong yia&quot;),key)
+	//解密
+	MyDESDecrypt(&quot;6xl7sC7Om9o+lQ1S2j1U6g==&quot;,key)
+
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;输出结果&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;6xl7sC7Om9o+lQ1S2j1U6g==hello kong yia
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;3des-加密及解密&quot;&gt;3DES 加密及解密&lt;/h2&gt;
+&lt;p&gt;DES的升级版,24字节的密钥分为,分为3组分别进行加密,以提高安全性&lt;/p&gt;
+
+&lt;h3 id=&quot;加密&quot;&gt;加密&lt;/h3&gt;
+
+&lt;p&gt;对比DES，发现只是换了NewTripleDESCipher。不过，需要注意的是，密钥长度必须24byte，否则直接返回错误。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+//补码
+func PKCS5padding(ciphertext []byte,blocksize int)[]byte  {
+	padding:=blocksize-len(ciphertext)%blocksize  //%24
+	padtext:=bytes.Repeat([]byte{byte(padding)},padding) //补齐
+	return append(ciphertext,padtext...)  //合并
+
+}
+//去码
+func PKCS5Unpadding(origData []byte)[]byte  {
+	length:=len(origData)  //测密码长度
+	unadding:=int(origData[length-1]) //取最后一位
+	return origData[:(length-unadding)]  //减去最后一位的位数
+
+}
+//3DES 加密
+func TripleDesEncrypt(origData []byte,key []byte)[] byte  {
+	//3DES密钥长度必须是24位
+	block,_:=des.NewTripleDESCipher(key)  //获得密钥块  Triple-&amp;gt;3的意思
+	//补码
+	origData=PKCS5padding(origData,block.BlockSize())
+	//设置加密模式
+	blockMode:=cipher.NewCBCEncrypter(block,key[:8]) //固定8
+	//创建密文数组,加密
+	crypted :=make([]byte,len(origData))
+	blockMode.CryptBlocks(crypted,origData)
+	return crypted
+}
+//解密
+func TripDesDecrypt(crypted,key[]byte)[]byte  {
+		block,_:=des.NewTripleDESCipher(key)  //通过密钥得到密码块
+		blockMode:=cipher.NewCBCDecrypter(block,key[:8])  //解密
+		origData:=make([]byte,len(crypted))  //创建数组
+		blockMode.CryptBlocks(origData,crypted) // 解密
+		origData=PKCS5Unpadding(origData)  //去码
+		return origData
+
+}
+//CBC模式
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;方法调用&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;func main()  {
+	var key = []byte(&quot;123456789012345678901234&quot;) //长度为24byte
+var encryptcode=TripleDesEncrypt([]byte(&quot;liujiaow&quot;),key)
+var decryptcode=TripDesDecrypt(encryptcode,key)
+fmt.Println(base64.StdEncoding.EncodeToString(encryptcode))
+fmt.Println(string(decryptcode))
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;输出结果&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;vtTkkOTHUHx2nY5Pu2ObTQ==
+liujiaow
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+</description>
+        <pubDate>Thu, 17 May 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/05/17/%E5%AF%86%E7%A0%81%E5%AD%A6%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95DES%E5%92%8C3DES/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/05/17/%E5%AF%86%E7%A0%81%E5%AD%A6%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95DES%E5%92%8C3DES/</guid>
+        
+        <category>密码学</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>密码学加密算法</title>
+        <description>&lt;h1 id=&quot;go-密码学-加密算法&quot;&gt;go 密码学 加密算法&lt;/h1&gt;
+
+&lt;p&gt;###hash算法加密&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;ol&gt;
+  &lt;li&gt;加法Hash；&lt;/li&gt;
+  &lt;li&gt;位运算Hash；&lt;/li&gt;
+  &lt;li&gt;乘法Hash；&lt;/li&gt;
+  &lt;li&gt;除法Hash；&lt;/li&gt;
+  &lt;li&gt;查表Hash；&lt;/li&gt;
+  &lt;li&gt;混合Hash；&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;hr /&gt;
+&lt;h2 id=&quot;hash算法有什么特点&quot;&gt;Hash算法有什么特点&lt;/h2&gt;
+
+&lt;p&gt;一个优秀的 hash 算法，将能实现：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;正向快速&lt;/strong&gt;：给定明文和 hash 算法，在有限时间和有限资源内能计算出 hash 值。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;逆向困难&lt;/strong&gt;：给定（若干） hash 值，在有限时间内很难（基本不可能）逆推出明文。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;输入敏感&lt;/strong&gt;：原始输入信息修改一点信息，产生的 hash 值看起来应该都有很大不同。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;冲突避免&lt;/strong&gt;：很难找到两段内容不同的明文，使得它们的 hash 值一致（发生冲突）。即对于任意两个不同的数据块，其hash值相同的可能性极小；对于一个给定的数据块，找到和它hash值相同的数据块极为困难。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;##MD5
+MD5讯息摘要演算法（英语：MD5 Message-Digest Algorithm），一种被广泛使用的密码杂凑函数，可以产生出一个128位元（16位元组）的散列值（hash value），用于确保信息传输完整一致。&lt;strong&gt;不可逆推&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;用go语言实现&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;func MyMd5() {   //32位字节
+	data:=[]byte(&quot;hello world&quot;)
+	s:=fmt.Sprintf(&quot;%x\n&quot;,md5.Sum(data)) //把字符串格式化后返回
+	fmt.Println(len(s))
+	fmt.Println(s)
+
+	h:=md5.New() //声明md5对象
+	h.Write(data)  //把data写入h
+	s = hex.EncodeToString(h.Sum(nil)) // 十六进制转字符串
+	fmt.Println(s)
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;输出结果&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;5eb63bbbe01eeed093cb22bb8f5acdc3
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;sha256加密算法&quot;&gt;###sha256加密算法&lt;/h2&gt;
+&lt;p&gt;SHA-256 算法输入报文的最大长度不超过2^64 bit，输入按512-bit 分组进行处理，产生的输出是一个256-bit 的报文摘要。&lt;strong&gt;不可逆推&lt;/strong&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;strong&gt;go语言实现&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;func Mysha2561()  {
+	sum:=sha256.Sum256([]byte(&quot;hello world&quot;))  //得到长度64字节 256位的密文 (一个字节占4位)
+	fmt.Printf(&quot;%x\n&quot;,sum)
+	//第二种方法
+	h:=sha256.New()
+	h.Write([]byte(&quot;hello world&quot;))
+	fmt.Printf(&quot;%x\n&quot;,h.Sum(nil))
+
+}
+//将文档中的加密
+func MyIo()  {  //将文件中的内容做256的加密
+f,_:=os.Open(&quot;5.16myHash/text.txt&quot;)
+h:=sha256.New()
+io.Copy(h,f)//把文件名写到h里
+fmt.Printf(&quot;%x\n&quot;,h.Sum(nil))
+
+
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;输出结果&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;5eb63bbbe01eeed093cb22bb8f5acdc3
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;###ripemd160 加密算法&lt;/p&gt;
+
+&lt;p&gt;哈希值的输出值一般是&lt;code class=&quot;highlighter-rouge&quot;&gt;16&lt;/code&gt;进制的字符串。而&lt;code class=&quot;highlighter-rouge&quot;&gt;16&lt;/code&gt;进制字符串，每两个字符占一个字节。我们知道，一个字节&lt;code class=&quot;highlighter-rouge&quot;&gt;=8bit&lt;/code&gt;. &lt;strong&gt;不可逆推&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;以&lt;code class=&quot;highlighter-rouge&quot;&gt;sha256&lt;/code&gt;为例：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;256bit-&amp;gt;64&lt;/code&gt;位&lt;code class=&quot;highlighter-rouge&quot;&gt;16&lt;/code&gt;进制字符。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;go语言实现&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//ripemd160 利用hash原理,实现加密  40字节 160位
+func MyRipemd160(){
+	hasher:=ripemd160.New() //实例化
+	hasher.Write([]byte(&quot;hello world&quot;))  //把[]byte类型的字符串类型 写入到加密文件里
+	hashString:=fmt.Sprintf(&quot;%x&quot;,hasher.Sum(nil))  //转成16进制字符串
+	fmt.Printf(hashString)
+
+
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;输出结果&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;5eb63bbbe01eeed093cb22bb8f5acdc3
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+</description>
+        <pubDate>Thu, 17 May 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/05/17/%E5%AF%86%E7%A0%81%E5%AD%A6%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%951/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/05/17/%E5%AF%86%E7%A0%81%E5%AD%A6%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%951/</guid>
+        
+        <category>密码学</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>mac 创建公钥和私钥 非对称加密和3DES</title>
+        <description>&lt;h1 id=&quot;mac-创建公钥和私钥-非对称加密&quot;&gt;mac 创建公钥和私钥 非对称加密&lt;/h1&gt;
+&lt;p&gt;openssl工具 非对称加密&lt;/p&gt;
+
+&lt;p&gt;mac 打开控制台 (产生公钥和私钥)
+打开openssl工具&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;openssl 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;创建私钥&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;genrsa -out rsa_private_key.pem 2048
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;这行命令为设置私钥为PKCS8格式&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pkcs8 -topk8 -inform PEM -in rsa_private_key.pem -outform PEM
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;产生公钥&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rsa -in rsa_private_key.pem -pubout -out rsa_public_key.pem
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;产生 rsa_public_key.pem 公钥
+产生rsa_private_key.pem 私钥&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 17 May 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/05/17/mac-%E5%88%9B%E5%BB%BA%E5%85%AC%E9%92%A5%E5%92%8C%E7%A7%81%E9%92%A5-%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/05/17/mac-%E5%88%9B%E5%BB%BA%E5%85%AC%E9%92%A5%E5%92%8C%E7%A7%81%E9%92%A5-%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86/</guid>
+        
+        <category>密码学</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>hash散列和链表 </title>
+        <description>&lt;h2 id=&quot;go语言hash散列和链表&quot;&gt;go语言hash散列和链表&lt;/h2&gt;
+&lt;p&gt;通过hash散列算法把输入的值,平均分配的一个长度位16的数组当中去&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//将key转换成数组下标的散列算法
+func HashCode(key string) int {
+	var index int = 0
+	index = int(key[0])
+	for k := 0; k &amp;lt; len(key); k++ {
+		index *= (1103515245 + int(key[k]))
+	}
+	index &amp;gt;&amp;gt;= 27
+	index &amp;amp;= 16 - 1
+
+	return index
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;每个数组下标,里面存放一个链表头,后面可以无限链接链表,链表分为(地址域&lt;/td&gt;
+      &lt;td&gt;数据域),数据域里分为(key&lt;/td&gt;
+      &lt;td&gt;value),通过key来找到value.&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;strong&gt;创建数组&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;package HashMP
+
+import (
+	&quot;5.15myHashMap/LinkNodes&quot;
+	&quot;fmt&quot;
+)
+
+
+
+//声明全局数组
+var bultArr [16]*LinkNodes.Node
+
+
+//初始化数组
+func CreatBulet() {
+	var arr =[16]*LinkNodes.Node{}
+
+	for i:=0;i&amp;lt;16;i++{
+		arr[i]=LinkNodes.CreateHeadNode(&quot;头节点&quot;,&quot;头节点&quot;)  //创建16个链表
+	}
+	bultArr=arr
+
+
+}
+
+
+//将key转换成数组下标的散列算法
+func HashCode(key string) int {
+	var index int = 0
+	index = int(key[0])
+	for k := 0; k &amp;lt; len(key); k++ {
+		index *= (1103515245 + int(key[k]))
+	}
+	index &amp;gt;&amp;gt;= 27
+	index &amp;amp;= 16 - 1
+
+	return index
+}
+//向数组中添加键值对
+func AddkeyValue(k string,v string) {
+	//计算键所对应的木桶下标
+	var pos = HashCode(k)
+
+	var head *LinkNodes.Node= bultArr[pos]  //获得木桶数组中的 头节点
+	LinkNodes.AddNode(k,v,head) //向指定下标的头节点添加节点
+}
+
+//获取数据
+func GetvalueByKey(k string)string  {
+	var pos = HashCode(k)
+	//通过散列因子得到数组下标 通过下标找到对应头节点
+	var head *LinkNodes.Node=bultArr[pos]
+	//通过头节点 遍历链表
+	LinkNodes.ShowNodes(head)
+	//查找对应下标下的链表 判断key与节点中的key一致时打印
+	for {
+		if head.Data.K==k{
+			fmt.Println(head.Data.V)
+			break
+		}else {
+			head=head.NextNode
+			if head.NextNode== nil{
+
+			}
+		}
+	}
+	return &quot;&quot;
+
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;创建链表&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;package LinkNodes
+
+import &quot;fmt&quot;
+
+//用结构体作为数据域的类型
+type DM struct {
+	K string
+	V string
+}
+
+
+//声明全局变量,保存头节点
+var head *Node //头节点地址
+var curr *Node //当前节点地址
+
+type Node struct {//一个链表  声明节点类型
+	//数据域
+	Data DM
+	//地址域  指向下一个节点
+	NextNode *Node
+}
+
+//创建头节点
+
+func CreateHeadNode(k string ,v string) *Node { //创建节点
+	var node *Node = new(Node) //创建
+	node.Data.K = k //设置数据域结构体中的键值对
+	node.Data.V = v
+	//设置地址域
+	node.NextNode = nil        //下一个节点的地址
+	//保存头节点
+	head = node  //创建的是节点 赋值给头
+	curr = node  //创建的节点 给当前
+
+	return node
+
+}
+
+//在指定的节点(curr)后面添加新节点
+func AddNode(k string,v string, currHead *Node) *Node {  //先用局部变量的 curr
+	var newNode *Node = new(Node)
+	newNode.Data.K = k    //新节点数据
+	newNode.Data.V = v
+	newNode.NextNode = nil // 下一个节点的地址
+	//挂接节点
+	currHead.NextNode = newNode //当前节点的下一个节点==新创建的节点
+	currHead = newNode          //curr 等于新创建的节点 =新的节点???
+
+	return newNode
+
+}
+
+//在指定节点遍历链表
+func ShowNodes(n * Node) {
+	var node =n  //从头开始
+	for {
+
+		if node.NextNode==nil{  //退出条件 下一个节点的 地址域==nil
+			fmt.Println(node.Data)  //打印该节点的数据
+			break
+		}else {
+			fmt.Println(node.Data)
+			node = node.NextNode  //该节点等于下一个节点
+		}
+
+	}
+}
+
+//计算节点的个数
+
+func Nodecnt() int {
+	n := 1
+	i := head  //从头开始
+	for {
+		if i.NextNode == nil {
+			break
+		}
+		n++
+		i = i.NextNode  //该节点等于下一个节点
+	}
+	return n
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;可以通过链表的Next.Node来链接链表&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 17 May 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/05/17/hash%E6%95%A3%E5%88%97%E5%92%8C%E9%93%BE%E8%A1%A8/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/05/17/hash%E6%95%A3%E5%88%97%E5%92%8C%E9%93%BE%E8%A1%A8/</guid>
+        
+        <category>hash</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Nebulas包调用</title>
         <description>&lt;p&gt;#星云链环境搭建mac版&lt;/p&gt;
 
 &lt;h2 id=&quot;golang环境搭建&quot;&gt;Golang环境搭建&lt;/h2&gt;
@@ -97,9 +669,11 @@ cd $GOPATH/src/github.com/nebulasio/go-nebulas
 make build&lt;/p&gt;
 
 </description>
-        <pubDate>Mon, 14 May 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/05/14/%E6%98%9F%E4%BA%91%E9%93%BE%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BAmac%E7%89%88/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/05/14/%E6%98%9F%E4%BA%91%E9%93%BE%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BAmac%E7%89%88/</guid>
+        <pubDate>Tue, 15 May 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/05/15/%E6%98%9F%E4%BA%91%E9%93%BE%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BAmac%E7%89%88/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/05/15/%E6%98%9F%E4%BA%91%E9%93%BE%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BAmac%E7%89%88/</guid>
+        
+        <category>星云链</category>
         
         
       </item>
@@ -589,210 +1163,6 @@ result:前面是init方法的值后面是预计要花的Gas
         <guid isPermaLink="true">http://localhost:4000/2018/05/06/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6%E9%83%A8%E7%BD%B2%E5%92%8C%E8%B0%83%E7%94%A8/</guid>
         
         <category>星云链</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>星云链合约调用</title>
-        <description>&lt;h1 id=&quot;星云链合约调用&quot;&gt;星云链合约调用&lt;/h1&gt;
-&lt;p&gt;交易hash:
-f4c0cff0f8e812b6da5d63c973f22e4ec740f189bd0e2502d732a145405bb90e
-合约地址(Contract address):
-n1jgZAYD5dUuT8sWPsv4mGxdysC2ZR9VkTh
-###1.智能合约搜索
-通过交易hash我们可以从合约(Contract)里面的搜索(Search),搜索到我们刚刚部署的智能合约,
-&lt;img src=&quot;http://p8ka0wokw.bkt.clouddn.com/WX20180511-194600@2x.png&quot; alt=&quot;rr&quot; /&gt;
-###2.合约调用
-接下来选择调用(Call),
-首先方法(function)这里填刚才我们部署的一个方法,save 就是存钱,
-参数(arguments)这里填上要存多少钱,由于NAS不多了,就先存个0.1吧,要注意是[” “]这个格式
-然后还是依然选择钱包,输入密码,不过这里 To address要填合约地址(Contract address)
-&lt;img src=&quot;http://p8ka0wokw.bkt.clouddn.com/WX20180511-195517@2x.png&quot; alt=&quot;uu&quot; /&gt;
-###3. 合约测试
-点击测试(Test),出现结果依然是init的空值和预计要花费的Gas
-&lt;img src=&quot;http://p8ka0wokw.bkt.clouddn.com/WX20180511-195530@2x.png&quot; alt=&quot;ces&quot; /&gt;
-###4.提交
-确认完毕后,点击提交(Submit),会显示提交结果(Submit result)
-得到交易hash,点击交易hash
-&lt;img src=&quot;http://p8ka0wokw.bkt.clouddn.com/WX20180511-195539@2x.png&quot; alt=&quot;dkf&quot; /&gt;
-还是跟部署合约时一样看到success就证明钱已经存进去了,最后再检查下余额,看下是不是少了0.1,
-当然我们还可以通过takeout方法再把钱取出来&lt;/p&gt;
-
-</description>
-        <pubDate>Sun, 06 May 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/05/06/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E5%90%88%E7%BA%A6%E8%B0%83%E7%94%A8/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/05/06/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E5%90%88%E7%BA%A6%E8%B0%83%E7%94%A8/</guid>
-        
-        <category>星云链</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>星云链nebulas包安装</title>
-        <description>&lt;h1 id=&quot;星云链nebulas包安装&quot;&gt;星云链nebulas包安装&lt;/h1&gt;
-&lt;p&gt;https://github.com/nebulasio/go-nebulas&lt;/p&gt;
-
-&lt;p&gt;1.执行命令&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm i nebulas
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;安装nebulas,里面会有一些星云链部署合约所需要的方法和对象
-2.安装完毕之后,可以去node_modules里的package里去看下 是否安装成功,成功会显示包名和版本号,安装成功后,就可以调用包下面的方法啦&lt;/p&gt;
-
-</description>
-        <pubDate>Sun, 06 May 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/05/06/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E5%8C%85%E5%AE%89%E8%A3%85/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/05/06/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E5%8C%85%E5%AE%89%E8%A3%85/</guid>
-        
-        <category>星云链</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>星云链mac开发必装软件 </title>
-        <description>&lt;p&gt;#星云链mac开发必装软件 
-###1.Homebrew 安装
-这是官网https://brew.sh/
-可以直接通过命令&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;安装,安装之后可以通过homebrew安装很多我们需要的东西.具体有什么可以看
-https://github.com/Homebrew/homebrew-core/tree/master/Formula&lt;/p&gt;
-
-&lt;p&gt;###2.git安装
-我们安装好了Homebrew就可以安装git啦
-通过命令&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;brew install git
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;就安装成功啦
-git的主要作用是可以从github上克隆库&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git clone &amp;lt;远端git&amp;gt; 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;还有一些数据同步的操作&lt;/p&gt;
-
-&lt;p&gt;在本地文件夹下面执行&lt;code class=&quot;highlighter-rouge&quot;&gt;git init&lt;/code&gt;指令，初始化文件夹，作为本地的一个仓库。
-执行&lt;code class=&quot;highlighter-rouge&quot;&gt;git remote add origin&lt;/code&gt; 仓库的ssh链接
-执行&lt;code class=&quot;highlighter-rouge&quot;&gt;git pull&lt;/code&gt;指令，将远端代码拉取到本地&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git add                 添加文件到git仓库
-git commit -m &quot;备注&quot;     确认完成
-git status              仓库状态
-git diff                查看修改的内容
-git log                 查看历史纪录可以看到版本号
-git reset 版本号         回到该版本
-git reset - -hard HEAD^  回到上一个版本
-                  HEAD^^ 回到上两个版本
-
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;###3.安装node
-还是通过Homebrew来安装
-直接执行命令&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;brew install node
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;node主要是来编译javeScript代码用的,可以脱离浏览器来检查代码
-直接输入&lt;code class=&quot;highlighter-rouge&quot;&gt;node  js的文件名&lt;/code&gt; 就可以运行啦&lt;/p&gt;
-
-&lt;p&gt;###4.安装npm
-安装了node就不能不安npm&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo npm install npm -g
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;npm主要是
-允许用户从NPM服务器下载别人编写的第三方包到本地使用。
-允许用户从NPM服务器下载并安装别人编写的命令行程序到本地使用。
-允许用户将自己编写的包或命令行程序上传到NPM服务器供别人使用。
-有了npm我们就能安装一些库了
-在package.json所在目录下使用&lt;code class=&quot;highlighter-rouge&quot;&gt;npm install . -g&lt;/code&gt;可先在本地安装当前命令行程序，可用于发布前的本地测试。
-使用npm update &lt;package&gt;可以把当前目录下```node_modules```子目录里边的对应模块更新至最新版本。
-使用```npm update &lt;package&gt; -g```可以把全局安装的对应命令行程序更新至最新版。
-使用```npm cache clear```可以清空NPM本地缓存，用于对付使用相同版本号发布新版本代码的人。
-###5.安装gulp
-继续安装 官网 https://www.gulpjs.com.cn/&lt;/package&gt;&lt;/package&gt;&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;全局安装&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm install --global gulp
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;2.作为项目的开发依赖（devDependencies）安装：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm install --save-dev gulp
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;gulp可以把整个文件夹打包成一个文件&lt;/p&gt;
-
-</description>
-        <pubDate>Sun, 06 May 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/05/06/%E6%98%9F%E4%BA%91%E9%93%BEDAPPmac%E5%BC%80%E5%8F%91%E5%BF%85%E8%A3%85%E8%BD%AF%E4%BB%B6/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/05/06/%E6%98%9F%E4%BA%91%E9%93%BEDAPPmac%E5%BC%80%E5%8F%91%E5%BF%85%E8%A3%85%E8%BD%AF%E4%BB%B6/</guid>
-        
-        <category>星云链</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>React安装</title>
-        <description>&lt;h1 id=&quot;react安装&quot;&gt;React安装&lt;/h1&gt;
-&lt;p&gt;官网  https://reactjs.org/
-主要用来编写JS和XML,前后端结合
-1.全局安装&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm install -g create-react-app  
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;2.使用命令创建文件myapp
-不能有大写字母哦&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;create-react-app myapp 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;3.启动项目&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm start 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;进入项目,启动后看到logo 证明安装成功啦&lt;/p&gt;
-
-&lt;p&gt;4.删除项目中的包&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm uninstall 包名
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;就可删除了,在看下package文件里,包就被删除了
-如果还想还原,就在执行下&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm install
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;包就还原了&lt;/p&gt;
-
-</description>
-        <pubDate>Sun, 06 May 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/05/06/React%E5%AE%89%E8%A3%85/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/05/06/React%E5%AE%89%E8%A3%85/</guid>
-        
-        <category>React</category>
         
         
       </item>
