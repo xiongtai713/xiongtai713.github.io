@@ -6,21 +6,21 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <title>星云链nebulas包安装</title>
-  <meta name="description" content="星云链手记">
+  <title>go语言实现椭圆曲线ECC加密算法,签名和验签</title>
+  <meta name="description" content="密码学">
   <meta name="author" content="黎跃春">
 
-  <meta name="keywords" content="区块链交易"
+  <meta name="keywords" content="椭圆曲线ECC"
   />
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="星云链nebulas包安装">
-  <meta name="twitter:description" content="星云链手记">
+  <meta name="twitter:title" content="go语言实现椭圆曲线ECC加密算法,签名和验签">
+  <meta name="twitter:description" content="密码学">
 
   <meta property="og:type" content="article">
-  <meta property="og:title" content="星云链nebulas包安装">
-  <meta property="og:description" content="星云链手记">
-  <meta property="og:site_name" content="区块链交易e"
+  <meta property="og:title" content="go语言实现椭圆曲线ECC加密算法,签名和验签">
+  <meta property="og:description" content="密码学">
+  <meta property="og:site_name" content="椭圆曲线ECCe"
   />
 
 
@@ -31,7 +31,7 @@
   <link rel="stylesheet" href=" /css/main.css ">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="http://localhost:4000/2018/05/06/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E5%8C%85%E5%AE%89%E8%A3%85/">
+  <link rel="canonical" href="http://localhost:4000/2018/05/20/go%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BFECC%E7%AD%BE%E5%90%8D%E5%92%8C%E9%AA%8C%E7%AD%BE/">
   <link rel="alternate" type="application/rss+xml" title="刘蛟区块链博客" href="http://localhost:4000 /feed.xml
     ">
 
@@ -195,10 +195,10 @@
     <div class="content-wrapper__inner">
       <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
-    <h1 class="post-title">星云链nebulas包安装</h1>
+    <h1 class="post-title">go语言实现椭圆曲线ECC加密算法,签名和验签</h1>
     <div class="post-meta">
       <img src="/images/calendar.png" width="20px"/>
-      <time datetime="2018-05-06 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2018-05-06</time>
+      <time datetime="2018-05-20 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2018-05-20</time>
 
       <span id="busuanzi_container_page_pv"> | 阅读：<span id="busuanzi_value_page_pv"></span>次</span>
     </p>
@@ -206,16 +206,83 @@
   </header>
 
   <section class="post">
-    <h1 id="星云链nebulas包安装">星云链nebulas包安装</h1>
-<p>https://github.com/nebulasio/go-nebulas</p>
+    <h1 id="go语言实现椭圆曲线ecc加密的签名和验签">go语言实现椭圆曲线ECC加密的签名和验签</h1>
+<hr />
+<p>椭圆曲线加密算法，即：Elliptic Curve Cryptography，简称ECC，是基于椭圆曲线数学理论实现的一种非对称加密算法。相比RSA，ECC优势是可以使用更短的密钥，来实现与RSA相当或更高的安全。据研究，160位ECC加密安全性相当于1024位RSA加密，210位ECC加密安全性相当于2048位RSA加密。</p>
 
-<p>1.执行命令</p>
+<p>　　椭圆曲线在密码学中的使用，是1985年由Neal Koblitz和Victor Miller分别独立提出的。
+　　
+—</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>npm i nebulas
+<p><strong>验证签名就是通过明文进行hash运算,然后跟签名中明文的hash进行比对</strong></p>
+
+<hr />
+
+<p><strong>go语言实现</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>package main
+
+import (
+	"crypto/ecdsa"
+	"crypto/elliptic"
+	"crypto/rand"
+	"crypto/sha256"
+	"math/big"
+	"fmt"
+)
+
+//通过椭圆曲线完成签名和验证
+func main()  {
+	//声明明文
+	message:=[]byte("hello world")
+	//生成私钥   elliptic.P256椭圆曲线法则
+	privateKey,_:=ecdsa.GenerateKey(elliptic.P256(),rand.Reader)
+	//生成公钥
+	pub:=privateKey.PublicKey
+	//将明文进行hash散列 数组
+	digest:=sha256.Sum256(message)
+	//签名
+	r,s,_:=ecdsa.Sign(rand.Reader,privateKey,digest[:])//切片
+	//设置私钥参数类型为Curve是曲线类型
+	param:=privateKey.Curve.Params()
+	//获得私钥长度                   把参数里的位求出来/8 = 求出字节[]byte长度  有自动补码
+	curveOrderByteSize:=param.P.BitLen()/8
+	//求出s,r,的字节长度  签名返回值的字节长度
+	rByte,sByte:=r.Bytes(),s.Bytes()
+	fmt.Println(r,rByte)
+	//创建签名数组, 长度是字节的两倍
+	signature:=make([]byte,curveOrderByteSize*2)
+
+	//通过数组,保存了签名结果返回值
+	copy(signature[curveOrderByteSize-len(rByte):],rByte)
+	copy(signature[curveOrderByteSize*2-len(sByte):],sByte)
+	//认证
+	//将明文做hash散列,为了验证的对比
+	digest= sha256.Sum256(message)
+	//获得公钥长度
+	curveOrderByteSize=pub.Curve.Params().P.BitLen()/8
+	//创建俩个整形对象
+	r,s =new(big.Int),new(big.Int)
+	//设置证书值
+	r.SetBytes(signature[:curveOrderByteSize])
+	s.SetBytes(signature[curveOrderByteSize:])
+	//认证
+	e:=ecdsa.Verify(&amp;pub,digest[:],r,s)
+	if e==true{
+		fmt.Println("ok")
+
+	}else {
+		fmt.Println("failed")
+	}
+}
 </code></pre>
 </div>
-<p>安装nebulas,里面会有一些星云链部署合约所需要的方法和对象
-2.安装完毕之后,可以去node_modules里的package里去看下 是否安装成功,成功会显示包名和版本号,安装成功后,就可以调用包下面的方法啦</p>
+
+<p><strong>运行结果</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>如果验签成功返回 ok
+</code></pre>
+</div>
 
 
   </section>
@@ -224,7 +291,7 @@
 
 <section class="post-comments">
   <!--PC和WAP自适应版-->
-<div id="SOHUCS" sid=星云链nebulas包安装 ></div>
+<div id="SOHUCS" sid=go语言实现椭圆曲线ECC加密算法,签名和验签 ></div>
 <script type="text/javascript">
 (function(){
 var appid = 'cytfSz8yx';

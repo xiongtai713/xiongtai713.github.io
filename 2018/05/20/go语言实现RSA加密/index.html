@@ -6,21 +6,21 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <title>星云链nebulas包安装</title>
-  <meta name="description" content="星云链手记">
+  <title>go语言实现非对称RSA加密算法</title>
+  <meta name="description" content="密码学">
   <meta name="author" content="黎跃春">
 
-  <meta name="keywords" content="区块链交易"
+  <meta name="keywords" content="RSA"
   />
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="星云链nebulas包安装">
-  <meta name="twitter:description" content="星云链手记">
+  <meta name="twitter:title" content="go语言实现非对称RSA加密算法">
+  <meta name="twitter:description" content="密码学">
 
   <meta property="og:type" content="article">
-  <meta property="og:title" content="星云链nebulas包安装">
-  <meta property="og:description" content="星云链手记">
-  <meta property="og:site_name" content="区块链交易e"
+  <meta property="og:title" content="go语言实现非对称RSA加密算法">
+  <meta property="og:description" content="密码学">
+  <meta property="og:site_name" content="RSAe"
   />
 
 
@@ -31,7 +31,7 @@
   <link rel="stylesheet" href=" /css/main.css ">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="http://localhost:4000/2018/05/06/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E5%8C%85%E5%AE%89%E8%A3%85/">
+  <link rel="canonical" href="http://localhost:4000/2018/05/20/go%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0RSA%E5%8A%A0%E5%AF%86/">
   <link rel="alternate" type="application/rss+xml" title="刘蛟区块链博客" href="http://localhost:4000 /feed.xml
     ">
 
@@ -195,10 +195,10 @@
     <div class="content-wrapper__inner">
       <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
-    <h1 class="post-title">星云链nebulas包安装</h1>
+    <h1 class="post-title">go语言实现非对称RSA加密算法</h1>
     <div class="post-meta">
       <img src="/images/calendar.png" width="20px"/>
-      <time datetime="2018-05-06 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2018-05-06</time>
+      <time datetime="2018-05-20 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2018-05-20</time>
 
       <span id="busuanzi_container_page_pv"> | 阅读：<span id="busuanzi_value_page_pv"></span>次</span>
     </p>
@@ -206,16 +206,71 @@
   </header>
 
   <section class="post">
-    <h1 id="星云链nebulas包安装">星云链nebulas包安装</h1>
-<p>https://github.com/nebulasio/go-nebulas</p>
+    <h1 id="go实现非对称加密rsa">go实现非对称加密RSA</h1>
+<hr />
+<p>RSA是一种公钥密码算法，它的名字是由它的三位开发者，即Ron Rivest、Adi Shamir 和 Leonard Adleman的姓氏的首字母组成的( Rivest-Shamir-Adleman )。</p>
 
-<p>1.执行命令</p>
+<p>RSA可以被用于公钥密码和数字签名。
+　　
+—
+非对称加密会生成一对密钥
+<strong>公钥 用来加密明文和验证签名</strong>
+<strong>密钥 用来解密密文和发送签名</strong>
+可以先用openssl来生成一对密钥</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>npm i nebulas
+<h2 id="openssl生成私钥">openssl生成私钥</h2>
+<p>打开终端</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>openssl genrsa -out rsa_private_key.pem 1024  
 </code></pre>
 </div>
-<p>安装nebulas,里面会有一些星云链部署合约所需要的方法和对象
-2.安装完毕之后,可以去node_modules里的package里去看下 是否安装成功,成功会显示包名和版本号,安装成功后,就可以调用包下面的方法啦</p>
+
+<h2 id="openssl生成公钥">openssl生成公钥</h2>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>openssl rsa -in rsa_private_key.pem -pubout -out rsa_public_key.pem  
+</code></pre>
+</div>
+
+<p>##go实现</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>//公钥加密
+func RsaEncrypt(origData []byte) []byte {
+	block,_:=pem.Decode(publicKey) //把文件放在pem里转成block
+	pubInterface,_:=x509.ParsePKIXPublicKey(block.Bytes)//解析公钥
+	pub:=pubInterface.(*rsa.PublicKey) //设置刚才的公钥确实是Public 类型  类型断言
+	bts,_:=rsa.EncryptPKCS1v15(rand.Reader,pub,origData)//加密[]byte("hello world")
+	return bts
+}
+
+func RsaDecrypt(origData []byte)[]byte  {
+	//解密
+	block,_:=pem.Decode(pirvateKey) //私钥放在pem里转成block
+	//解析私钥
+	priv,_:=x509.ParsePKCS1PrivateKey(block.Bytes)
+	//解密
+	bts,_:=rsa.DecryptPKCS1v15(rand.Reader,priv,origData)
+	return bts
+
+}
+
+func main()  {
+	e:=RsaEncrypt([]byte("hello wold"))
+	fmt.Println("密文",base64.StdEncoding.EncodeToString(e)) //字节码转换成字符串
+	r:=RsaDecrypt(e)
+	fmt.Println(string(r))
+
+
+}
+
+</code></pre>
+</div>
+
+<p>运行结果</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>密文 blqAd7iBbtv67OjkgaL6JZKN4WZOsjvRK+vLmT9ZxEl5KK1aCXQBAhp024SKtAqXInzGHMyy2Y7+bEkvv5zmTulcaZUzxas7/azw0oS+Hu24m3NY8QMXcWlvAcEq481iWs8CJCda8b4l32bXD3CS/5oFNSx5KQW6z/hoeLrjk9kp9DisXcUnZq1mss1A7I5V0r2Iv/YJa9RNg29MCdH309lHV/NBAI2gkFUA33jnkHR/s3UEfR19fn9KfT06zMURm57qcyV78f3QcJhUvKyJPHxpM4Xyz+am6y/tVCIRzVCmACRd8Drj6ZUU8POc+MUyM9jhDrQtJJ7edQUwTI9A7A==
+hello wold
+</code></pre>
+</div>
 
 
   </section>
@@ -224,7 +279,7 @@
 
 <section class="post-comments">
   <!--PC和WAP自适应版-->
-<div id="SOHUCS" sid=星云链nebulas包安装 ></div>
+<div id="SOHUCS" sid=go语言实现非对称RSA加密算法 ></div>
 <script type="text/javascript">
 (function(){
 var appid = 'cytfSz8yx';

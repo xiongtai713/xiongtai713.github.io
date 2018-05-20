@@ -2,12 +2,367 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>刘蛟区块链博客</title>
-    <description>初级区块链工程师</description>
+    <description>区块链工程师</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 17 May 2018 20:25:12 +0800</pubDate>
-    <lastBuildDate>Thu, 17 May 2018 20:25:12 +0800</lastBuildDate>
+    <pubDate>Sun, 20 May 2018 10:59:29 +0800</pubDate>
+    <lastBuildDate>Sun, 20 May 2018 10:59:29 +0800</lastBuildDate>
     <generator>Jekyll v3.5.1</generator>
+    
+      <item>
+        <title>零知识证明</title>
+        <description>&lt;h1 id=&quot;零知识证明&quot;&gt;零知识证明&lt;/h1&gt;
+
+&lt;p&gt;什么是零知识证明
+零知识证明(Zero—Knowledge Proof)，是由S.Goldwasser、S.Micali及C.Rackoff在20世纪80年代初提出的。它指的是证明者能够在不向验证者提供任何有用的信息的情况下，使验证者相信某个论断是正确的。零知识证明实质上是一种涉及两方或更多方的协议，即两方或更多方完成一项任务所需采取的一系列步骤。证明者向验证者证明并使其相信自己知道或拥有某一消息，但证明过程不能向验证者泄漏任何关于被证明消息的信息。大量事实证明，零知识证明在密码学中非常有用。如果能够将零知识证明用于验证，将可以有效解决许多问题。&lt;/p&gt;
+
+&lt;h2 id=&quot;通俗来将就是不给对方透露任何信息让对方相信你又这个能力&quot;&gt;通俗来将就是,不给对方透露任何信息,让对方相信,你又这个能力&lt;/h2&gt;
+&lt;p&gt;比如有一个房间只能用钥匙打开,A要向B证明A有钥匙,
+B知道房间里有一件特殊的物体X其他人不知道,A可以通过告诉B,特殊物体的信息,来证明自己有钥匙可以进入到房间内&lt;/p&gt;
+
+</description>
+        <pubDate>Sun, 20 May 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/05/20/%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/05/20/%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E/</guid>
+        
+        <category>密码学</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>go语言实现椭圆曲线ECC加密算法,签名和验签</title>
+        <description>&lt;h1 id=&quot;go语言实现椭圆曲线ecc加密的签名和验签&quot;&gt;go语言实现椭圆曲线ECC加密的签名和验签&lt;/h1&gt;
+&lt;hr /&gt;
+&lt;p&gt;椭圆曲线加密算法，即：Elliptic Curve Cryptography，简称ECC，是基于椭圆曲线数学理论实现的一种非对称加密算法。相比RSA，ECC优势是可以使用更短的密钥，来实现与RSA相当或更高的安全。据研究，160位ECC加密安全性相当于1024位RSA加密，210位ECC加密安全性相当于2048位RSA加密。&lt;/p&gt;
+
+&lt;p&gt;　　椭圆曲线在密码学中的使用，是1985年由Neal Koblitz和Victor Miller分别独立提出的。
+　　
+—&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;验证签名就是通过明文进行hash运算,然后跟签名中明文的hash进行比对&lt;/strong&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;strong&gt;go语言实现&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;package main
+
+import (
+	&quot;crypto/ecdsa&quot;
+	&quot;crypto/elliptic&quot;
+	&quot;crypto/rand&quot;
+	&quot;crypto/sha256&quot;
+	&quot;math/big&quot;
+	&quot;fmt&quot;
+)
+
+//通过椭圆曲线完成签名和验证
+func main()  {
+	//声明明文
+	message:=[]byte(&quot;hello world&quot;)
+	//生成私钥   elliptic.P256椭圆曲线法则
+	privateKey,_:=ecdsa.GenerateKey(elliptic.P256(),rand.Reader)
+	//生成公钥
+	pub:=privateKey.PublicKey
+	//将明文进行hash散列 数组
+	digest:=sha256.Sum256(message)
+	//签名
+	r,s,_:=ecdsa.Sign(rand.Reader,privateKey,digest[:])//切片
+	//设置私钥参数类型为Curve是曲线类型
+	param:=privateKey.Curve.Params()
+	//获得私钥长度                   把参数里的位求出来/8 = 求出字节[]byte长度  有自动补码
+	curveOrderByteSize:=param.P.BitLen()/8
+	//求出s,r,的字节长度  签名返回值的字节长度
+	rByte,sByte:=r.Bytes(),s.Bytes()
+	fmt.Println(r,rByte)
+	//创建签名数组, 长度是字节的两倍
+	signature:=make([]byte,curveOrderByteSize*2)
+
+	//通过数组,保存了签名结果返回值
+	copy(signature[curveOrderByteSize-len(rByte):],rByte)
+	copy(signature[curveOrderByteSize*2-len(sByte):],sByte)
+	//认证
+	//将明文做hash散列,为了验证的对比
+	digest= sha256.Sum256(message)
+	//获得公钥长度
+	curveOrderByteSize=pub.Curve.Params().P.BitLen()/8
+	//创建俩个整形对象
+	r,s =new(big.Int),new(big.Int)
+	//设置证书值
+	r.SetBytes(signature[:curveOrderByteSize])
+	s.SetBytes(signature[curveOrderByteSize:])
+	//认证
+	e:=ecdsa.Verify(&amp;amp;pub,digest[:],r,s)
+	if e==true{
+		fmt.Println(&quot;ok&quot;)
+
+	}else {
+		fmt.Println(&quot;failed&quot;)
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;运行结果&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;如果验签成功返回 ok
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+</description>
+        <pubDate>Sun, 20 May 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/05/20/go%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BFECC%E7%AD%BE%E5%90%8D%E5%92%8C%E9%AA%8C%E7%AD%BE/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/05/20/go%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BFECC%E7%AD%BE%E5%90%8D%E5%92%8C%E9%AA%8C%E7%AD%BE/</guid>
+        
+        <category>密码学</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>go语言实现RSA加密算法,签名和验签</title>
+        <description>&lt;h1 id=&quot;go语言实现rsa签名和验签&quot;&gt;go语言实现RSA签名和验签&lt;/h1&gt;
+
+&lt;p&gt;签名通过私钥对明文进行hash MD5运算,进行签名
+验签通过公钥对明文进行hash MD5运算,进行验签&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;package main
+
+import (
+&quot;crypto/rsa&quot;
+&quot;crypto/rand&quot;
+&quot;crypto/md5&quot;
+&quot;crypto&quot;
+&quot;fmt&quot;
+	&quot;encoding/base64&quot;
+)
+
+//RSA 实现签名和验证签
+func main()  {
+	//生成私钥
+	priv,_:=rsa.GenerateKey(rand.Reader,1024)
+	//产生公钥
+	pub:=&amp;amp;priv.PublicKey
+	fmt.Println(pub)
+	//设置明文
+	plaintext:=[]byte(&quot;hello&quot;)
+
+	//先给明文做hash散列加密
+	h:=md5.New()
+	h.Write(plaintext)
+	hashed:=h.Sum(nil)
+
+	//签名
+	opts:=&amp;amp;rsa.PSSOptions{SaltLength:rsa.PSSSaltLengthAuto,Hash:crypto.MD5}  //签名算法
+	sig,_:=rsa.SignPSS(rand.Reader,priv,crypto.MD5,hashed,opts)
+	fmt.Println(base64.StdEncoding.EncodeToString(sig))
+	//认证
+	e:=rsa.VerifyPSS(pub,crypto.MD5,hashed,sig,opts)
+	if e==nil{
+		fmt.Println(&quot;认证成功&quot;)
+
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;运行结果&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;e的值为空,证明验证成功
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+</description>
+        <pubDate>Sun, 20 May 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/05/20/go%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0RSA%E5%8A%A0%E5%AF%86%E7%AD%BE%E5%90%8D%E5%92%8C%E9%AA%8C%E7%AD%BE/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/05/20/go%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0RSA%E5%8A%A0%E5%AF%86%E7%AD%BE%E5%90%8D%E5%92%8C%E9%AA%8C%E7%AD%BE/</guid>
+        
+        <category>密码学</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>go语言实现非对称RSA加密算法</title>
+        <description>&lt;h1 id=&quot;go实现非对称加密rsa&quot;&gt;go实现非对称加密RSA&lt;/h1&gt;
+&lt;hr /&gt;
+&lt;p&gt;RSA是一种公钥密码算法，它的名字是由它的三位开发者，即Ron Rivest、Adi Shamir 和 Leonard Adleman的姓氏的首字母组成的( Rivest-Shamir-Adleman )。&lt;/p&gt;
+
+&lt;p&gt;RSA可以被用于公钥密码和数字签名。
+　　
+—
+非对称加密会生成一对密钥
+&lt;strong&gt;公钥 用来加密明文和验证签名&lt;/strong&gt;
+&lt;strong&gt;密钥 用来解密密文和发送签名&lt;/strong&gt;
+可以先用openssl来生成一对密钥&lt;/p&gt;
+
+&lt;h2 id=&quot;openssl生成私钥&quot;&gt;openssl生成私钥&lt;/h2&gt;
+&lt;p&gt;打开终端&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;openssl genrsa -out rsa_private_key.pem 1024  
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;openssl生成公钥&quot;&gt;openssl生成公钥&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;openssl rsa -in rsa_private_key.pem -pubout -out rsa_public_key.pem  
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;##go实现&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//公钥加密
+func RsaEncrypt(origData []byte) []byte {
+	block,_:=pem.Decode(publicKey) //把文件放在pem里转成block
+	pubInterface,_:=x509.ParsePKIXPublicKey(block.Bytes)//解析公钥
+	pub:=pubInterface.(*rsa.PublicKey) //设置刚才的公钥确实是Public 类型  类型断言
+	bts,_:=rsa.EncryptPKCS1v15(rand.Reader,pub,origData)//加密[]byte(&quot;hello world&quot;)
+	return bts
+}
+
+func RsaDecrypt(origData []byte)[]byte  {
+	//解密
+	block,_:=pem.Decode(pirvateKey) //私钥放在pem里转成block
+	//解析私钥
+	priv,_:=x509.ParsePKCS1PrivateKey(block.Bytes)
+	//解密
+	bts,_:=rsa.DecryptPKCS1v15(rand.Reader,priv,origData)
+	return bts
+
+}
+
+func main()  {
+	e:=RsaEncrypt([]byte(&quot;hello wold&quot;))
+	fmt.Println(&quot;密文&quot;,base64.StdEncoding.EncodeToString(e)) //字节码转换成字符串
+	r:=RsaDecrypt(e)
+	fmt.Println(string(r))
+
+
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;运行结果&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;密文 blqAd7iBbtv67OjkgaL6JZKN4WZOsjvRK+vLmT9ZxEl5KK1aCXQBAhp024SKtAqXInzGHMyy2Y7+bEkvv5zmTulcaZUzxas7/azw0oS+Hu24m3NY8QMXcWlvAcEq481iWs8CJCda8b4l32bXD3CS/5oFNSx5KQW6z/hoeLrjk9kp9DisXcUnZq1mss1A7I5V0r2Iv/YJa9RNg29MCdH309lHV/NBAI2gkFUA33jnkHR/s3UEfR19fn9KfT06zMURm57qcyV78f3QcJhUvKyJPHxpM4Xyz+am6y/tVCIRzVCmACRd8Drj6ZUU8POc+MUyM9jhDrQtJJ7edQUwTI9A7A==
+hello wold
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+</description>
+        <pubDate>Sun, 20 May 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/05/20/go%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0RSA%E5%8A%A0%E5%AF%86/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/05/20/go%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0RSA%E5%8A%A0%E5%AF%86/</guid>
+        
+        <category>密码学</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>go语言实现对称AES加密算法</title>
+        <description>&lt;h2 id=&quot;go语言实现aes加密算法&quot;&gt;#go语言实现AES加密算法&lt;/h2&gt;
+&lt;p&gt;AES是作为DES的替代标准出现的，全称Advanced Encryption Standard，即：高级加密标准。AES加密算法，经历了公开的选拔，最终2000年，由比利时密码学家Joan Daemen和Vincent Rijmen设计的Rijndael算法被选中，成为了AES标准。
+　　AES明文分组长度为128位，即16个字节，密钥长度可以为16个字节、24个字节、或32个字节，即128位密钥、192位密钥、或256位密钥。
+　　
+AES同样需要加密前补码,解密后取码&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//补码
+func PKCS7Paading(ciphertext []byte,blocksize int )[]byte  { //传入不同的密钥长度
+	//传入密钥分组后的长度-要加密的明文的长度%密钥分组后的长度
+	//要补的位数
+	//把要补的位数补上
+	padding:=blocksize-len(ciphertext)%blocksize
+	padtext:=bytes.Repeat([]byte{byte(padding)},padding)
+	return append(ciphertext,padtext...)
+	//padding:=blocksize-len(ciphertext)%blocksize
+	//padtext:=bytes.Repeat([]byte{byte(padding)},padding)
+	//return append(ciphertext,padtext...)
+
+}
+//去码
+func PKCS7UnPaading(origData []byte)[]byte  {
+	//确定解密后的长度
+	//取到切片最后一个下标的值
+	//返回补码的数量总长度-最后的值
+	length:=len(origData)
+	unpadding:=int(origData[length-1])
+	return origData[:length-unpadding]
+	//length:=len(origData)
+	//unpadding:=int(origData[length-1])
+	//return origData[:(length-unpadding)]
+
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;补码后就可以进行加密了&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//加密
+func AesEncrypt(origData,key[]byte)[]byte  {
+	//密钥分组
+	//密钥长度
+	//补码
+	//加密模式
+	//创建数组
+	//加密
+	//返回加密数组
+
+
+	block,_:=aes.NewCipher(key) //密钥分组
+	blocksize:=block.BlockSize()  //密钥长度
+	fmt.Println(blocksize)
+	origData=PKCS7Paading(origData,blocksize)//补码
+	blockMode:=cipher.NewCBCEncrypter(block,key[:blocksize])//加密模式
+	cryted:=make([]byte,len(origData))//创建数组
+	blockMode.CryptBlocks(cryted,origData)//加密
+	return cryted  //返回加密数组
+}
+func AesDecrypt(cryted,key []byte)[]byte  {
+	block,_:=aes.NewCipher(key)  //密钥分组
+	blocksize:=block.BlockSize()//密钥长度
+	blockMode:=cipher.NewCBCDecrypter(block,key[:blocksize]) //解密方式
+	origData:=make([]byte,len(cryted)) //创建数组
+	blockMode.CryptBlocks(origData,cryted)  //解密到数组里面去
+	origData=PKCS7UnPaading(origData) //解密完去码
+	return origData
+
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;hr /&gt;
+&lt;p&gt;主函数&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;func main()  {
+	//var key16  =[]byte(&quot;1234567812345678&quot;)//aes 密钥长度 16 24 32 字节
+	var key24  =[]byte(&quot;12345678123456781234567812345678&quot;)
+	a:=AesEncrypt([]byte(&quot;abc&quot;),key24)
+	fmt.Println(base64.StdEncoding.EncodeToString(a))
+	b:=AesDecrypt(a,key24)
+	fmt.Println(string(b))
+
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;输出结果&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;密文: SwJ8j0Tx6HzCyft1FXa0Pg==
+明文: abc
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+</description>
+        <pubDate>Sat, 19 May 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/05/19/go%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0AES%E5%8A%A0%E5%AF%86/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/05/19/go%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0AES%E5%8A%A0%E5%AF%86/</guid>
+        
+        <category>密码学</category>
+        
+        
+      </item>
     
       <item>
         <title>密码学密码学对称加密算法DES和3DES</title>
@@ -672,495 +1027,6 @@ make build&lt;/p&gt;
         <pubDate>Tue, 15 May 2018 00:00:00 +0800</pubDate>
         <link>http://localhost:4000/2018/05/15/%E6%98%9F%E4%BA%91%E9%93%BE%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BAmac%E7%89%88/</link>
         <guid isPermaLink="true">http://localhost:4000/2018/05/15/%E6%98%9F%E4%BA%91%E9%93%BE%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BAmac%E7%89%88/</guid>
-        
-        <category>星云链</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>mac下zookeeper安装 </title>
-        <description>&lt;p&gt;#安装zookeeper&lt;/p&gt;
-
-&lt;h3 id=&quot;10-前提工作&quot;&gt;1.0 前提工作：&lt;/h3&gt;
-
-&lt;p&gt;安装jdk 配置环境变量，自行百度&lt;/p&gt;
-
-&lt;p&gt;jdk下载地址：&lt;a href=&quot;http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html&quot;&gt;http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;###1.1 查看zookeeper信息&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ brew info zookeeper
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;###1.2 安装zookeeper&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  $ brew install zookeeper
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;###1.3 启动服务&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ zkServer
-$ zkServer status
-$ zkServer start
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;###1.4 查看zookeeper运行状态&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ zkCli
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;##1.5 Go-zookeeper基本使用&lt;/p&gt;
-
-&lt;p&gt;CSDN：&lt;a href=&quot;https://blog.csdn.net/zhaominpro/article/details/77543543&quot;&gt;https://blog.csdn.net/zhaominpro/article/details/77543543&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;zookeeper教程：&lt;a href=&quot;https://www.w3cschool.cn/zookeeper/&quot;&gt;https://www.w3cschool.cn/zookeeper/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;zookeeper GODOC(翻墙):&lt;a href=&quot;https://godoc.org/github.com/samuel/go-zookeeper/zk&quot;&gt;https://godoc.org/github.com/samuel/go-zookeeper/zk&lt;/a&gt;&lt;/p&gt;
-
-</description>
-        <pubDate>Mon, 14 May 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/05/14/mac%E4%B8%8Bzookeeper%E5%AE%89%E8%A3%85/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/05/14/mac%E4%B8%8Bzookeeper%E5%AE%89%E8%A3%85/</guid>
-        
-        <category>zookeeper</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>json数据处理 </title>
-        <description>&lt;h1 id=&quot;json数据处理&quot;&gt;json数据处理&lt;/h1&gt;
-
-&lt;h3 id=&quot;31-编码json&quot;&gt;3.1 &lt;strong&gt;编码JSON&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;p&gt;使用json.Marshal()函数可以对一组数据进行JSON格式的编码。&lt;/p&gt;
-
-&lt;p&gt; json.Marshal()函数的声明如下：&lt;/p&gt;
-
-&lt;div class=&quot;language-go highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Marshal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;interface&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{})&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([]&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;还有一个格式化输出：&lt;/p&gt;
-
-&lt;div class=&quot;language-go highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;// MarshalIndent 很像 Marshal，只是用缩进对输出进行格式化&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MarshalIndent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;interface&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{},&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;prefix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;indent&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([]&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;编码JSON&lt;/p&gt;
-
-&lt;h4 id=&quot;311-通过结构体生成json&quot;&gt;3.1.1 通过结构体生成json&lt;/h4&gt;
-
-&lt;p&gt;实例代码&lt;/p&gt;
-
-&lt;div class=&quot;language-go highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;encoding/json&quot;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;fmt&quot;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;person&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;First&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;c&quot;&gt;//正常&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Last&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;`json:&quot;-&quot;`&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;c&quot;&gt;//加了json标签&quot;-&quot;代表忽略&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Age&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;   &lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;    &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;`json:&quot;wisdom score&quot;`&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;// 填加json标签 在json字符串里显示&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;James&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Bond&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;json&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Marshal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;注意：&lt;/strong&gt;结构体的字段(首字母是大写)才会被输出&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;关于  _ 、别名、类型转换、空数据的使用&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;1、_  可做忽略对应的字段&lt;/p&gt;
-
-&lt;p&gt;2、 &lt;code class=&quot;highlighter-rouge&quot;&gt;json:&quot;subjects&quot;&lt;/code&gt;     json：‘’ 取别名完成映射&lt;/p&gt;
-
-&lt;p&gt;3、&lt;code class=&quot;highlighter-rouge&quot;&gt;json:&quot;,string&quot;&lt;/code&gt;    类型转换&lt;/p&gt;
-
-&lt;p&gt;4、 &lt;code class=&quot;highlighter-rouge&quot;&gt;json:&quot;price, omitempty&quot;&lt;/code&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;312-通过map生成json&quot;&gt;3.1.2 通过map生成JSON&lt;/h4&gt;
-
-&lt;div class=&quot;language-go highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;encoding/json&quot;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;fmt&quot;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;//创建一个map&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;make&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;interface&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{},&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;company&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;我爱编程&quot;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;subjects&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;语文&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;数学&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;英语&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;化学&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;isok&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;price&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1.1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-	&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;//编码成json&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;json&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MarshalIndent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;	&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;no&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-		&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;err = &quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-		&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;result = &quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;32-解码json&quot;&gt;3.2 解码JSON&lt;/h3&gt;
-
-&lt;p&gt;可以使用json.Unmarshal()函数将JSON格式的文本解码为Go里面预期的数据结构。&lt;/p&gt;
-
-&lt;h4 id=&quot;321-json字符串解析到结构体&quot;&gt;3.2.1 json字符串解析到结构体&lt;/h4&gt;
-
-&lt;div class=&quot;language-go highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;encoding/json&quot;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;fmt&quot;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Test02&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Company&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;   &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;`json:&quot;company&quot;`&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Subjects&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;`json:&quot;subjects&quot;`&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;c&quot;&gt;//二次编码&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;IsOk&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;     &lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;bool&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;     &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;`json:&quot;isok&quot;`&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Price&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;    &lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;float64&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;`json:&quot;price&quot;`&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;jsonBuf&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;`
-	{
-    &quot;company&quot;: &quot;我爱编程&quot;,
-    &quot;subjects&quot;: [
-        &quot;语文&quot;,
-        &quot;数学&quot;,
-        &quot;英语&quot;,
-        &quot;化学&quot;
-    ],
-    &quot;isok&quot;: true,
-    &quot;price&quot;: 1.1
-}`&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;//定义一个结构体变量&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;var&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tmp&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Test02&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;json&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Unmarshal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([]&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;jsonBuf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tmp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;c&quot;&gt;//第二个参数要地址传递&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;no&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-		&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;err = &quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-		&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;//fmt.Println(&quot;tmp = &quot;, tmp)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Printf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;tmp = %+v&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tmp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-	&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Test03&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-		&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Subjects&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;`json:&quot;subjects&quot;`&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;c&quot;&gt;//二次编码&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-	&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;var&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tmp2&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Test03&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;json&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Unmarshal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([]&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;jsonBuf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tmp2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;c&quot;&gt;//第二个参数要地址传递&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;no&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-		&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;err = &quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-		&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Printf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;tmp2 = %+v&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tmp2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h4 id=&quot;321-json字符串解析到map集合中&quot;&gt;3.2.1 json字符串解析到Map集合中&lt;/h4&gt;
-
-&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kr&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;main&lt;/span&gt;
-
-&lt;span class=&quot;kr&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-	&lt;span class=&quot;s2&quot;&gt;&quot;encoding/json&quot;&lt;/span&gt;
-	&lt;span class=&quot;s2&quot;&gt;&quot;fmt&quot;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;//定义json字符串&lt;/span&gt;
-	&lt;span class=&quot;nl&quot;&gt;jsonBuf&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;
-	&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;s2&quot;&gt;&quot;company&quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;我爱编程&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s2&quot;&gt;&quot;subjects&quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
-        &lt;span class=&quot;s2&quot;&gt;&quot;语文&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;s2&quot;&gt;&quot;数学&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;s2&quot;&gt;&quot;英语&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;s2&quot;&gt;&quot;化学&quot;&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
-    &lt;span class=&quot;s2&quot;&gt;&quot;isok&quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s2&quot;&gt;&quot;price&quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;1.1&lt;/span&gt;
-	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;
-
-	&lt;span class=&quot;c1&quot;&gt;//创建一个map&lt;/span&gt;
-	&lt;span class=&quot;nl&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;make&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;interface&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{},&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-	&lt;span class=&quot;nl&quot;&gt;err&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;json&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Unmarshal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([]&lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;jsonBuf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//第二个参数要地址传递&lt;/span&gt;
-	&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;nil&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-		&lt;span class=&quot;nx&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;err = &quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-		&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;
-	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-	&lt;span class=&quot;nx&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Printf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;m = %+v\n&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-	&lt;span class=&quot;c1&quot;&gt;//	var str string&lt;/span&gt;
-	&lt;span class=&quot;c1&quot;&gt;//	str = string(m[&quot;company&quot;]) //err， 无法转换&lt;/span&gt;
-	&lt;span class=&quot;c1&quot;&gt;//	fmt.Println(&quot;str = &quot;, str)&lt;/span&gt;
-
-
-	&lt;span class=&quot;c1&quot;&gt;//遍历map集合，判断类型&lt;/span&gt;
-	&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;str&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;string&lt;/span&gt;
-
-	&lt;span class=&quot;c1&quot;&gt;//类型断言, 值，它是value类型&lt;/span&gt;
-	&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;range&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-		&lt;span class=&quot;c1&quot;&gt;//fmt.Printf(&quot;%v ============&amp;gt; %v\n&quot;, key, value)&lt;/span&gt;
-		&lt;span class=&quot;k&quot;&gt;switch&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-		&lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;
-			&lt;span class=&quot;nx&quot;&gt;str&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt;
-			&lt;span class=&quot;nx&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Printf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;map[%s]的值类型为string, value = %s\n&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-		&lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;bool&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;
-			&lt;span class=&quot;nx&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Printf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;map[%s]的值类型为bool, value = %v\n&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-		&lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;float64&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;
-			&lt;span class=&quot;nx&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Printf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;map[%s]的值类型为float64, value = %f\n&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-		&lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;
-			&lt;span class=&quot;nx&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Printf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;map[%s]的值类型为[]string, value = %v\n&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-		&lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;interface&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;
-			&lt;span class=&quot;nx&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Printf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;map[%s]的值类型为[]interface, value = %v\n&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-		&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;33-decoder和encoder-的使用&quot;&gt;3.3 Decoder和Encoder 的使用&lt;/h3&gt;
-
-&lt;p&gt;Encode：对象转换成json字符串&lt;/p&gt;
-
-&lt;div class=&quot;language-go highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;encoding/json&quot;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;os&quot;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;person&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Name&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Age&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sex&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;liubei&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;18&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;nan&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;json&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NewEncoder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Stdout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Encode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;//{&quot;Name&quot;:&quot;liubei&quot;,&quot;Age&quot;:&quot;18&quot;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Decoder: json字符串转对象&lt;/p&gt;
-
-&lt;div class=&quot;language-go highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;encoding/json&quot;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;strings&quot;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;fmt&quot;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;person01&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Name&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Age&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sex&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;var&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p2&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;person01&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;strings&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NewReader&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;`{&quot;Name&quot;:&quot;lixunhuan&quot;,&quot;Age&quot;:&quot;22&quot;}`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;json&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NewDecoder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Decode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;//{lixunhuan 22 }&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-</description>
-        <pubDate>Mon, 14 May 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/05/14/JSON%E5%A4%84%E7%90%86/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/05/14/JSON%E5%A4%84%E7%90%86/</guid>
-        
-        <category>json</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>星云链钱包安装</title>
-        <description>&lt;h1 id=&quot;星云链钱包安装&quot;&gt;星云链钱包安装&lt;/h1&gt;
-&lt;p&gt;1.进入github克隆地址
-https://github.com/nebulasio/web-wallet
-新建文件夹打开命令行 输入命令&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git clone https://github.com/nebulasio/web-wallet.git
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;2.点击index就可以进入钱包了&lt;/p&gt;
-
-&lt;p&gt;&lt;img class=&quot;size-full wp-image-776 aligncenter&quot; src=&quot;https://blog.nebulas.io/wp-content/uploads/2018/04/3.png&quot; alt=&quot;&quot; width=&quot;499&quot; height=&quot;290&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;3.创建钱包,输入密码,自动生成密钥,下面密码库文件&lt;/p&gt;
-
-&lt;p&gt;&lt;img class=&quot;size-medium wp-image-781 aligncenter&quot; src=&quot;https://blog.nebulas.io/wp-content/uploads/2018/04/8-800x370.png&quot; alt=&quot;&quot; width=&quot;800&quot; height=&quot;370&quot; srcset=&quot;https://blog.nebulas.io/wp-content/uploads/2018/04/8-800x370.png 800w, https://blog.nebulas.io/wp-content/uploads/2018/04/8-768x355.png 768w, https://blog.nebulas.io/wp-content/uploads/2018/04/8-1200x555.png 1200w&quot; sizes=&quot;(max-width: 800px) 100vw, 800px&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;4.谷歌浏览器插件钱包安装
-https://github.com/ChengOrangeJu/WebExtensionWallet
-下载压缩包,解压缩,然后打开谷歌插件,选择开发者模式,直接,直接选择已经解压的扩展程序
-安装完毕,右上角发现小图标没,&lt;/p&gt;
-
-</description>
-        <pubDate>Sun, 06 May 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/05/06/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E9%92%B1%E5%8C%85%E5%AE%89%E8%A3%85/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/05/06/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E9%92%B1%E5%8C%85%E5%AE%89%E8%A3%85/</guid>
-        
-        <category>星云链</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>星云链转账</title>
-        <description>&lt;p&gt;#星云链转账
-###启动创始区块&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;./neb -c conf/default/config.conf&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;###启动挖矿&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;./neb -c conf/example/miner.conf&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;###查询账户状态&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d ‘{“address”:”n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE”}’&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;nonce值下次交易要加1&lt;/p&gt;
-
-&lt;p&gt;##签名发送
-###准备发的交易签名&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;curl -i -H ‘Content-Type: application/json’ -X POST http://localhost:8685/v1/admin/sign -d ‘{“transaction”:{“from”:”n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE”,”to”:”n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5”, “value”:”1000000000000000000”,”nonce”:1,”gasPrice”:”1000000”,”gasLimit”:”2000000”}, “passphrase”:”passphrase”}’&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;from是转账地址
-to  是收款地址
-result得到data
-要注意nonce值,每次累加1&lt;/p&gt;
-
-&lt;p&gt;###将签好名的交易原始数据提交到本地私有链里的星云节点&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;curl -i -H ‘Content-Type: application/json’ -X POST http://localhost:8685/v1/user/rawtransaction -d ‘{“data”:”CiAbjMP5dyVsTWILfXL1MbwZ8Q6xOgX/JKinks1dpToSdxIaGVcH+WT/SVMkY18ix7SG4F1+Z8evXJoA35caGhlXbip8PupTNxwV4SRM87r798jXWADXpWngIhAAAAAAAAAAAA3gtrOnZAAAKAEwuKuC1wU6CAoGYmluYXJ5QGRKEAAAAAAAAAAAAAAAAAAPQkBSEAAAAAAAAAAAAAAAAAAehIBYAWJBVVuRHWSNY1e3bigbVKd9i6ci4f1LruDC7AUtXDLirHlsmTDZXqjSMGLio1ziTmxYJiLj+Jht5RoZxFKqFncOIQA=”}’&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;转账完毕后,再次查询账户
-result转账完毕后可以得到txhash值用来查询交易状态
-data后面输入 上面得到的data&lt;/p&gt;
-
-&lt;p&gt;###密码交易&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;curl -i -H ‘Content-Type: application/json’ -X POST http://localhost:8685/v1/admin/transactionWithPassphrase -d ‘{“transaction”:{“from”:”n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE”,”to”:”n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5”, “value”:”1000000000000000000”,”nonce”:2,”gasPrice”:”1000000”,”gasLimit”:”2000000”},”passphrase”:”passphrase”}’&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;同样要注意nonce值 
-passphrase后面是密码
-result转账完毕后可以得到txhash值用来查询交易状态&lt;/p&gt;
-
-&lt;p&gt;##交易状态查询&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/getTransactionReceipt -d ‘{“hash”:”8d69dea784f0edfb2ee678c464d99e155bca04b3d7e6cdba6c5c189f731110cf”}’&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;hash里面输入上面交易的txhash 可以看到交易信息
-这里的status可能有三种状态值，0，1和2。
-0: 交易失败. 表示当前交易已经上链，但是执行失败了。可能是因为部署合约或者调用合约参数错误。
-1: 交易成功. 表示当前交易已经上链，而且执行成功了。
-2: 交易待定. 表示当前交易还没有上链。可能是因为当前交易还没有被打包；如果长时间处于当前状态，可能是因为当前交易的发送者账户的余额不够支付上链手续费。&lt;/p&gt;
-
-&lt;p&gt;###再次查询下账户信息&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d ‘{“address”:”n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE”}’&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;可以得到结果&lt;/p&gt;
-
-</description>
-        <pubDate>Sun, 06 May 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/05/06/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E8%BD%AC%E8%B4%A6%E5%91%BD%E4%BB%A4/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/05/06/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E8%BD%AC%E8%B4%A6%E5%91%BD%E4%BB%A4/</guid>
-        
-        <category>星云链</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>星云链智能合约部署和调用</title>
-        <description>&lt;h1 id=&quot;星云链智能合约部署和调用&quot;&gt;星云链智能合约部署和调用&lt;/h1&gt;
-&lt;p&gt;1.首先打开星云钱包
-先确认下网络,是要部署到主链,测试链,还是本地,
-选择合约(Contract),然后选择部署(Deploy)
-合约代码(code)
-写在下面,我在这里部署的是一个银行存取合约,可以调用存钱(save)和取钱(takeout)方法.
-编程语言选择JavaScript
-参数(arguments)
-是你init方法里要传的值,也就是初次在区块链上要写入的值,我们这里不需要,所以暂时不用写
-&lt;img src=&quot;http://p8ka0wokw.bkt.clouddn.com/WX20180511-191430@2x.png&quot; alt=&quot;GitHub set up&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;2.选择自己的钱包,输入密码,点击解锁(Unlock)
-下面会显示钱包内容,有钱包地址(From Address)
-余额(Balance),小费上限(Gas limit)等等
-这里说下汇率 1 NAS= 1Ewei =10^18wei
-(就是后面18个0)
-&lt;img src=&quot;http://p8ka0wokw.bkt.clouddn.com/WX20180511-191833@2x.png&quot; alt=&quot;GitHub set up&quot; /&gt;
-3.点击测试(Test)
-下面框里会显示
-result:前面是init方法的值后面是预计要花的Gas
-&lt;img src=&quot;http://p8ka0wokw.bkt.clouddn.com/WX20180511-192126@2x.png&quot; alt=&quot;GitHub set up&quot; /&gt;
-4.确认后,没问题我们就可以点击提交啦(Submit)
-提交后会有交易hash和智能合约地址(Contract address)
-这俩个我们都要复制保存起来,以便后面找到合约.
-&lt;img src=&quot;http://p8ka0wokw.bkt.clouddn.com/WX20180511-192018@2x.png&quot; alt=&quot;GitHub set up&quot; /&gt;
-5.点击交易hash
-可以看到hash,智能合约地址(Contract address),还有一个是当前状态(TxReceipt Status),如果显示pending
-就是还没有完成,如果显示为success,就证明合约已经部署完毕啦,这里还可以复制合约地址和交易hash&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://p8ka0wokw.bkt.clouddn.com/WX20180511-192648@2x.png&quot; alt=&quot;GitHub set up&quot; /&gt;&lt;/p&gt;
-
-</description>
-        <pubDate>Sun, 06 May 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/05/06/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6%E9%83%A8%E7%BD%B2%E5%92%8C%E8%B0%83%E7%94%A8/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/05/06/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6%E9%83%A8%E7%BD%B2%E5%92%8C%E8%B0%83%E7%94%A8/</guid>
         
         <category>星云链</category>
         
