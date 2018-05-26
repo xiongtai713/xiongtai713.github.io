@@ -5,9 +5,672 @@
     <description>区块链工程师</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 20 May 2018 10:59:29 +0800</pubDate>
-    <lastBuildDate>Sun, 20 May 2018 10:59:29 +0800</lastBuildDate>
+    <pubDate>Sat, 26 May 2018 10:13:45 +0800</pubDate>
+    <lastBuildDate>Sat, 26 May 2018 10:13:45 +0800</lastBuildDate>
     <generator>Jekyll v3.5.1</generator>
+    
+      <item>
+        <title>拜占庭将军问题PBFT实用拜占庭容错</title>
+        <description>&lt;h1 id=&quot;拜占庭将军问题&quot;&gt;拜占庭将军问题&lt;/h1&gt;
+&lt;p&gt;BFT 拜占庭将军问题 30个节点当中必须有21个是可用的,才能完成这项任务&lt;/p&gt;
+
+&lt;p&gt;客户端把信息”哈喽”给主节点A&lt;/p&gt;
+
+&lt;p&gt;A发布信息”哈喽”给B,C,D&lt;/p&gt;
+
+&lt;p&gt;B收到信息”哈喽”给A,C,D&lt;/p&gt;
+
+&lt;p&gt;C收到信息”哈喽”给A,B,D&lt;/p&gt;
+
+&lt;p&gt;D收到信息”哈喽”给A,B,C&lt;/p&gt;
+
+&lt;p&gt;PBFT 实用拜占庭容错
+信息广播后ABCD每个节点都有收到的”哈喽”,再把”哈喽”返回给客户端,
+客户端收到ABCD回复的信息如果有有2条以上的 信息为”哈喽”,
+那最终结果就是”哈喽”&lt;/p&gt;
+
+&lt;p&gt;go来实现&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;package main
+
+import (
+	&quot;os&quot;
+	&quot;fmt&quot;
+	&quot;net/http&quot;
+	&quot;io&quot;
+)
+
+//声明nodeInfo节点,代表各个小的王国
+type nodeInfo struct {
+	//节点名称
+	id string
+	//节点路径
+	path string
+	//http响应
+	write http.ResponseWriter //跟终端进行交互
+}
+
+//创建map,存储各个国家的ip地址
+var nodeTable = make(map[string]string)
+
+func main() {
+	//接收终端参数  先编译 然后运行./main 后面跟参数
+	userID := os.Args[1] //1代表有一个参数
+	fmt.Println(userID)
+	//存储4个国家的Ip地址
+	nodeTable = map[string]string{
+		&quot;Apple&quot;:  &quot;localhost:11112&quot;,
+		&quot;MS&quot;:     &quot;localhost:11113&quot;,
+		&quot;Google&quot;: &quot;localhost:11114&quot;,
+		&quot;IBM&quot;:    &quot;localhost:11115&quot;,
+	}
+	//创建国家对象
+	node := nodeInfo{id: userID, path: nodeTable[userID]}
+	//http协议的回调函数
+	//http://localhost:1111/req?warTime=1111[0]&amp;amp;arTime=1112[1]
+	http.HandleFunc(&quot;/req&quot;, node.request)
+	//回调函数 通过/prePrepare
+	http.HandleFunc(&quot;/prePrepare&quot;, node.prePrepare)
+	//回调  通过/prepare
+	http.HandleFunc(&quot;/prepare&quot;, node.prepare)
+	http.HandleFunc(&quot;/commit&quot;,node.commit)
+
+	//启动服务器  监听端口  如果有请求,会搜索handdleFunc里面的关键字
+	 err := http.ListenAndServe(node.path, nil)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+}
+//writer http.ResponseWriter, request *http.Request固定格式
+//http返回值					//https输入的值
+//当http服务器,接收到网络请求并且/req 则回调request方法
+func (node *nodeInfo) request(writer http.ResponseWriter, request *http.Request) {
+	//该命令允许request请求参数
+	//ParseForm解析URL中的查询字符串，并将解析结果更新到r.Form字段
+
+	request.ParseForm() //取参数  ?后面的参数
+	if (len(request.Form[&quot;warTime&quot;]) &amp;gt; 0) {
+		node.write = writer
+		fmt.Println(&quot;主节点接收到的参数信息为&quot;, request.Form[&quot;warTime&quot;][0])
+		//激活主节点后,向其他节点发送广播
+		node.broadcast(request.Form[&quot;warTime&quot;][0], &quot;/prePrepare&quot;) //广播给其他节点
+	}
+}
+
+//节点发送广播的方法
+func (node *nodeInfo) broadcast(msg string, path string) { //msg要发送的内容 path要发送的ip地址和端口
+	fmt.Println(&quot;广播&quot;, path) //1133
+	//遍历所有节点
+	for nodeId, url := range nodeTable {
+		if nodeId == node.id { //如果是本身, 就跳过这次
+			continue
+		}
+		//使当前节点外的节点做响应
+		//向指定的url发出请求
+		http.Get(&quot;http://&quot; + url + path + &quot;?warTime=&quot; + msg + &quot;&amp;amp;nodeId=&quot; + node.id)
+	}
+}
+
+//接收广播后接收到的数据
+func (node *nodeInfo) prePrepare(writer http.ResponseWriter, request *http.Request) {
+	request.ParseForm() //啥意思?
+	fmt.Println(&quot;接收到的广播&quot;, request.Form[&quot;warTime&quot;][0])
+	//做判断
+	if len(request.Form[&quot;warTime&quot;])&amp;gt;0{
+		node.broadcast(request.Form[&quot;warTime&quot;][0],&quot;/prepare&quot;)
+
+	}
+}
+
+//接收子节点的广播
+func (node *nodeInfo) prepare(writer http.ResponseWriter, request *http.Request) {
+	request.ParseForm()
+	//打印消息
+	fmt.Println(&quot;接收到的广播&quot;, request.Form[&quot;warTime&quot;][0])
+	//校验
+	if len(request.Form[&quot;warTime&quot;])&amp;gt;0{
+		node.authentication(request)
+	}
+
+}
+
+var authenticationNodeMap =make(map[string]string)
+var authenticationSuceess = false
+
+//校验拜占庭
+func (node *nodeInfo)authentication(request *http.Request)  {
+	if !authenticationSuceess{
+		if len(request.Form[&quot;nodeId&quot;])&amp;gt;0{
+			authenticationNodeMap[request.Form[&quot;nodeId&quot;][0]]=&quot;OK&quot;
+			//如果存了两个国家节点成功正确的返回了结果 就是true
+			if len(authenticationNodeMap)&amp;gt;len(nodeTable)/3{
+				authenticationSuceess=true
+				node.broadcast(request.Form[&quot;warTime&quot;][0],&quot;/commit&quot;)
+			}
+
+		}
+	}
+}
+
+//返回成功响应
+func (node *nodeInfo)commit(writer http.ResponseWriter,request *http.Request)  {
+	if writer!=nil{
+		fmt.Println(&quot;拜占庭校验成功&quot;)
+	}
+	io.WriteString(node.write,&quot;ok&quot;) //在网页显示
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+</description>
+        <pubDate>Sat, 26 May 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/05/26/%E6%8B%9C%E5%8D%A0%E5%BA%AD%E5%B0%86%E5%86%9B%E5%92%8C%E4%BD%BF%E7%94%A8%E6%8B%9C%E5%8D%A0%E5%BA%AD%E5%AE%B9%E9%94%99%E7%AE%97%E6%B3%95/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/05/26/%E6%8B%9C%E5%8D%A0%E5%BA%AD%E5%B0%86%E5%86%9B%E5%92%8C%E4%BD%BF%E7%94%A8%E6%8B%9C%E5%8D%A0%E5%BA%AD%E5%AE%B9%E9%94%99%E7%AE%97%E6%B3%95/</guid>
+        
+        <category>共识算法</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Raft一致性算法</title>
+        <description>&lt;h1 id=&quot;raft--一致性算法日志存储&quot;&gt;Raft  一致性算法日志存储&lt;/h1&gt;
+&lt;p&gt;Raft 是一种为了管理复制日志的一致性算法&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;raft的工作模式是一个Leader和多个Follower模式，即我们通常说的领导者-追随者模式,这种模式下需要解决的第一个问题就是Leader的选举问题。其次是如何把日志从Leader复制到所有Follower上去。这里先不关心安全和可靠性，只理解raft运行起来基本规则。raft中的server有三种状态，除了已经提到的Leader和Follower状态外，还有Candidate状态，即竞选者状态。下面是这三种状态的转化过程。&lt;/p&gt;
+
+&lt;p&gt;1、Leader的选举过程
+初始所有节点都是&lt;strong&gt;追随者&lt;/strong&gt;,并开始随机睡眠(0-1000毫秒),最先醒来的变成&lt;strong&gt;竞选者&lt;/strong&gt;,竞选者可以给让其他节点给投票,当得到一半以上的票数,就当选成&lt;strong&gt;领导者&lt;/strong&gt;,只有&lt;strong&gt;领导者&lt;/strong&gt;才有权利接收客户端发来的委托请求,并像其他节点发送请求来保存日志.
+2、日志复制过程
+&lt;strong&gt;领导者&lt;/strong&gt;给所有&lt;strong&gt;追随者&lt;/strong&gt;发送保存日志请求,追随者收到请求后,判断是否满足条件,如果满足,追随者就保存在本地,并且给领导者发送保存成功的信息,领导者收到大部分追随者回复的信息之后,领导者就会正式提交把日志保存在本地,然后会给追随者发送本条日志的保存信息,(包括领导者ID和任期等),追随者会验证这些信息,确认刚才的日志已经被提交,正式把日志保存在本地,就意味着本条日志正式被Raft系统接受.
+&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/3021998-8fecbddc9bc69558.png&quot; alt=&quot;GitHub set up&quot; /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;&lt;strong&gt;领导者&lt;/strong&gt;具有绝对的日志复制权力其它&lt;strong&gt;追随者&lt;/strong&gt;上存在日志不全或者与&lt;strong&gt;领导者&lt;/strong&gt;日志不一致的情况时，一切都以&lt;strong&gt;领导者&lt;/strong&gt;上的日志为主，最终所有server上的日志都会复制成与&lt;strong&gt;领导者&lt;/strong&gt;一致的状态。&lt;/p&gt;
+
+&lt;p&gt;#安全性保证
+1.&lt;strong&gt;领导者&lt;/strong&gt;正常运作时，会周期性地发出append_entries请求。这个周期性的append_entries除了可以更新其它Follower的log信息，另外一个重要功能就是起到心跳作用。Follower收到append_entries后，就知道&lt;strong&gt;领导者&lt;/strong&gt;还活着。如果Follower经过一个预定的时间(一般设为2000ms左右)都没有收到&lt;strong&gt;领导者&lt;/strong&gt;的心跳，就认为Leader挂了。于是转入Candidate状态，开始发起投票竞选新的&lt;strong&gt;领导者&lt;/strong&gt;。每个新的&lt;strong&gt;领导者&lt;/strong&gt;产生后就是一个新的任期，每个任期都对应一个唯一的任期号term。这个term是单调递增的，用来唯一标识一个&lt;strong&gt;领导者&lt;/strong&gt;的任期。投票开始时，Candidate将自己的term加1，并在request_vote中带上term；Follower只会接受任期号term比自己大的request_vote请求，并为之投票。这条规则保证了只有最新的Candidate才有可能成为&lt;strong&gt;领导者&lt;/strong&gt;。
+2.同时有俩位竞选者一起竞选,谁票数多谁当选,如果一样多,就继续睡从新选.
+3.如果宕机很久,就不能竞选位领导者,只有拥有最新日志的节点,才能成为领导者
+&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/3021998-b3b95d8d2d1f4341.png&quot; alt=&quot;&quot; /&gt;
+判断如果lastLogTerm比自己的term大，那么就可以给它投票；lastLogTerm比自己的term小，就不给它投票&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;4.如果新增加服务器,Raft会添加一个中间配置(Cold, Cnew)，这个中间配置的内容是旧的配置表Cold和新的配置Cnew,比如说server3在竞选Leader的时候，不仅需要得到Cold中的大部分投票，还要得到Cnew中的大部分投票才能成为Leader
+&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/3021998-5f5dd0487c633705.png&quot; alt=&quot;&quot; /&gt;
+5.提交之前任期内的日志条目
+&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/3021998-4306d3847460eb68.png&quot; alt=&quot;&quot; /&gt;
+如果在c图中s1挂掉之前,把日志提交给大部分节点,s5由于没有最新的日志4号,就无法当选领导人,也就无法出现D图中的问题.&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 26 May 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/05/26/Raft%E4%B8%80%E8%87%B4%E6%80%A7%E7%AE%97%E6%B3%95/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/05/26/Raft%E4%B8%80%E8%87%B4%E6%80%A7%E7%AE%97%E6%B3%95/</guid>
+        
+        <category>共识算法</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>RPC网络框架</title>
+        <description>&lt;p&gt;RPC框架 
+用我电脑调用别的电脑里的函数
+server 本台电脑
+Area方法在Rect类型里
+用其它的cilent来链接server,调用Rect里的Area方法&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;raft注册到rpc&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rpc.Register(Rect) 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;rpc通过handle(路由器)可以通过网线或者无线把rpc到handle里面&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rpc.HandleHTTP()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;rpc监听本机&lt;/strong&gt;  &lt;br /&gt;
+通过tcp协议把自己作为主服务器去监听别的电脑或者客户端,参数有port(本机ip地址和接口)和handle(回调函数,回调go语言库defaultfunc,去比较本机的ip地址和其他电脑拨打的ip地址是否一致)&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;http.ListenAndServe(&quot;IP地址:端口号&quot;,&quot;nil&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;其他电脑进行拨打指定的ip地址及端口,如果和上边监听中的电脑ip地址一致,那么表示已经连上该机.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rpc1,err:=rpc.DialHTTP(&quot;TCP&quot;,&quot;要链接的IP地址:端口号&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;go实现服务器&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;package main
+
+import (
+	&quot;net/rpc&quot;
+	&quot;net/http&quot;
+	&quot;log&quot;
+)
+
+//定义参数类型
+type Params struct {
+	Width, Height int
+}
+
+//声明对象
+type Rect struct {
+}
+
+//定义公共方法 该方法在本机以外的方法也能调用
+func (r *Rect) Area(p Params, ret *int) error {  //别人要调我的计算机的内存 所以要用指针
+	*ret=p.Height*p.Width
+	return nil
+}
+
+func (r *Rect)Perimtter(p Params, ret *int) error {
+	*ret=(p.Width+p.Height)*2
+	return nil
+
+}
+
+func main()  {
+	//注册服务
+	rect:=new(Rect)
+	rpc.Register(rect)
+	rpc.HandleHTTP() //不知道
+	err:=http.ListenAndServe(&quot;:9090&quot;,nil)  //监听端头
+	if err!=nil{
+		log.Fatal(err)  //打印错误 并且写入日志
+	}
+
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;链接成功后返回rpc1,可以调用Call方法来调用server中的communication方法&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rpc1.Call(&quot;要调用的方法路径Rect.Area&quot;,&quot;要传入方法的参数&quot;,&quot;方法给的结果&amp;amp;&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;go实现客户端&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;package main
+
+import (
+	&quot;net/rpc&quot;
+	&quot;log&quot;
+	&quot;fmt&quot;
+)
+
+//实现rpc客户端
+
+type Params struct { //客户端要跟服务器保持一致
+	Width, Height int
+}
+
+//调用服务器
+func main() {
+	//链接远程rpc
+	rpc1,err:=rpc.DialHTTP(&quot;tcp&quot;,&quot;127.0.0.1:9090&quot;)//链接
+	if err!=nil{
+		log.Fatal(err)
+	}
+	ret:=0  //接收服务器传递的结果
+	e:=rpc1.Call(&quot;Rect.Area&quot;,Params{100,100},&amp;amp;ret)
+
+	if e!=nil{
+		log.Fatal(e)
+	}
+	fmt.Println(ret)
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;结果就是ret=100&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 26 May 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/05/26/RPC%E7%BD%91%E7%BB%9C%E6%A1%86%E6%9E%B6/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/05/26/RPC%E7%BD%91%E7%BB%9C%E6%A1%86%E6%9E%B6/</guid>
+        
+        <category>RPC框架</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>POW共识算法</title>
+        <description>&lt;h1 id=&quot;pow共识算法&quot;&gt;pow共识算法&lt;/h1&gt;
+&lt;p&gt;pow就是挖矿,工作量证明&lt;/p&gt;
+
+&lt;p&gt;##区块数据结构
+上一个节点的hash(prehHash)创始区块为0
+当前节点的hash(HashCode)
+区块高度(Index)
+时间戳(time)
+交易数据(Data)
+nonce (每次+1 来进行hash碰撞)
+难度系数 Diff =4(当前hash值前面就必须有4个0)&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;把以上所有内容加起来,进行hash运算(sha256),来完成hash碰撞nonce值从0开始进行累计,交易数据会随机从未确认池中捞取,直到得到符合难度要要求的hash值,就是Pow挖矿成功,
+Pow完成的区块向全网广播，其他节点将验证其是否符合规则，如果验证有效，其他节点将接收此区块，并附加在已有区块链之后。之后将进入下一轮挖矿。
+如果有两个同时确认,两个区块会同时存在,再进行下一轮的挖矿,下一轮谁先挖到,就以谁的区块为准,另一条区块失效&lt;/p&gt;
+
+&lt;p&gt;用go语言代码来实现pow挖矿&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//PoW proof-of-work  工作量证明算法
+func pow(diff int, block *Block) string {
+	for { //循环来产生区块的hash值 直到符合难度要求
+		hash := GenerateBlockHashValue(*block)
+		fmt.Println(hash)
+		//hash值前面要有Diff个0
+		if strings.HasPrefix(hash, strings.Repeat(&quot;0&quot;, diff)) {  //判断开头是不是diff个0  返回bool
+			//挖矿成功
+			fmt.Println(&quot;挖矿成功&quot;)
+			return hash
+		}else {
+			block.Nonce++
+		}
+
+	}
+
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//生产区块的hash值
+func GenerateBlockHashValue(block Block) string {
+	//按照比特币的写法,将区块的所有的属性拼接后做Hash运算
+	var hashdata = strconv.Itoa(block.Index) + block.Timestamp +
+		strconv.Itoa(block.Diff) + strconv.Itoa(block.Nonce) + block.Data
+	//进行hash运算
+	var sha = sha256.New()
+	sha.Write([]byte(hashdata))
+	hashed := sha.Sum(nil)
+	//将[]byte转换字符串
+	return hex.EncodeToString(hashed)
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;缺点 非常好资源 
+比特币总量是有限的,到最后矿工就会很少,
+最后没有奖励了,就会瘫痪&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 26 May 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/05/26/POW%E5%85%B1%E8%AF%86%E7%AE%97%E6%B3%95%E5%B7%A5%E4%BD%9C%E9%87%8F%E8%AF%81%E6%98%8E/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/05/26/POW%E5%85%B1%E8%AF%86%E7%AE%97%E6%B3%95%E5%B7%A5%E4%BD%9C%E9%87%8F%E8%AF%81%E6%98%8E/</guid>
+        
+        <category>共识算法</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>POS共识算法</title>
+        <description>&lt;h1 id=&quot;pos共识算法&quot;&gt;pos共识算法&lt;/h1&gt;
+&lt;p&gt;###共识算法 pos(点点币)
+—
+大多数地方叫&lt;strong&gt;权益证明&lt;/strong&gt;，其实可以看作是股权证明，也是一种共识算法，在基于权益证明的数字货币中，下一个区块的选择是根据不同节点的股份和时间进行随机选择的。打个比方说，假如你买了1万个数字货币，然后就放在POS机制中，这样你就拥有了机会去获得新的区块从而得到奖励，机会有多大呢，就是那些拥有1千个数字货币的人的10倍概率，因为你有1万个，1万是1千的十倍，10%的股份分红是1%股份的10倍，道理是一样的。&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;优势：不需要浪费算力，同时，进行51%攻击的代价更高，因为想要进行51%攻击的话，你得拥有51%的货币。也就是说，这东西越值钱，攻击的成本就越高&lt;/p&gt;
+
+&lt;h2 id=&quot;pos的挖矿奖励是通过币零来计算的&quot;&gt;pos的挖矿奖励是通过币零来计算的&lt;/h2&gt;
+
+&lt;p&gt;有一个名词叫币龄，每个币每天产生1币龄，比如你持有100个币，总共持有了30天，那么，此时你的币龄就为3000，这个时候，如果你发现了一个POS区块，你的币龄就会被清空为0。你每被清空365币龄，你将会从区块中获得0.05个币的利息(可理解为年利率5%)，那么在这个案例中，利息 = 3000 * 5% / 365 = 0.41个币，这下就很有意思了，持币有利息，非常好！（需要注意的是，5%的年利率仅仅是举例，并非每个POS模式的币种都是5%，比如点点币PPCoin就是1%年利率）&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;##POS的设计理念，来自于对比特币危机的思考，原因有三：
+首先，我们都知道，比特币的区块产量每4年会减半，在不久的未来，随着比特币区块包含的产量越来越低，大家挖矿的动力将会不断下降，矿工人数越来越少，整个比特币网络有可能会逐渐陷入瘫痪(因为大家都减少了运行比特币客户端的时间，因此越来越难找到一个P2P节点去连接和同步网络数据)。
+POS解决方案：在POS体系中，只有打开钱包客户端程序，才能发现POS区块，才会获得利息，这促使很多不想挖矿的人，也会常常打开自己的钱包客户端，这帮助了P2P货币网络的健壮。
+其次，若干年后，随着矿工人数的下降，比特币很有可能被一些高算力的人、或团队、或矿池，进行51%攻击，导致整个比特币网络崩溃。51%攻击简单来说，就是当你拥有了超过全球51%的比特币算力时，你将能伪造比特币网络的任何数据，比如你伪造你有一百万个比特币但实际上你没有。(拓展阅读：什么是51%攻击)
+POS解决方案：在POS体系中，即使你拥有了全球51%的算力，也未必能够进行51%攻击，因为，有一部分的货币并不是挖矿产生的，而是由利息产生(利息存放在POS区块中)，这要求攻击者还需要持有全球超过51%的货币量。这大大提高了51%攻击的难度。&lt;/p&gt;
+
+&lt;p&gt;用go来实现pos算法&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;package main
+
+import (
+	&quot;strconv&quot;
+	&quot;crypto/sha256&quot;
+	&quot;encoding/hex&quot;
+	&quot;time&quot;
+	&quot;math/rand&quot;
+	&quot;fmt&quot;
+)
+
+//常用共识算法 Pos pow Dpos 所有的共识算法都是为了解决挖矿问题
+//pos共识算法的使用
+//创建区块
+
+type Block struct {
+	BMP       int
+	Perhash   string
+	HashCode  string
+	TimeStamp string
+	Index     int
+	validator string //区块验证者
+}
+//创建区块链
+var Blockchain []Block
+
+
+//区块hash算法 计算区块的hash值
+func generateHashValue(block Block)string  {
+	var hashcode=block.Perhash+block.HashCode+block.TimeStamp+block.validator+strconv.Itoa(block.BMP)+strconv.Itoa(block.Index)
+		sha:=sha256.New()
+		sha.Write([]byte(hashcode))
+		hashed:=sha.Sum(nil)
+		return hex.EncodeToString(hashed)
+
+}
+
+//生成新的区块  adds是矿工的地址
+func GenerateNextblock(oldBlock Block,BMP int,adds string)Block  {
+	newBlock:=Block{}
+	newBlock.Index=oldBlock.Index+1
+	newBlock.TimeStamp=time.Now().String()
+	newBlock.HashCode=generateHashValue(newBlock)
+	newBlock.Perhash=oldBlock.HashCode
+	newBlock.validator=adds
+	newBlock.BMP=BMP
+	return newBlock
+
+}
+//点点币网路系统中的全节点
+type Node struct {
+	tokens int  //有多少币
+	adds string //地址
+}
+//存放全节点
+var n[2] Node  //节点 创建几个 就有几个用户
+var addr[3000] string  //
+
+func main() {
+	//存放两个炒币者
+	n[0]=Node{1000,&quot;abc123&quot;}  //第一个节点
+	n[1]=Node{2000,&quot;bcd234&quot;}
+	//以下为pos公式算法
+	var cnt =0
+	for i:=0;i&amp;lt;2;i++{
+		for j :=0;j&amp;lt;n[i].tokens;j++{  //addr 数组赋值
+			addr[cnt]=n[i].adds
+			cnt++
+		}
+	}
+	rand.Seed(time.Now().Unix())  //随机种子
+	//通过随机值[0-3000)
+	rd:=rand.Intn(3000)
+	var adds=addr[rd]
+
+	//生成创始区块
+	firstBlock:=Block{}
+	firstBlock.BMP=100
+	firstBlock.Perhash=&quot;0&quot;
+	firstBlock.TimeStamp=time.Now().String()
+	firstBlock.validator=&quot;abc123&quot;
+	firstBlock.Index=1
+	firstBlock.HashCode=generateHashValue(firstBlock)
+
+	//将创始区块添加的区块链
+	Blockchain=append(Blockchain,firstBlock)
+	//挖矿成功
+	var sceondBlock=GenerateNextblock(firstBlock,200,adds)
+	//把下一个区块存取区块链
+	Blockchain=append(Blockchain,sceondBlock)
+	fmt.Println(Blockchain)
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+</description>
+        <pubDate>Sat, 26 May 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/05/26/POS%E5%85%B1%E8%AF%86%E7%AE%97%E6%B3%95%E6%9D%83%E7%9B%8A%E8%AF%81%E6%98%8E/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/05/26/POS%E5%85%B1%E8%AF%86%E7%AE%97%E6%B3%95%E6%9D%83%E7%9B%8A%E8%AF%81%E6%98%8E/</guid>
+        
+        <category>共识算法</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>DPOS共识算法</title>
+        <description>&lt;h1 id=&quot;dpos共识算法&quot;&gt;Dpos共识算法&lt;/h1&gt;
+&lt;h2 id=&quot;什么是-dpos&quot;&gt;什么是 DPoS&lt;/h2&gt;
+
+&lt;p&gt;DPoS 即 Delegated Proof of Stake 译为股份授权证明。
+最早于2013年由比特股Bitshares提出，目的为解决PoW和PoS机制的不足&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;持币人可以进行投票,选出代表自己的受托人,受托人的权益是相等的,可以进行轮流挖矿的,并按照个人的持股比例获得“利息”&lt;/strong&gt;
+相较于PoW每10分钟产生一个区块，DPoS每3秒钟即可产生一个区块,效率大大提高.&lt;/p&gt;
+
+&lt;p&gt;###对恶意节点的惩罚
+注册成为候选受托人需要支付一笔保证金，就像是参与民意代表选举前缴纳的保证金一样，一般来说担任受托人约两周后才可达到损益平衡，这促进了受托人的稳定性，确保至少会挖满两周的矿。
+惩罚机制为：不按排程产生区块的节点将在下一轮被投票剔除，也会被没收之前缴纳的保证金。
+DPoS是效率较PoW和PoS更高、产生区块的速度更快；
+虽然恶意的节点将在下一轮投票被踢出，但单个恶意区块在短期仍有可能是有效的状态。
+短期虽然可能存在恶意区块，但长期下来，可以透过受托人的自主选择来回归链条的有效性
+假定现在总共有3个受托人A、Ｂ、Ｃ，D加入排程后，只要确认之前的区块中，有2/3以上个受托人遵循的链是哪条就可以了。&lt;/p&gt;
+
+&lt;p&gt;##DPoS的优缺点
+###优点
+能耗更低。DPoS机制将节点数量进一步减少到101个，在保证网络安全的前提下，整个网络的能耗进一步降低，网络运行成本最低。
+更加去中心化。目前，对于比特币而言，个人挖矿已经不现实了，比特币的算力都集中在几个大的矿池手里，每个矿池都是中心化的，就像DPoS的一个受托人，因此DPoS机制的加密货币更加去中心化。PoS机制的加密货币（比如未来币），要求用户开着客户端，事实上用户并不会天天开着电脑，因此真正的网络节点是由几个股东保持的，去中心化程度也不能与DPoS机制的加密货币相比。
+更快的确认速度。每个块的时间为10秒，一笔交易（在得到6-10个确认后）大概1分钟，一个完整的101个块的周期大概仅仅需要16分钟。而比特币（PoW机制）产生一个区块需要10分钟，一笔交易完成（6个区块确认后）需要1个小时。点点币（PoS机制）确认一笔交易大概也需要1小时。
+###缺点
+投票的积极性并不高。绝大多数持股人（90％+）从未参与投票。这是因为投票需要时间、精力以及技能，而这恰恰是大多数投资者所缺乏的。
+对于坏节点的处理存在诸多困难。社区选举不能及时有效的阻止一些破坏节点的出现，给网络造成安全隐患。&lt;/p&gt;
+
+&lt;p&gt;go语言实现Dpos共识算法&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;package main
+
+import (
+	&quot;strconv&quot;
+	&quot;crypto/sha256&quot;
+	&quot;encoding/hex&quot;
+	&quot;time&quot;
+	&quot;math/rand&quot;
+	&quot;fmt&quot;
+)
+
+//Dpos共识算法 原理
+
+type Block struct {
+	Index int
+	PreHash string
+	HashCode string
+	BMP int
+	Validator string   //区块验证者
+	TimeStamp string
+}
+
+//区块链 用数组维护区块
+
+var blockchian []Block
+
+//生成Block
+func generateNextBlock(oldBlock Block,BMP int,adds string)Block  {
+	newBlock:=Block{}
+	newBlock.Index=oldBlock.Index+1
+	newBlock.PreHash=oldBlock.HashCode
+	newBlock.BMP=BMP
+	newBlock.TimeStamp=time.Now().String()
+	newBlock.HashCode=generateHashValue(newBlock)
+	newBlock.Validator=adds
+
+	return newBlock
+}
+
+
+//产生区块的hash值
+func generateHashValue(block Block)string  {
+	var hashcode=block.PreHash+block.Validator+block.TimeStamp+
+		strconv.Itoa(block.Index)+strconv.Itoa(block.BMP)
+		sha:=sha256.New()
+		sha.Write([]byte(hashcode))
+		hashed:=sha.Sum(nil)
+		return hex.EncodeToString(hashed)
+
+}
+
+//存放代理人 代理人的地址信息
+var delgate =[]string {&quot;aaa&quot;,&quot;bbb&quot;,&quot;ccc&quot;,&quot;ddd&quot;}
+
+//随机调换委托人的位置
+func RandDelegate(){
+	rand.Seed(time.Now().Unix())
+	r:=rand.Intn(4)
+	t:=delgate[r]
+	delgate[r]=delgate[3]
+	delgate[3]=t
+}
+
+func main()  {
+	//创始区块
+	RandDelegate()
+	var firstBlock Block
+	blockchian=append(blockchian,firstBlock)  //把创始区块放到链里
+	//通过变量n按顺序让delegat作为矿工
+
+	n:=0
+
+	for{
+		//每三秒产生一个区块
+		time.Sleep(3*time.Second)
+		nextBlock:=generateNextBlock(firstBlock,1,delgate[n])   //区块验证者地址
+		n++
+		n=n%len(delgate) //轮流让受信人挖矿
+		firstBlock=nextBlock //创始=下一个区块
+		blockchian=append(blockchian,nextBlock) // 把新创建的区块加到链里
+		fmt.Println(blockchian)
+	}
+
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+</description>
+        <pubDate>Sat, 26 May 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/05/26/DPOS%E5%85%B1%E8%AF%86%E7%AE%97%E6%B3%95%E8%82%A1%E6%9D%83%E6%8E%88%E6%9D%83%E8%AF%81%E6%98%8E/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/05/26/DPOS%E5%85%B1%E8%AF%86%E7%AE%97%E6%B3%95%E8%82%A1%E6%9D%83%E6%8E%88%E6%9D%83%E8%AF%81%E6%98%8E/</guid>
+        
+        <category>共识算法</category>
+        
+        
+      </item>
     
       <item>
         <title>零知识证明</title>
@@ -257,778 +920,6 @@ hello wold
         <guid isPermaLink="true">http://localhost:4000/2018/05/20/go%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0RSA%E5%8A%A0%E5%AF%86/</guid>
         
         <category>密码学</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>go语言实现对称AES加密算法</title>
-        <description>&lt;h2 id=&quot;go语言实现aes加密算法&quot;&gt;#go语言实现AES加密算法&lt;/h2&gt;
-&lt;p&gt;AES是作为DES的替代标准出现的，全称Advanced Encryption Standard，即：高级加密标准。AES加密算法，经历了公开的选拔，最终2000年，由比利时密码学家Joan Daemen和Vincent Rijmen设计的Rijndael算法被选中，成为了AES标准。
-　　AES明文分组长度为128位，即16个字节，密钥长度可以为16个字节、24个字节、或32个字节，即128位密钥、192位密钥、或256位密钥。
-　　
-AES同样需要加密前补码,解密后取码&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//补码
-func PKCS7Paading(ciphertext []byte,blocksize int )[]byte  { //传入不同的密钥长度
-	//传入密钥分组后的长度-要加密的明文的长度%密钥分组后的长度
-	//要补的位数
-	//把要补的位数补上
-	padding:=blocksize-len(ciphertext)%blocksize
-	padtext:=bytes.Repeat([]byte{byte(padding)},padding)
-	return append(ciphertext,padtext...)
-	//padding:=blocksize-len(ciphertext)%blocksize
-	//padtext:=bytes.Repeat([]byte{byte(padding)},padding)
-	//return append(ciphertext,padtext...)
-
-}
-//去码
-func PKCS7UnPaading(origData []byte)[]byte  {
-	//确定解密后的长度
-	//取到切片最后一个下标的值
-	//返回补码的数量总长度-最后的值
-	length:=len(origData)
-	unpadding:=int(origData[length-1])
-	return origData[:length-unpadding]
-	//length:=len(origData)
-	//unpadding:=int(origData[length-1])
-	//return origData[:(length-unpadding)]
-
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;补码后就可以进行加密了&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//加密
-func AesEncrypt(origData,key[]byte)[]byte  {
-	//密钥分组
-	//密钥长度
-	//补码
-	//加密模式
-	//创建数组
-	//加密
-	//返回加密数组
-
-
-	block,_:=aes.NewCipher(key) //密钥分组
-	blocksize:=block.BlockSize()  //密钥长度
-	fmt.Println(blocksize)
-	origData=PKCS7Paading(origData,blocksize)//补码
-	blockMode:=cipher.NewCBCEncrypter(block,key[:blocksize])//加密模式
-	cryted:=make([]byte,len(origData))//创建数组
-	blockMode.CryptBlocks(cryted,origData)//加密
-	return cryted  //返回加密数组
-}
-func AesDecrypt(cryted,key []byte)[]byte  {
-	block,_:=aes.NewCipher(key)  //密钥分组
-	blocksize:=block.BlockSize()//密钥长度
-	blockMode:=cipher.NewCBCDecrypter(block,key[:blocksize]) //解密方式
-	origData:=make([]byte,len(cryted)) //创建数组
-	blockMode.CryptBlocks(origData,cryted)  //解密到数组里面去
-	origData=PKCS7UnPaading(origData) //解密完去码
-	return origData
-
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;hr /&gt;
-&lt;p&gt;主函数&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;func main()  {
-	//var key16  =[]byte(&quot;1234567812345678&quot;)//aes 密钥长度 16 24 32 字节
-	var key24  =[]byte(&quot;12345678123456781234567812345678&quot;)
-	a:=AesEncrypt([]byte(&quot;abc&quot;),key24)
-	fmt.Println(base64.StdEncoding.EncodeToString(a))
-	b:=AesDecrypt(a,key24)
-	fmt.Println(string(b))
-
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;输出结果&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;密文: SwJ8j0Tx6HzCyft1FXa0Pg==
-明文: abc
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-</description>
-        <pubDate>Sat, 19 May 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/05/19/go%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0AES%E5%8A%A0%E5%AF%86/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/05/19/go%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0AES%E5%8A%A0%E5%AF%86/</guid>
-        
-        <category>密码学</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>密码学密码学对称加密算法DES和3DES</title>
-        <description>&lt;h1 id=&quot;go密码学对称加密算法des和3des&quot;&gt;go密码学对称加密算法DES和3DES&lt;/h1&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;加密模式&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;&lt;strong&gt;ECB模式&lt;/strong&gt; 全称Electronic Codebook模式，译为电子密码本模式(由于安全性差,已经被淘汰)&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;CBC模式&lt;/strong&gt; 全称Cipher Block Chaining模式，译为密文分组链接模式(分组模式)&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;CFB模式&lt;/strong&gt; 全称Cipher FeedBack模式，译为密文反馈模式(流模式)&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;OFB模式&lt;/strong&gt; 全称Output Feedback模式，译为输出反馈模式。(流模式)&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;CTR模式&lt;/strong&gt; 全称Counter模式，译为计数器模式。(流模式)&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;des加密算法可解密可加密&quot;&gt;DES加密算法(可解密可加密)&lt;/h2&gt;
-&lt;p&gt;DES是以64比特的明文为一个单位来进行加密的，超过64比特的数据，要求按固定的64比特的大小分组，分组有很多模式，后续单独总结，暂时先介绍DES加密算法。DES使用的密钥长度为64比特，但由于每隔7个比特设置一个奇偶校验位，因此其密钥长度实际为56比特。奇偶校验为最简单的错误检测码，即根据一组二进制代码中1的个数是奇数或偶数来检测错误。&lt;/p&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;DES加密需要先将密码分组,然后把要加密的明文进行PKCS5Padding进行补码,既8位取余,余几位,补几位,解密后同样要把后面补的几位去掉,&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;&lt;strong&gt;go语言实现&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;加密&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//DES对称性加密
-//DES 有不同的加密模式(5种)本次采用CBC加密模式
-func MyDesEncrypt(origData,key []byte)  {  //origData 明文
-	//把钥匙传进来加密 换成block块
-	block,_:=des.NewCipher(key) //密钥分组
-	//将明文按密钥长度做补码运算
-	origData=PKCS5Padding(origData,block.BlockSize())
-	//设置加密方式
-	blockMode :=cipher.NewCBCEncrypter(block,key) //CBC加密方式
-	//创建明文长度的字节数组
-	crypted:=make([]byte,len(origData))
-	//加密明文
-	blockMode.CryptBlocks(crypted,origData)
-	//将字节数组转换成字符串 转成base64 类型
-	fmt.Printf(base64.StdEncoding.EncodeToString(crypted))
-
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;&lt;strong&gt;补码&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//实现去除补码
-func PKCS5Unpandding(origData []byte) []byte {
-	length:=len(origData) //计算长度
-	unpadding:=int(origData[length-1])//把最后一个值拿出来
-	return origData[:(length-unpadding)]
-
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;解密&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//DES解密方法
-func MyDESDecrypt(data string,key []byte)  {
-	//将字符串转换成字节数组[]byte
-	crypted, _ := base64.StdEncoding.DecodeString(data)//将字符串转成[]byte数组
-	//fmt.Println(crypted)
-	block,_:=des.NewCipher(key)//将字节密钥转换成block块 ,密钥分组
-	//设置解密方式
-	blockMode:=cipher.NewCBCDecrypter(block,key)
-	//创建密文大小的[]byte切片
-	origData:=make([]byte,len(crypted))
-	//解密密文到数组origData中
-	blockMode.CryptBlocks(origData,crypted)
-	//除去补码
-	origData=PKCS5Unpandding(origData)
-	//打印明文
-	fmt.Println(string(origData))
-
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;去码&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;func PKCS5Padding(ciphertext []byte,blockSize int)  []byte{ //实现明文的补码
-	padding:=blockSize-len(ciphertext)%blockSize //查看需要补几位 比如差3位
-	padtext:=bytes.Repeat([]byte{byte(padding)},padding)//重复几位将里面的 这里就补333
-	return append(ciphertext,padtext...)  //append[]byte 后面需要加...
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;方法调用&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;func main()  {
-//声明密钥 利用此密钥 实现明文的加密和密文的解密
-key:=[]byte(&quot;12345678&quot;) //长度为8
-	//加密
-	MyDesEncrypt([]byte(&quot;hello kong yia&quot;),key)
-	//解密
-	MyDESDecrypt(&quot;6xl7sC7Om9o+lQ1S2j1U6g==&quot;,key)
-
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;输出结果&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;6xl7sC7Om9o+lQ1S2j1U6g==hello kong yia
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;3des-加密及解密&quot;&gt;3DES 加密及解密&lt;/h2&gt;
-&lt;p&gt;DES的升级版,24字节的密钥分为,分为3组分别进行加密,以提高安全性&lt;/p&gt;
-
-&lt;h3 id=&quot;加密&quot;&gt;加密&lt;/h3&gt;
-
-&lt;p&gt;对比DES，发现只是换了NewTripleDESCipher。不过，需要注意的是，密钥长度必须24byte，否则直接返回错误。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-//补码
-func PKCS5padding(ciphertext []byte,blocksize int)[]byte  {
-	padding:=blocksize-len(ciphertext)%blocksize  //%24
-	padtext:=bytes.Repeat([]byte{byte(padding)},padding) //补齐
-	return append(ciphertext,padtext...)  //合并
-
-}
-//去码
-func PKCS5Unpadding(origData []byte)[]byte  {
-	length:=len(origData)  //测密码长度
-	unadding:=int(origData[length-1]) //取最后一位
-	return origData[:(length-unadding)]  //减去最后一位的位数
-
-}
-//3DES 加密
-func TripleDesEncrypt(origData []byte,key []byte)[] byte  {
-	//3DES密钥长度必须是24位
-	block,_:=des.NewTripleDESCipher(key)  //获得密钥块  Triple-&amp;gt;3的意思
-	//补码
-	origData=PKCS5padding(origData,block.BlockSize())
-	//设置加密模式
-	blockMode:=cipher.NewCBCEncrypter(block,key[:8]) //固定8
-	//创建密文数组,加密
-	crypted :=make([]byte,len(origData))
-	blockMode.CryptBlocks(crypted,origData)
-	return crypted
-}
-//解密
-func TripDesDecrypt(crypted,key[]byte)[]byte  {
-		block,_:=des.NewTripleDESCipher(key)  //通过密钥得到密码块
-		blockMode:=cipher.NewCBCDecrypter(block,key[:8])  //解密
-		origData:=make([]byte,len(crypted))  //创建数组
-		blockMode.CryptBlocks(origData,crypted) // 解密
-		origData=PKCS5Unpadding(origData)  //去码
-		return origData
-
-}
-//CBC模式
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;方法调用&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;func main()  {
-	var key = []byte(&quot;123456789012345678901234&quot;) //长度为24byte
-var encryptcode=TripleDesEncrypt([]byte(&quot;liujiaow&quot;),key)
-var decryptcode=TripDesDecrypt(encryptcode,key)
-fmt.Println(base64.StdEncoding.EncodeToString(encryptcode))
-fmt.Println(string(decryptcode))
-}
-
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;输出结果&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;vtTkkOTHUHx2nY5Pu2ObTQ==
-liujiaow
-
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-</description>
-        <pubDate>Thu, 17 May 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/05/17/%E5%AF%86%E7%A0%81%E5%AD%A6%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95DES%E5%92%8C3DES/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/05/17/%E5%AF%86%E7%A0%81%E5%AD%A6%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95DES%E5%92%8C3DES/</guid>
-        
-        <category>密码学</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>密码学加密算法</title>
-        <description>&lt;h1 id=&quot;go-密码学-加密算法&quot;&gt;go 密码学 加密算法&lt;/h1&gt;
-
-&lt;p&gt;###hash算法加密&lt;/p&gt;
-
-&lt;hr /&gt;
-&lt;ol&gt;
-  &lt;li&gt;加法Hash；&lt;/li&gt;
-  &lt;li&gt;位运算Hash；&lt;/li&gt;
-  &lt;li&gt;乘法Hash；&lt;/li&gt;
-  &lt;li&gt;除法Hash；&lt;/li&gt;
-  &lt;li&gt;查表Hash；&lt;/li&gt;
-  &lt;li&gt;混合Hash；&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;hr /&gt;
-&lt;h2 id=&quot;hash算法有什么特点&quot;&gt;Hash算法有什么特点&lt;/h2&gt;
-
-&lt;p&gt;一个优秀的 hash 算法，将能实现：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;正向快速&lt;/strong&gt;：给定明文和 hash 算法，在有限时间和有限资源内能计算出 hash 值。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;逆向困难&lt;/strong&gt;：给定（若干） hash 值，在有限时间内很难（基本不可能）逆推出明文。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;输入敏感&lt;/strong&gt;：原始输入信息修改一点信息，产生的 hash 值看起来应该都有很大不同。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;冲突避免&lt;/strong&gt;：很难找到两段内容不同的明文，使得它们的 hash 值一致（发生冲突）。即对于任意两个不同的数据块，其hash值相同的可能性极小；对于一个给定的数据块，找到和它hash值相同的数据块极为困难。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;##MD5
-MD5讯息摘要演算法（英语：MD5 Message-Digest Algorithm），一种被广泛使用的密码杂凑函数，可以产生出一个128位元（16位元组）的散列值（hash value），用于确保信息传输完整一致。&lt;strong&gt;不可逆推&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;用go语言实现&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;func MyMd5() {   //32位字节
-	data:=[]byte(&quot;hello world&quot;)
-	s:=fmt.Sprintf(&quot;%x\n&quot;,md5.Sum(data)) //把字符串格式化后返回
-	fmt.Println(len(s))
-	fmt.Println(s)
-
-	h:=md5.New() //声明md5对象
-	h.Write(data)  //把data写入h
-	s = hex.EncodeToString(h.Sum(nil)) // 十六进制转字符串
-	fmt.Println(s)
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;&lt;strong&gt;输出结果&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;5eb63bbbe01eeed093cb22bb8f5acdc3
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;sha256加密算法&quot;&gt;###sha256加密算法&lt;/h2&gt;
-&lt;p&gt;SHA-256 算法输入报文的最大长度不超过2^64 bit，输入按512-bit 分组进行处理，产生的输出是一个256-bit 的报文摘要。&lt;strong&gt;不可逆推&lt;/strong&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;&lt;strong&gt;go语言实现&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;func Mysha2561()  {
-	sum:=sha256.Sum256([]byte(&quot;hello world&quot;))  //得到长度64字节 256位的密文 (一个字节占4位)
-	fmt.Printf(&quot;%x\n&quot;,sum)
-	//第二种方法
-	h:=sha256.New()
-	h.Write([]byte(&quot;hello world&quot;))
-	fmt.Printf(&quot;%x\n&quot;,h.Sum(nil))
-
-}
-//将文档中的加密
-func MyIo()  {  //将文件中的内容做256的加密
-f,_:=os.Open(&quot;5.16myHash/text.txt&quot;)
-h:=sha256.New()
-io.Copy(h,f)//把文件名写到h里
-fmt.Printf(&quot;%x\n&quot;,h.Sum(nil))
-
-
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;输出结果&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;5eb63bbbe01eeed093cb22bb8f5acdc3
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;###ripemd160 加密算法&lt;/p&gt;
-
-&lt;p&gt;哈希值的输出值一般是&lt;code class=&quot;highlighter-rouge&quot;&gt;16&lt;/code&gt;进制的字符串。而&lt;code class=&quot;highlighter-rouge&quot;&gt;16&lt;/code&gt;进制字符串，每两个字符占一个字节。我们知道，一个字节&lt;code class=&quot;highlighter-rouge&quot;&gt;=8bit&lt;/code&gt;. &lt;strong&gt;不可逆推&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;以&lt;code class=&quot;highlighter-rouge&quot;&gt;sha256&lt;/code&gt;为例：&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;256bit-&amp;gt;64&lt;/code&gt;位&lt;code class=&quot;highlighter-rouge&quot;&gt;16&lt;/code&gt;进制字符。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;go语言实现&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//ripemd160 利用hash原理,实现加密  40字节 160位
-func MyRipemd160(){
-	hasher:=ripemd160.New() //实例化
-	hasher.Write([]byte(&quot;hello world&quot;))  //把[]byte类型的字符串类型 写入到加密文件里
-	hashString:=fmt.Sprintf(&quot;%x&quot;,hasher.Sum(nil))  //转成16进制字符串
-	fmt.Printf(hashString)
-
-
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;输出结果&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;5eb63bbbe01eeed093cb22bb8f5acdc3
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-</description>
-        <pubDate>Thu, 17 May 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/05/17/%E5%AF%86%E7%A0%81%E5%AD%A6%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%951/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/05/17/%E5%AF%86%E7%A0%81%E5%AD%A6%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%951/</guid>
-        
-        <category>密码学</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>mac 创建公钥和私钥 非对称加密和3DES</title>
-        <description>&lt;h1 id=&quot;mac-创建公钥和私钥-非对称加密&quot;&gt;mac 创建公钥和私钥 非对称加密&lt;/h1&gt;
-&lt;p&gt;openssl工具 非对称加密&lt;/p&gt;
-
-&lt;p&gt;mac 打开控制台 (产生公钥和私钥)
-打开openssl工具&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;openssl 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;创建私钥&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;genrsa -out rsa_private_key.pem 2048
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;这行命令为设置私钥为PKCS8格式&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pkcs8 -topk8 -inform PEM -in rsa_private_key.pem -outform PEM
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;产生公钥&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rsa -in rsa_private_key.pem -pubout -out rsa_public_key.pem
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;产生 rsa_public_key.pem 公钥
-产生rsa_private_key.pem 私钥&lt;/p&gt;
-
-</description>
-        <pubDate>Thu, 17 May 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/05/17/mac-%E5%88%9B%E5%BB%BA%E5%85%AC%E9%92%A5%E5%92%8C%E7%A7%81%E9%92%A5-%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/05/17/mac-%E5%88%9B%E5%BB%BA%E5%85%AC%E9%92%A5%E5%92%8C%E7%A7%81%E9%92%A5-%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86/</guid>
-        
-        <category>密码学</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>hash散列和链表 </title>
-        <description>&lt;h2 id=&quot;go语言hash散列和链表&quot;&gt;go语言hash散列和链表&lt;/h2&gt;
-&lt;p&gt;通过hash散列算法把输入的值,平均分配的一个长度位16的数组当中去&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//将key转换成数组下标的散列算法
-func HashCode(key string) int {
-	var index int = 0
-	index = int(key[0])
-	for k := 0; k &amp;lt; len(key); k++ {
-		index *= (1103515245 + int(key[k]))
-	}
-	index &amp;gt;&amp;gt;= 27
-	index &amp;amp;= 16 - 1
-
-	return index
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;table&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;每个数组下标,里面存放一个链表头,后面可以无限链接链表,链表分为(地址域&lt;/td&gt;
-      &lt;td&gt;数据域),数据域里分为(key&lt;/td&gt;
-      &lt;td&gt;value),通过key来找到value.&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;&lt;strong&gt;创建数组&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;package HashMP
-
-import (
-	&quot;5.15myHashMap/LinkNodes&quot;
-	&quot;fmt&quot;
-)
-
-
-
-//声明全局数组
-var bultArr [16]*LinkNodes.Node
-
-
-//初始化数组
-func CreatBulet() {
-	var arr =[16]*LinkNodes.Node{}
-
-	for i:=0;i&amp;lt;16;i++{
-		arr[i]=LinkNodes.CreateHeadNode(&quot;头节点&quot;,&quot;头节点&quot;)  //创建16个链表
-	}
-	bultArr=arr
-
-
-}
-
-
-//将key转换成数组下标的散列算法
-func HashCode(key string) int {
-	var index int = 0
-	index = int(key[0])
-	for k := 0; k &amp;lt; len(key); k++ {
-		index *= (1103515245 + int(key[k]))
-	}
-	index &amp;gt;&amp;gt;= 27
-	index &amp;amp;= 16 - 1
-
-	return index
-}
-//向数组中添加键值对
-func AddkeyValue(k string,v string) {
-	//计算键所对应的木桶下标
-	var pos = HashCode(k)
-
-	var head *LinkNodes.Node= bultArr[pos]  //获得木桶数组中的 头节点
-	LinkNodes.AddNode(k,v,head) //向指定下标的头节点添加节点
-}
-
-//获取数据
-func GetvalueByKey(k string)string  {
-	var pos = HashCode(k)
-	//通过散列因子得到数组下标 通过下标找到对应头节点
-	var head *LinkNodes.Node=bultArr[pos]
-	//通过头节点 遍历链表
-	LinkNodes.ShowNodes(head)
-	//查找对应下标下的链表 判断key与节点中的key一致时打印
-	for {
-		if head.Data.K==k{
-			fmt.Println(head.Data.V)
-			break
-		}else {
-			head=head.NextNode
-			if head.NextNode== nil{
-
-			}
-		}
-	}
-	return &quot;&quot;
-
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;创建链表&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;package LinkNodes
-
-import &quot;fmt&quot;
-
-//用结构体作为数据域的类型
-type DM struct {
-	K string
-	V string
-}
-
-
-//声明全局变量,保存头节点
-var head *Node //头节点地址
-var curr *Node //当前节点地址
-
-type Node struct {//一个链表  声明节点类型
-	//数据域
-	Data DM
-	//地址域  指向下一个节点
-	NextNode *Node
-}
-
-//创建头节点
-
-func CreateHeadNode(k string ,v string) *Node { //创建节点
-	var node *Node = new(Node) //创建
-	node.Data.K = k //设置数据域结构体中的键值对
-	node.Data.V = v
-	//设置地址域
-	node.NextNode = nil        //下一个节点的地址
-	//保存头节点
-	head = node  //创建的是节点 赋值给头
-	curr = node  //创建的节点 给当前
-
-	return node
-
-}
-
-//在指定的节点(curr)后面添加新节点
-func AddNode(k string,v string, currHead *Node) *Node {  //先用局部变量的 curr
-	var newNode *Node = new(Node)
-	newNode.Data.K = k    //新节点数据
-	newNode.Data.V = v
-	newNode.NextNode = nil // 下一个节点的地址
-	//挂接节点
-	currHead.NextNode = newNode //当前节点的下一个节点==新创建的节点
-	currHead = newNode          //curr 等于新创建的节点 =新的节点???
-
-	return newNode
-
-}
-
-//在指定节点遍历链表
-func ShowNodes(n * Node) {
-	var node =n  //从头开始
-	for {
-
-		if node.NextNode==nil{  //退出条件 下一个节点的 地址域==nil
-			fmt.Println(node.Data)  //打印该节点的数据
-			break
-		}else {
-			fmt.Println(node.Data)
-			node = node.NextNode  //该节点等于下一个节点
-		}
-
-	}
-}
-
-//计算节点的个数
-
-func Nodecnt() int {
-	n := 1
-	i := head  //从头开始
-	for {
-		if i.NextNode == nil {
-			break
-		}
-		n++
-		i = i.NextNode  //该节点等于下一个节点
-	}
-	return n
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;可以通过链表的Next.Node来链接链表&lt;/p&gt;
-
-</description>
-        <pubDate>Thu, 17 May 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/05/17/hash%E6%95%A3%E5%88%97%E5%92%8C%E9%93%BE%E8%A1%A8/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/05/17/hash%E6%95%A3%E5%88%97%E5%92%8C%E9%93%BE%E8%A1%A8/</guid>
-        
-        <category>hash</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Nebulas包调用</title>
-        <description>&lt;p&gt;#星云链环境搭建mac版&lt;/p&gt;
-
-&lt;h2 id=&quot;golang环境搭建&quot;&gt;Golang环境搭建&lt;/h2&gt;
-&lt;p&gt;Components	Version	Description
-Golang	&amp;gt;= 1.9.2	The Go Programming Language
-我们会分别介绍Mac OSX和Linux两种系统下golang环境的搭建。&lt;/p&gt;
-
-&lt;p&gt;Mac OSX
-在Mac OSX里，我们推荐使用Homebrew来安装Golang.&lt;/p&gt;
-
-&lt;h2 id=&quot;安装&quot;&gt;安装&lt;/h2&gt;
-&lt;p&gt;brew install go&lt;/p&gt;
-
-&lt;h2 id=&quot;配置环境变量&quot;&gt;配置环境变量&lt;/h2&gt;
-&lt;p&gt;export GOPATH=/path/to/workspace
-提示: 在golang的开发中，GOPATH是必须的，它指定了我们使用golang开发的工作空间。所有的源码都应放在GOPATH之下。
-编译星云链
-下载源码
-可以使用如下指令直接下载最新版本的星云链源码。&lt;/p&gt;
-
-&lt;h2 id=&quot;进入工作目录&quot;&gt;进入工作目录&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;mkdir -p $GOPATH/src/github.com/nebulasio&lt;/strong&gt;
-&lt;strong&gt;cd $GOPATH/src/github.com/nebulasio&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;下载源码&quot;&gt;下载源码&lt;/h2&gt;
-&lt;p&gt;git clone https://github.com/nebulasio/go-nebulas.git&lt;/p&gt;
-
-&lt;h2 id=&quot;进入项目目录&quot;&gt;进入项目目录&lt;/h2&gt;
-&lt;p&gt;cd go-nebulas&lt;/p&gt;
-
-&lt;h2 id=&quot;切换到最稳定的master分支&quot;&gt;切换到最稳定的master分支&lt;/h2&gt;
-&lt;p&gt;git checkout master&lt;/p&gt;
-
-&lt;p&gt;##安装rocksdb依赖库
-同样我们会介绍如何在MAC OSX和Linux正确安装RocksDB。&lt;/p&gt;
-
-&lt;p&gt;Mac OSX
-可以直接通过Homebrew安装，运行&lt;/p&gt;
-
-&lt;p&gt;命令brew install rocksdb
-##安装Go依赖库
-在Go-Nebulas中，Go的三方库都通过Dep来做管理。&lt;/p&gt;
-
-&lt;p&gt;Components	Version	Description
-Dep	&amp;gt;= 0.3.1	Dep is a dependency management tool for Go.&lt;/p&gt;
-
-&lt;p&gt;##安装Dep工具
-我们同样分别介绍Mac OSX和Linux下Dep的安装方法。&lt;/p&gt;
-
-&lt;p&gt;Mac OSX
-通过Homebrew直接安装并升级Dep
-安装命令
-brew install dep
-brew upgrade dep&lt;/p&gt;
-
-&lt;p&gt;##下载Go三方库
-我们切换到Go-Nebulas项目根目录，然后使用Dep来下载三方库。&lt;/p&gt;
-
-&lt;p&gt;cd $GOPATH/src/github.com/nebulasio/go-nebulas
-make dep
-提示: make dep将会下载很多依赖库。在部分地区，这个过程可能比较耗时。所以，我们提供了依赖库的压缩包vendor.tar.gz。可以使用下列指令通过压缩包来安装GO依赖库。&lt;/p&gt;
-
-&lt;p&gt;下载命令
-wget http://ory7cn4fx.bkt.clouddn.com/vendor.tar.gz
-切换到文件夹
-cd $GOPATH/src/github.com/nebulasio/go-nebulas
-解压缩
-tar zxf vendor.tar.gz&lt;/p&gt;
-
-&lt;p&gt;##安装Chrome V8依赖库
-星云虚拟机目前依赖于Chrome的V8引擎，为了大家使用方便，我们已经为Mac OSX和Linux编译好了V8的动态库。运行如下指令就可以完成安装。&lt;/p&gt;
-
-&lt;p&gt;切换文件夹
-cd $GOPATH/src/github.com/nebulasio/go-nebulas
-安装v8
-make deploy-v8&lt;/p&gt;
-
-&lt;p&gt;##编译可执行文件
-完成所有上述依赖库的安装后，现在我们可以进入Go-Nebulas根目录编译星云链的可执行文件了。&lt;/p&gt;
-
-&lt;p&gt;切换文件夹
-cd $GOPATH/src/github.com/nebulasio/go-nebulas
-编译文件
-make build&lt;/p&gt;
-
-</description>
-        <pubDate>Tue, 15 May 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/05/15/%E6%98%9F%E4%BA%91%E9%93%BE%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BAmac%E7%89%88/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/05/15/%E6%98%9F%E4%BA%91%E9%93%BE%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BAmac%E7%89%88/</guid>
-        
-        <category>星云链</category>
         
         
       </item>
