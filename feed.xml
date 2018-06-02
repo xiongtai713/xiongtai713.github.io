@@ -5,9 +5,964 @@
     <description>区块链工程师</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 26 May 2018 10:13:45 +0800</pubDate>
-    <lastBuildDate>Sat, 26 May 2018 10:13:45 +0800</lastBuildDate>
+    <pubDate>Sat, 02 Jun 2018 21:38:08 +0800</pubDate>
+    <lastBuildDate>Sat, 02 Jun 2018 21:38:08 +0800</lastBuildDate>
     <generator>Jekyll v3.5.1</generator>
+    
+      <item>
+        <title>区块链数据结构 </title>
+        <description>&lt;p&gt;#区块数据结构&lt;/p&gt;
+
+&lt;p&gt;在区块链中，区块是存储有价值信息的块。这是任何一种加密货币的本质。除此之外，区块还包含一些技术信息，比如它的版本、当前时间戳和前一区块的散列值（哈希值）&lt;/p&gt;
+
+&lt;p&gt;Block（区块）是Ethereum的核心数据结构之一&lt;/p&gt;
+
+&lt;p&gt;***** 所有账户的相关活动，以交易(Transaction)的格式存储，每个Block有一个交易对象的列表&lt;/p&gt;
+
+&lt;p&gt;*** **每个交易的执行结果，由一个Receipt对象与其包含的一组Log对象记录&lt;/p&gt;
+
+&lt;p&gt;***** 所有交易执行完后生成的Receipt列表，存储在Block中(经过压缩加密)&lt;/p&gt;
+
+&lt;p&gt;***** 不同Block之间，通过前向指针ParentHash一个一个串联起来成为一个单向链表，BlockChain 结构体管理着这个链表&lt;/p&gt;
+
+&lt;p&gt;***** Block结构体基本可分为Header和Body两个部分&lt;/p&gt;
+
+&lt;p&gt;Block: 表示以太坊区块链中的一个完整块&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;type Block struct {
+	header       *Header
+	uncles       []*Header		// 块头(Header)
+	transactions Transactions
+
+	// caches
+	hash atomic.Value
+	size atomic.Value
+
+	// Td is used by package core to store the total difficulty
+	// of the chain up to and including the block.
+	td *big.Int
+
+	// These fields are used by package eth to track
+	// inter-peer block relay.
+	ReceivedAt   time.Time
+	ReceivedFrom interface{}		// 块体(Body)
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;在存储区块信息时，会将区块头和区块体分开进行存储。因此在区块的结构体中，能够看到Header和Body两个结构体&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Header: 表示以太坊区块链中的块头&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;type Header struct {
+	ParentHash  common.Hash    `json:&quot;parentHash&quot;       gencodec:&quot;required&quot;`
+	UncleHash   common.Hash    `json:&quot;sha3Uncles&quot;       gencodec:&quot;required&quot;`
+	Coinbase    common.Address `json:&quot;miner&quot;            gencodec:&quot;required&quot;`
+	Root        common.Hash    `json:&quot;stateRoot&quot;        gencodec:&quot;required&quot;`
+	TxHash      common.Hash    `json:&quot;transactionsRoot&quot; gencodec:&quot;required&quot;`
+	ReceiptHash common.Hash    `json:&quot;receiptsRoot&quot;     gencodec:&quot;required&quot;`
+	Bloom       Bloom          `json:&quot;logsBloom&quot;        gencodec:&quot;required&quot;`
+	Difficulty  *big.Int       `json:&quot;difficulty&quot;       gencodec:&quot;required&quot;`
+	Number      *big.Int       `json:&quot;number&quot;           gencodec:&quot;required&quot;`
+	GasLimit    uint64         `json:&quot;gasLimit&quot;         gencodec:&quot;required&quot;`
+	GasUsed     uint64         `json:&quot;gasUsed&quot;          gencodec:&quot;required&quot;`
+	Time        *big.Int       `json:&quot;timestamp&quot;        gencodec:&quot;required&quot;`
+	Extra       []byte         `json:&quot;extraData&quot;        gencodec:&quot;required&quot;`
+	MixDigest   common.Hash    `json:&quot;mixHash&quot;          gencodec:&quot;required&quot;`
+	Nonce       BlockNonce     `json:&quot;nonce&quot;            gencodec:&quot;required&quot;`
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Body: 以太坊区块链中的交易信息&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// Body is a simple (mutable, non-safe) data container for storing and moving
+// a block's data contents (transactions and uncles) together.
+type Body struct {
+	Transactions []*Transaction
+	Uncles       []*Header
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;header部分&quot;&gt;Header部分&lt;/h2&gt;
+
+&lt;p&gt;Header是Block的核心，它的成员变量全都是公共的，可以很方便的向调用者提供关于Block属性的操作。Header的成员变量全都很重要，值得细细理解:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;ParentHash：指向父区块(parentBlock)的指针。除了创世块(Genesis Block)外，每个区块有且只有一个父区块。&lt;/li&gt;
+  &lt;li&gt;UncleHash：Block结构体的成员uncles的RLP哈希值。uncles是一个Header数组，它的存在，颇具匠心。&lt;/li&gt;
+  &lt;li&gt;Coinbase：挖掘出这个区块的作者地址。在每次执行交易时系统会给与一定补偿的Ether，这笔金额就是发给这个地址的。&lt;/li&gt;
+  &lt;li&gt;Root：StateDB中的“state Trie”的根节点的RLP哈希值。Block中，每个账户以stateObject对象表示，账户以Address为唯一标示，其信息在相关交易(Transaction)的执行中被修改。所有账户对象可以逐个插入一个Merkle-PatricaTrie(MPT)结构里，形成“state Trie”。&lt;/li&gt;
+  &lt;li&gt;TxHash: Block中 “tx Trie”的根节点的RLP哈希值。Block的成员变量transactions中所有的tx对象，被逐个插入一个MPT结构，形成“tx Trie”。&lt;/li&gt;
+  &lt;li&gt;ReceiptHash：Block中的 “Receipt Trie”的根节点的RLP哈希值。Block的所有Transaction执行完后会生成一个Receipt数组，这个数组中的所有Receipt被逐个插入一个MPT结构中，形成”Receipt Trie”。&lt;/li&gt;
+  &lt;li&gt;Bloom：Bloom过滤器(Filter)，用来快速判断一个参数Log对象是否存在于一组已知的Log集合中。&lt;/li&gt;
+  &lt;li&gt;Difficulty：区块的难度。Block的Difficulty由共识算法基于parentBlock的Time和Difficulty计算得出，它会应用在区块的‘挖掘’阶段。&lt;/li&gt;
+  &lt;li&gt;Number：区块的序号。Block的Number等于其父区块Number +1。&lt;/li&gt;
+  &lt;li&gt;GasLimit：区块内所有Gas消耗的理论上限。该数值在区块创建时设置，与父区块有关。具体来说，根据父区块的GasUsed同GasLimit * 2/3的大小关系来计算得出。&lt;/li&gt;
+  &lt;li&gt;GasUsed：区块内所有Transaction执行时所实际消耗的Gas总和。&lt;/li&gt;
+  &lt;li&gt;Time：区块“应该”被创建的时间。由共识算法确定，一般来说，要么等于parentBlock.Time + 10s，要么等于当前系统时间。&lt;/li&gt;
+  &lt;li&gt;Nonce：一个64bit的哈希数，它被应用在区块的”挖掘”阶段，并且在使用中会被修改&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;body结构体&quot;&gt;Body结构体&lt;/h2&gt;
+
+&lt;p&gt;Block的成员变量td 表示的是整个区块链表从源头创世块开始，到当前区块截止，累积的所有区块Difficulty之和，td 取名totalDifficulty。从概念上可知，某个区块与父区块的td之差，就等于该区块Header带有的Difficulty值。&lt;/p&gt;
+
+&lt;p&gt;Body可以理解为Block里的数组成员集合，它相对于Header需要更多的内存空间，所以在数据传输和验证时，往往与Header是分开进行的。&lt;/p&gt;
+
+&lt;p&gt;Uncles是Body非常特别的一个成员，从业务功能上说，它并不是Block结构体必须的，它的出现当然会占用整个Block计算哈希值时更长的时间，目的是为了抵消整个Ethereum网络中那些计算能力特别强大的节点会对区块的产生有过大的影响力，防止这些节点破坏“去中心化”这个根本宗旨。官方描述可见&lt;a href=&quot;https://github.com/ethereum/wiki/wiki/Design-Rationale#uncle-incentivization&quot;&gt;ethereum-wiki&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;block的唯一标识符&quot;&gt;Block的唯一标识符&lt;/h2&gt;
+
+&lt;p&gt;Block对象的唯一标识符，就是它的(RLP)哈希值。需要注意的是，Block的哈希值，等于其Header成员的(RLP)哈希值&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// core/types/block.go
+// Hash returns the keccak256 hash of b's header.
+// The hash is computed on the first call and cached thereafter.
+func (b *Block) Hash() common.Hash {
+	if hash := b.hash.Load(); hash != nil {	// 获取最近所设置的存储值
+		return hash.(common.Hash)
+	}
+	v := b.header.Hash()	// 调用Head成员的Hash
+	b.hash.Store(v)
+	return v
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Block的成员hash会缓存上一次Header计算出的哈希值，以避免不必要的计算&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// Hash returns the block hash of the header, which is simply the keccak256 hash of its
+// RLP encoding.
+func (h *Header) Hash() common.Hash {
+   return rlpHash(h)
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;func rlpHash(x interface{}) (h common.Hash) {
+   hw := sha3.NewKeccak256()
+   rlp.Encode(hw, x)
+   hw.Sum(h[:0])
+   return h
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;添加新块:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// NewBlock creates a new block. The input data is copied,
+// changes to header and to the field values will not affect the
+// block.
+//
+// The values of TxHash, UncleHash, ReceiptHash and Bloom in header
+// are ignored and set to values derived from the given txs, uncles
+// and receipts.
+func NewBlock(header *Header, txs []*Transaction, uncles []*Header, receipts []*Receipt) *Block {
+	b := &amp;amp;Block{header: CopyHeader(header), td: new(big.Int)}
+
+	// TODO: panic if len(txs) != len(receipts)
+	if len(txs) == 0 {
+		b.header.TxHash = EmptyRootHash
+	} else {
+		b.header.TxHash = DeriveSha(Transactions(txs))
+		b.transactions = make(Transactions, len(txs))
+		copy(b.transactions, txs)
+	}
+
+	if len(receipts) == 0 {
+		b.header.ReceiptHash = EmptyRootHash
+	} else {
+		b.header.ReceiptHash = DeriveSha(Receipts(receipts))
+		b.header.Bloom = CreateBloom(receipts)
+	}
+
+	if len(uncles) == 0 {
+		b.header.UncleHash = EmptyUncleHash
+	} else {
+		b.header.UncleHash = CalcUncleHash(uncles)
+		b.uncles = make([]*Header, len(uncles))
+		for i := range uncles {
+			b.uncles[i] = CopyHeader(uncles[i])
+		}
+	}
+
+	return b
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+</description>
+        <pubDate>Sat, 02 Jun 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/06/02/%E5%8C%BA%E5%9D%97%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/06/02/%E5%8C%BA%E5%9D%97%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</guid>
+        
+        <category>区块链</category>
+        
+        
+      </item>
+    
+      <item>
+        <title> 交易的Hash </title>
+        <description>&lt;h1 id=&quot;交易的hash&quot;&gt;交易的Hash&lt;/h1&gt;
+
+&lt;p&gt;两个最常用的自定义数据类型&lt;strong&gt;common.Hash用来表示哈希值，common.Address&lt;/strong&gt;表示地址&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# /commons/types.go  
+const (  
+    HashLength = 32  
+    AddressLength = 20  
+)  
+type Hash [HashLength]byte  
+type Address [AddressLength]byte  
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;在Ethereum 代码里，所有用到的哈希值，都使用该Hash类型，长度为32bytes，即256 bits；Ethereum 中所有跟帐号(Account)相关的信息，比如交易转帐的转出帐号(地址)和转入帐号(地址)，都会用该Address类型表示，长度20bytes。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;big.Int&lt;/strong&gt;是golang提供的数据类型，用来处理比较大的整型数，当然它也可以处理诸如64bit，32bit的常用整数。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# /go-1.x/src/math/big/int.go  
+package big  
+type Int struct {  
+    neg bool  // sign, whether negaive  
+    abs nat   // absolute value of integer  
+}  
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;big.Int是一个结构体(struct)，相当于C++中的class，所以每次新建big.Int时可以用 x := new(big.Int), 返回一个指针。注意对Int的算术操作，要使用该对象的成员函数，比如Add():&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;func (z *Int) Add(x, y *Int) *Int   // Add sets z to sum x+y and returns z 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+</description>
+        <pubDate>Sat, 02 Jun 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/06/02/%E4%BA%A4%E6%98%93%E7%9A%84Hash/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/06/02/%E4%BA%A4%E6%98%93%E7%9A%84Hash/</guid>
+        
+        <category>区块链</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>交易数据结构</title>
+        <description>&lt;p&gt;#交易数据结构&lt;/p&gt;
+
+&lt;p&gt;##区块链转账的基本概念和流程&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;用户输入转账的地址和转入的地址和转出的金额&lt;/li&gt;
+  &lt;li&gt;系统通过转出的地址的私钥对转账信息进行签名（用于证明这笔交易确实由本人进行）&lt;/li&gt;
+  &lt;li&gt;系统对交易信息进行验证&lt;/li&gt;
+  &lt;li&gt;把这笔交易入到本地的txpool中（就是缓存交易池）&lt;/li&gt;
+  &lt;li&gt;把交易信息广播给其它节点&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;每条交易对应存储两条数据，一条是交易本身，一条是交易的元信息（meta）。交易以交易的hash为key、交易的RLP编码为value存储；元信息以txHash+txMetaSuffix为key、元信息的RLP编码为value存储。元信息中包含交易所在区块的区块hash、区块号、交易在区块中的索引。具体可以看WriteTransactions函数&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// hash size from是缓存字段
+type Transaction struct {
+	data txdata
+	// caches
+	hash atomic.Value
+	size atomic.Value
+	from atomic.Value
+}
+
+type txdata struct {
+	AccountNonce uint64          `json:&quot;nonce&quot;    gencodec:&quot;required&quot;`
+	Price        *big.Int        `json:&quot;gasPrice&quot; gencodec:&quot;required&quot;`
+	GasLimit     uint64          `json:&quot;gas&quot;      gencodec:&quot;required&quot;`
+	Recipient    *common.Address `json:&quot;to&quot;       rlp:&quot;nil&quot;` // nil means contract creation
+	Amount       *big.Int        `json:&quot;value&quot;    gencodec:&quot;required&quot;`
+	Payload      []byte          `json:&quot;input&quot;    gencodec:&quot;required&quot;`
+
+	// Signature values
+	V *big.Int `json:&quot;v&quot; gencodec:&quot;required&quot;`
+	R *big.Int `json:&quot;r&quot; gencodec:&quot;required&quot;`
+	S *big.Int `json:&quot;s&quot; gencodec:&quot;required&quot;`
+
+	// This is only used when marshaling to JSON.
+	Hash *common.Hash `json:&quot;hash&quot; rlp:&quot;-&quot;`
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;AccountNonce:  发送者发起的交易总数量&lt;/p&gt;
+
+&lt;p&gt;Price:		此次交易的gas价格&lt;/p&gt;
+
+&lt;p&gt;GasLimit:	本次交易允许消耗的最大Gas数&lt;/p&gt;
+
+&lt;p&gt;Recipient:	交易接收者的地址&lt;/p&gt;
+
+&lt;p&gt;Amount:		此次交易转移的以太币数量&lt;/p&gt;
+
+&lt;p&gt;Payload:		其它数据&lt;/p&gt;
+
+&lt;p&gt;V:			交易的签名数据&lt;/p&gt;
+
+&lt;p&gt;R:			交易的签名数据&lt;/p&gt;
+
+&lt;p&gt;S:			交易的签名数据&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;txdata结构中没有指明交易的发送者，因为交易的发送者地址可以从签名中得到&lt;/p&gt;
+&lt;/blockquote&gt;
+
+</description>
+        <pubDate>Sat, 02 Jun 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/06/02/%E4%BA%A4%E6%98%93%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/06/02/%E4%BA%A4%E6%98%93%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</guid>
+        
+        <category>区块链</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>以太坊源码解析-go-ethereum代码阅读环境搭建</title>
+        <description>&lt;h1 id=&quot;go-ethereum代码阅读环境搭建&quot;&gt;go-ethereum代码阅读环境搭建&lt;/h1&gt;
+
+&lt;p&gt;安装GO&lt;/p&gt;
+
+&lt;p&gt;配置环境变量(GOROOT, GOPATH, GOBIN)&lt;/p&gt;
+
+&lt;p&gt;下载源码：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cd  $GOPATH; 
+$ mkdir src
+$ cd src  #进入go项目目录，创建src目录, 并进入src目录
+$ git clone https://github.com/ethereum/go-ethereum
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;使用vim或其他IDE打开即可&lt;/p&gt;
+
+&lt;p&gt;##windows 10 64bit&lt;/p&gt;
+
+&lt;p&gt;安装GO&lt;/p&gt;
+
+&lt;p&gt;配置环境变量(GOROOT, GOPATH, GOBIN)&lt;/p&gt;
+
+&lt;p&gt;安装git工具，请参考网络上的教程安装git工具， go语言从github自动下载代码需要git工具的支持&lt;/p&gt;
+
+&lt;p&gt;打开命令行工具下载 go-ethereum的代码&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;go get github.com/ethereum/go-ethereum
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;命令执行成功之后，代码就会下载到下面这个目录，%GOPATH%\src\github.com\ethereum\go-ethereum
+如果执行过程中出现&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# github.com/ethereum/go-ethereum/crypto/secp256k1
+exec: &quot;gcc&quot;: executable file not found in %PATH%
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;则需要安装gcc工具，我们从下面地址下载并安装&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;http://tdm-gcc.tdragon.net/download
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;安装相应的IDE(Goland)&lt;/p&gt;
+
+&lt;p&gt;##环境测试&lt;/p&gt;
+
+&lt;p&gt;打开go-ethereum/rlp/decode_test.go. 在编辑框右键选择运行， 如果运行成功，代表环境搭建完成&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;./picture/go_env_2.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;##go ethereum 目录大概介绍&lt;/p&gt;
+
+&lt;p&gt;go-ethereum项目的组织结构基本上是按照功能模块划分的目录，下面简单介绍一下各个目录的结构，每个目录在GO语言里面又被成为一个Package&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;accounts		实现了一个高等级的以太坊账户管理
+bmt				二进制的默克尔树的实现
+build			主要是编译和构建的一些脚本和配置
+cmd				命令行工具，又分了很多的命令行工具
+	/abigen		Source code generator to convert Ethereum contract definitions into easy to use, compile-time 
+type-safe Go packages
+	/bootnode	启动一个仅仅实现网络发现的节点
+	/evm		以太坊虚拟机的开发工具， 用来提供一个可配置的，受隔离的代码调试环境
+	/faucet		
+	/geth		以太坊命令行客户端，最重要的一个工具
+	/p2psim		提供了一个工具来模拟http的API
+	/puppeth	创建一个新的以太坊网络的向导
+	/rlpdump 	提供了一个RLP数据的格式化输出
+	/swarm		swarm网络的接入点
+	/util		提供了一些公共的工具
+	/wnode		这是一个简单的Whisper节点。 它可以用作独立的引导节点。此外，可以用于不同的测试和诊断目的。
+common			提供了一些公共的工具类
+compression		Package rle implements the run-length encoding used for Ethereum data.
+consensus		提供了以太坊的一些共识算法，比如ethhash, clique(proof-of-authority)
+console			console类
+contracts	
+core			以太坊的核心数据结构和算法(虚拟机，状态，区块链，布隆过滤器)
+crypto			加密和hash算法，
+eth			实现了以太坊的协议
+ethclient		提供了以太坊的RPC客户端
+ethdb			eth的数据库(包括实际使用的leveldb和供测试使用的内存数据库)
+ethstats		提供网络状态的报告
+event			处理实时的事件
+les			实现了以太坊的轻量级协议子集
+light			实现为以太坊轻量级客户端提供按需检索的功能
+log			提供对人机都友好的日志信息
+metrics			提供磁盘计数器
+miner			提供以太坊的区块创建和挖矿
+mobile			移动端使用的一些warpper
+node			以太坊的多种类型的节点
+p2p			以太坊p2p网络协议
+rlp			以太坊序列化处理
+rpc			远程方法调用
+swarm			swarm网络处理
+tests			测试
+trie			以太坊重要的数据结构Package trie implements Merkle Patricia Tries.
+whisper			提供了whisper节点的协议。
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+</description>
+        <pubDate>Sat, 02 Jun 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/06/02/go-ethereum%E4%BB%A3%E7%A0%81%E9%98%85%E8%AF%BB%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/06/02/go-ethereum%E4%BB%A3%E7%A0%81%E9%98%85%E8%AF%BB%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
+        
+        <category>区块链</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>etcd 多台服务器集群</title>
+        <description>&lt;h1 id=&quot;etcd-多台服务器集群&quot;&gt;etcd 多台服务器集群&lt;/h1&gt;
+
+&lt;h2 id=&quot;下载安装-etcd&quot;&gt;下载安装 etcd&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ mkdir -p $GOPATH/src/github.com/coreos
+$ cd !$
+$ git clone https://github.com/coreos/etcd.git
+$ cd etcd
+$ ./build
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;启动服务&quot;&gt;启动服务&lt;/h2&gt;
+
+&lt;p&gt;每个节点都要执行以下配置，HOST_1、HOST_2、HOST_3 分别设置为多台服务器的IP&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;TOKEN=token-01
+CLUSTER_STATE=new
+NAME_1=machine-1
+NAME_2=machine-2
+NAME_3=machine-3
+HOST_1=192.168.1.126
+HOST_2=192.168.1.119
+HOST_3=192.168.1.103
+CLUSTER=${NAME_1}=http://${HOST_1}:2380,${NAME_2}=http://${HOST_2}:2380,${NAME_3}=http://${HOST_3}:2380
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;machine 1&lt;/strong&gt; 执行如下命令&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cd $GOPATH/src/github.com/coreos/etcd/bin
+
+# For machine 1
+THIS_NAME=${NAME_1}
+THIS_IP=${HOST_1}
+./etcd --data-dir=data.etcd --name ${THIS_NAME} --initial-advertise-peer-urls http://${THIS_IP}:2380 --listen-peer-urls http://${THIS_IP}:2380 --advertise-client-urls http://${THIS_IP}:2379 --listen-client-urls http://${THIS_IP}:2379 --initial-cluster ${CLUSTER} --initial-cluster-state ${CLUSTER_STATE} --initial-cluster-token ${TOKEN}
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;machine 2&lt;/strong&gt; 执行如下命令&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cd $GOPATH/src/github.com/coreos/etcd/bin
+
+# For machine 2
+THIS_NAME=${NAME_2}
+THIS_IP=${HOST_2}
+./etcd --data-dir=data.etcd --name ${THIS_NAME} --initial-advertise-peer-urls http://${THIS_IP}:2380 --listen-peer-urls http://${THIS_IP}:2380 --advertise-client-urls http://${THIS_IP}:2379 --listen-client-urls http://${THIS_IP}:2379 --initial-cluster ${CLUSTER} --initial-cluster-state ${CLUSTER_STATE} --initial-cluster-token ${TOKEN}
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;machine 3&lt;/strong&gt; 执行如下命令&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cd $GOPATH/src/github.com/coreos/etcd/bin
+
+# For machine 3
+THIS_NAME=${NAME_3}
+THIS_IP=${HOST_3}
+./etcd --data-dir=data.etcd --name ${THIS_NAME} --initial-advertise-peer-urls http://${THIS_IP}:2380 --listen-peer-urls http://${THIS_IP}:2380 --advertise-client-urls http://${THIS_IP}:2379 --listen-client-urls http://${THIS_IP}:2379 --initial-cluster ${CLUSTER} --initial-cluster-state ${CLUSTER_STATE} --initial-cluster-token ${TOKEN}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;检测服务器运行是否正常&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cd $GOPATH/src/github.com/coreos/etcd/bin
+
+export ETCDCTL_API=3
+HOST_1=192.168.1.126
+HOST_2=192.168.1.119
+HOST_3=192.168.1.103
+ENDPOINTS=$HOST_1:2379,$HOST_2:2379,$HOST_3:2379
+
+./etcdctl --endpoints=$ENDPOINTS member list
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;存储数据&quot;&gt;存储数据&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;./etcdctl --endpoints=$ENDPOINTS put foo &quot;Hello World!&quot;
+
+./etcdctl --endpoints=$ENDPOINTS get foo
+./etcdctl --endpoints=$ENDPOINTS --write-out=&quot;json&quot; get foo
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;根据前缀查询&quot;&gt;根据前缀查询&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;./etcdctl --endpoints=$ENDPOINTS put web1 value1
+./etcdctl --endpoints=$ENDPOINTS put web2 value2
+./etcdctl --endpoints=$ENDPOINTS put web3 value3
+
+./etcdctl --endpoints=$ENDPOINTS get web --prefix
+
+web1
+value1
+web2
+value2
+web3
+value3
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;删除&quot;&gt;删除&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;./etcdctl --endpoints=$ENDPOINTS put key myvalue
+./etcdctl --endpoints=$ENDPOINTS del key
+
+./etcdctl --endpoints=$ENDPOINTS put k1 value1
+./etcdctl --endpoints=$ENDPOINTS put k2 value2
+./etcdctl --endpoints=$ENDPOINTS del k --prefix
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;事务写入&quot;&gt;事务写入&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ./etcdctl --endpoints=$ENDPOINTS put user1 bad
+OK
+
+$ ./etcdctl --endpoints=$ENDPOINTS txn --interactive
+
+compares:
+// 输入以下内容，输入结束按 两次回车
+value(&quot;user1&quot;) = &quot;bad&quot;      
+
+//如果 user1 = bad，则执行 get user1 
+success requests (get, put, del):
+get user1
+
+//如果 user1 != bad，则执行 put user1 good
+failure requests (get, put, del):
+put user1 good
+
+// 运行结果，执行 success
+SUCCESS
+
+user1
+bad
+
+
+
+$ ./etcdctl --endpoints=$ENDPOINTS txn --interactive
+compares:
+value(&quot;user1&quot;) = &quot;111&quot;  
+
+// 如果 user1 = 111，则执行 get user1 
+success requests (get, put, del):
+get user1
+
+//如果 user1 != 111，则执行 put user1 2222
+failure requests (get, put, del):
+put user1 2222
+
+// 运行结果，执行 failure
+FAILURE
+
+OK
+
+$ ./etcdctl --endpoints=$ENDPOINTS get user1
+user1
+2222
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;watch&quot;&gt;watch&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// 当 stock1 的数值改变（ put 方法）的时候，watch 会收到通知
+./etcdctl --endpoints=$ENDPOINTS watch stock1
+
+// 新打开终端
+$ cd $GOPATH/src/github.com/coreos/etcd/bin
+
+export ETCDCTL_API=3
+HOST_1=192.168.1.126
+HOST_2=192.168.1.119
+HOST_3=192.168.1.103
+ENDPOINTS=$HOST_1:2379,$HOST_2:2379,$HOST_3:2379
+./etcdctl --endpoints=$ENDPOINTS put stock1 1000
+
+./etcdctl --endpoints=$ENDPOINTS watch stock --prefix
+
+./etcdctl --endpoints=$ENDPOINTS put stock1 10
+./etcdctl --endpoints=$ENDPOINTS put stock2 20
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;更多操作&quot;&gt;更多操作&lt;/h2&gt;
+
+&lt;p&gt;https://coreos.com/etcd/docs/latest/demo.html&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 02 Jun 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/06/02/etcd-%E5%A4%9A%E5%8F%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%9B%86%E7%BE%A4/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/06/02/etcd-%E5%A4%9A%E5%8F%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%9B%86%E7%BE%A4/</guid>
+        
+        <category>etcd</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>etcd使用</title>
+        <description>&lt;h1 id=&quot;etcd---一个分布式一致性键值存储系统&quot;&gt;etcd - 一个分布式一致性键值存储系统&lt;/h1&gt;
+
+&lt;p&gt;etcd是一个分布式一致性键值存储系统，用于共享配置和服务发现，专注于：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;简单:良好定义的，面向用户的API (gRPC)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;安全： 带有可选客户端证书认证的自动TLS&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;快速:测试验证，每秒10000写入&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;可靠:使用Raft适当分布&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;etcd是Go编写，并使用Raft一致性算法来管理高可用复制日志，架构如下图所示：&lt;/p&gt;
+
+&lt;h2 id=&quot;下载安装&quot;&gt;下载安装&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ mkdir -p $GOPATH/src/github.com/coreos
+$ cd !$
+$ git clone https://github.com/coreos/etcd.git
+$ cd etcd
+$ ./build
+$ ./bin/etcd
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;另外一种下载安装的方法：&lt;/p&gt;
+
+&lt;p&gt;直接下载etcd二进制 （包含etcd、etcdctl）
+https://github.com/coreos/etcd/releases&lt;/p&gt;
+
+&lt;h2 id=&quot;测试&quot;&gt;测试&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cd $GOPATH
+$ ./bin/etcd
+
+$ cd $GOPATH
+$ ETCDCTL_API=3 ./bin/etcdctl put foo bar
+
+# 输出结果显示OK，表示安装成功
+OK
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;搭建本地集群&quot;&gt;搭建本地集群&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ go get github.com/mattn/goreman
+
+$ cd $GOPATH/src/github.com/coreos/etcd
+$ goreman -f Procfile start
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;查看本地集群的服务器列表&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cd $GOPATH/src/github.com/coreos/etcd
+
+$ ./bin/etcdctl member list
+
+# 显示结果
+
+8211f1d0f64f3269: name=infra1 peerURLs=http://127.0.0.1:12380 clientURLs=http://127.0.0.1:2379 isLeader=false
+91bc3c398fb3c146: name=infra2 peerURLs=http://127.0.0.1:22380 clientURLs=http://127.0.0.1:22379 isLeader=true
+fd422379fda50e48: name=infra3 peerURLs=http://127.0.0.1:32380 clientURLs=http://127.0.0.1:32379 isLeader=false
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;存储数据&quot;&gt;存储数据&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;export ETCDCTL_API=3
+
+$ ./bin/etcdctl put foo &quot;Hello World!&quot;
+
+OK
+
+$ ./bin/etcdctl get foo
+
+foo
+Hello World!
+
+
+$ ./bin/etcdctl  --write-out=&quot;json&quot; get foo
+
+{&quot;header&quot;:{&quot;cluster_id&quot;:17237436991929493444,&quot;member_id&quot;:9372538179322589801,&quot;revision&quot;:2,&quot;raft_term&quot;:2},&quot;kvs&quot;:[{&quot;key&quot;:&quot;Zm9v&quot;,&quot;create_revision&quot;:2,&quot;mod_revision&quot;:2,&quot;version&quot;:1,&quot;value&quot;:&quot;SGVsbG8gV29ybGQh&quot;}],&quot;count&quot;:1}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;根据前缀查询&quot;&gt;根据前缀查询&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+$ ./bin/etcdctl put web1 value1
+$ ./bin/etcdctl put web2 value2
+$ ./bin/etcdctl put web3 value3
+
+$ ./bin/etcdctl get web --prefix
+
+web1
+value1
+web2
+value2
+web3
+value3
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;删除数据&quot;&gt;删除数据&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ./bin/etcdctl put key myvalue
+$ ./bin/etcdctl del key
+1
+$ ./bin/etcdctl get key
+// 查询结果为空
+
+$ ./bin/etcdctl put k1 value1
+$ ./bin/etcdctl put k2 value2
+$ ./bin/etcdctl del k --prefix
+2
+$ ./bin/etcdctl get k --prefix
+// 查询结果为空
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;事务写入&quot;&gt;事务写入&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ./bin/etcdctl put user1 bad
+OK
+$ ./bin/etcdctl txn --interactive
+
+compares:
+// 输入以下内容，输入结束按 两次回车
+value(&quot;user1&quot;) = &quot;bad&quot;      
+
+//如果 user1 = bad，则执行 get user1 
+success requests (get, put, del):
+get user1
+
+//如果 user1 != bad，则执行 put user1 good
+failure requests (get, put, del):
+put user1 good
+
+// 运行结果，执行 success
+SUCCESS
+
+user1
+bad
+
+
+
+$ ./bin/etcdctl txn --interactive
+compares:
+value(&quot;user1&quot;) = &quot;111&quot;  
+
+// 如果 user1 = 111，则执行 get user1 
+success requests (get, put, del):
+get user1
+
+//如果 user1 != 111，则执行 put user1 2222
+failure requests (get, put, del):
+put user1 2222
+
+// 运行结果，执行 failure
+FAILURE
+
+OK
+
+$ ./bin/etcdctl get user1
+user1
+2222
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;watch&quot;&gt;watch&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// 当 stock1 的数值改变（ put 方法）的时候，watch 会收到通知
+$ ./bin/etcdctl watch stock1
+
+// 新打开终端
+$ export ETCDCTL_API=3
+$ ./bin/etcdctl put stock1 1000
+
+//在watch 终端显示
+PUT
+stock1
+1000
+
+
+$ ./bin/etcdctl watch stock --prefix
+$ ./bin/etcdctl put stock1 10
+$ ./bin/etcdctl put stock2 20
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;lease&quot;&gt;lease&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ./bin/etcdctl lease grant 300
+# lease 326963a02758b527 granted with TTL(300s)
+
+$ ./bin/etcdctl put sample value --lease=326963a02758b527
+OK
+
+$ ./bin/etcdctl get sample
+
+$ ./bin/etcdctl lease keep-alive 326963a02758b520
+$ ./bin/etcdctl lease revoke 326963a02758b527
+lease 326963a02758b527 revoked
+
+# or after 300 seconds
+$ ./bin/etcdctl get sample
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;distributed-locks&quot;&gt;Distributed locks&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//第一终端
+$ ./bin/etcdctl lock mutex1
+mutex1/326963a02758b52d
+
+# 第二终端
+$ ./bin/etcdctl lock mutex1
+
+// 当第一个终端结束了，第二个终端会显示
+mutex1/326963a02758b531
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;elections&quot;&gt;Elections&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ./bin/etcdctl elect one p1
+
+one/326963a02758b539
+p1
+
+
+# another client with the same name blocks
+$ ./bin/etcdctl elect one p2
+
+//结束第一终端，第二终端显示
+one/326963a02758b53e
+p2
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;cluster-status&quot;&gt;Cluster status&lt;/h3&gt;
+
+&lt;p&gt;集群状态&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ./bin/etcdctl --write-out=table endpoint status
+
+$ ./bin/etcdctl endpoint health
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;snapshot&quot;&gt;Snapshot&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;./bin/etcdctl snapshot save my.db
+
+Snapshot saved at my.db
+
+./bin/etcdctl --write-out=table snapshot status my.db
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;member&quot;&gt;Member&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;./bin/etcdctl member list -w table
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+</description>
+        <pubDate>Sat, 02 Jun 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/06/02/etcd-%E4%B8%80%E4%B8%AA%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%80%E8%87%B4%E6%80%A7%E9%94%AE%E5%80%BC%E5%AD%98%E5%82%A8%E7%B3%BB%E7%BB%9F/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/06/02/etcd-%E4%B8%80%E4%B8%AA%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%80%E8%87%B4%E6%80%A7%E9%94%AE%E5%80%BC%E5%AD%98%E5%82%A8%E7%B3%BB%E7%BB%9F/</guid>
+        
+        <category>etcd</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>TCP和UDP的区别</title>
+        <description>&lt;h1 id=&quot;tcp和udp的区别&quot;&gt;TCP和UDP的区别&lt;/h1&gt;
+&lt;p&gt;TCP UDP
+TCP与UDP基本区别
+  1.基于连接与无连接
+  2.TCP要求系统资源较多，UDP较少； 
+  3.UDP程序结构较简单 
+  4.流模式（TCP）与数据报模式(UDP); 
+  5.TCP保证数据正确性，UDP可能丢包 
+  6.TCP保证数据顺序，UDP不保证 
+　　
+UDP应用场景：
+  1.面向数据报方式
+  2.网络数据大多为短消息 
+  3.拥有大量Client
+  4.对数据安全性无特殊要求
+  5.网络负担非常重，但对响应速度要求高&lt;/p&gt;
+
+&lt;p&gt;tcp需要确认对方在线,才能发送消息
+  UDP不需要确认对方在不在线,就能发送信息&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 02 Jun 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/06/02/TCP%E5%92%8CUDP%E7%9A%84%E5%8C%BA%E5%88%AB/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/06/02/TCP%E5%92%8CUDP%E7%9A%84%E5%8C%BA%E5%88%AB/</guid>
+        
+        <category>go</category>
+        
+        
+      </item>
     
       <item>
         <title>拜占庭将军问题PBFT实用拜占庭容错</title>
@@ -341,585 +1296,6 @@ func main() {
         <guid isPermaLink="true">http://localhost:4000/2018/05/26/RPC%E7%BD%91%E7%BB%9C%E6%A1%86%E6%9E%B6/</guid>
         
         <category>RPC框架</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>POW共识算法</title>
-        <description>&lt;h1 id=&quot;pow共识算法&quot;&gt;pow共识算法&lt;/h1&gt;
-&lt;p&gt;pow就是挖矿,工作量证明&lt;/p&gt;
-
-&lt;p&gt;##区块数据结构
-上一个节点的hash(prehHash)创始区块为0
-当前节点的hash(HashCode)
-区块高度(Index)
-时间戳(time)
-交易数据(Data)
-nonce (每次+1 来进行hash碰撞)
-难度系数 Diff =4(当前hash值前面就必须有4个0)&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;把以上所有内容加起来,进行hash运算(sha256),来完成hash碰撞nonce值从0开始进行累计,交易数据会随机从未确认池中捞取,直到得到符合难度要要求的hash值,就是Pow挖矿成功,
-Pow完成的区块向全网广播，其他节点将验证其是否符合规则，如果验证有效，其他节点将接收此区块，并附加在已有区块链之后。之后将进入下一轮挖矿。
-如果有两个同时确认,两个区块会同时存在,再进行下一轮的挖矿,下一轮谁先挖到,就以谁的区块为准,另一条区块失效&lt;/p&gt;
-
-&lt;p&gt;用go语言代码来实现pow挖矿&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//PoW proof-of-work  工作量证明算法
-func pow(diff int, block *Block) string {
-	for { //循环来产生区块的hash值 直到符合难度要求
-		hash := GenerateBlockHashValue(*block)
-		fmt.Println(hash)
-		//hash值前面要有Diff个0
-		if strings.HasPrefix(hash, strings.Repeat(&quot;0&quot;, diff)) {  //判断开头是不是diff个0  返回bool
-			//挖矿成功
-			fmt.Println(&quot;挖矿成功&quot;)
-			return hash
-		}else {
-			block.Nonce++
-		}
-
-	}
-
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//生产区块的hash值
-func GenerateBlockHashValue(block Block) string {
-	//按照比特币的写法,将区块的所有的属性拼接后做Hash运算
-	var hashdata = strconv.Itoa(block.Index) + block.Timestamp +
-		strconv.Itoa(block.Diff) + strconv.Itoa(block.Nonce) + block.Data
-	//进行hash运算
-	var sha = sha256.New()
-	sha.Write([]byte(hashdata))
-	hashed := sha.Sum(nil)
-	//将[]byte转换字符串
-	return hex.EncodeToString(hashed)
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;缺点 非常好资源 
-比特币总量是有限的,到最后矿工就会很少,
-最后没有奖励了,就会瘫痪&lt;/p&gt;
-
-</description>
-        <pubDate>Sat, 26 May 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/05/26/POW%E5%85%B1%E8%AF%86%E7%AE%97%E6%B3%95%E5%B7%A5%E4%BD%9C%E9%87%8F%E8%AF%81%E6%98%8E/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/05/26/POW%E5%85%B1%E8%AF%86%E7%AE%97%E6%B3%95%E5%B7%A5%E4%BD%9C%E9%87%8F%E8%AF%81%E6%98%8E/</guid>
-        
-        <category>共识算法</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>POS共识算法</title>
-        <description>&lt;h1 id=&quot;pos共识算法&quot;&gt;pos共识算法&lt;/h1&gt;
-&lt;p&gt;###共识算法 pos(点点币)
-—
-大多数地方叫&lt;strong&gt;权益证明&lt;/strong&gt;，其实可以看作是股权证明，也是一种共识算法，在基于权益证明的数字货币中，下一个区块的选择是根据不同节点的股份和时间进行随机选择的。打个比方说，假如你买了1万个数字货币，然后就放在POS机制中，这样你就拥有了机会去获得新的区块从而得到奖励，机会有多大呢，就是那些拥有1千个数字货币的人的10倍概率，因为你有1万个，1万是1千的十倍，10%的股份分红是1%股份的10倍，道理是一样的。&lt;/p&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;优势：不需要浪费算力，同时，进行51%攻击的代价更高，因为想要进行51%攻击的话，你得拥有51%的货币。也就是说，这东西越值钱，攻击的成本就越高&lt;/p&gt;
-
-&lt;h2 id=&quot;pos的挖矿奖励是通过币零来计算的&quot;&gt;pos的挖矿奖励是通过币零来计算的&lt;/h2&gt;
-
-&lt;p&gt;有一个名词叫币龄，每个币每天产生1币龄，比如你持有100个币，总共持有了30天，那么，此时你的币龄就为3000，这个时候，如果你发现了一个POS区块，你的币龄就会被清空为0。你每被清空365币龄，你将会从区块中获得0.05个币的利息(可理解为年利率5%)，那么在这个案例中，利息 = 3000 * 5% / 365 = 0.41个币，这下就很有意思了，持币有利息，非常好！（需要注意的是，5%的年利率仅仅是举例，并非每个POS模式的币种都是5%，比如点点币PPCoin就是1%年利率）&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;##POS的设计理念，来自于对比特币危机的思考，原因有三：
-首先，我们都知道，比特币的区块产量每4年会减半，在不久的未来，随着比特币区块包含的产量越来越低，大家挖矿的动力将会不断下降，矿工人数越来越少，整个比特币网络有可能会逐渐陷入瘫痪(因为大家都减少了运行比特币客户端的时间，因此越来越难找到一个P2P节点去连接和同步网络数据)。
-POS解决方案：在POS体系中，只有打开钱包客户端程序，才能发现POS区块，才会获得利息，这促使很多不想挖矿的人，也会常常打开自己的钱包客户端，这帮助了P2P货币网络的健壮。
-其次，若干年后，随着矿工人数的下降，比特币很有可能被一些高算力的人、或团队、或矿池，进行51%攻击，导致整个比特币网络崩溃。51%攻击简单来说，就是当你拥有了超过全球51%的比特币算力时，你将能伪造比特币网络的任何数据，比如你伪造你有一百万个比特币但实际上你没有。(拓展阅读：什么是51%攻击)
-POS解决方案：在POS体系中，即使你拥有了全球51%的算力，也未必能够进行51%攻击，因为，有一部分的货币并不是挖矿产生的，而是由利息产生(利息存放在POS区块中)，这要求攻击者还需要持有全球超过51%的货币量。这大大提高了51%攻击的难度。&lt;/p&gt;
-
-&lt;p&gt;用go来实现pos算法&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;package main
-
-import (
-	&quot;strconv&quot;
-	&quot;crypto/sha256&quot;
-	&quot;encoding/hex&quot;
-	&quot;time&quot;
-	&quot;math/rand&quot;
-	&quot;fmt&quot;
-)
-
-//常用共识算法 Pos pow Dpos 所有的共识算法都是为了解决挖矿问题
-//pos共识算法的使用
-//创建区块
-
-type Block struct {
-	BMP       int
-	Perhash   string
-	HashCode  string
-	TimeStamp string
-	Index     int
-	validator string //区块验证者
-}
-//创建区块链
-var Blockchain []Block
-
-
-//区块hash算法 计算区块的hash值
-func generateHashValue(block Block)string  {
-	var hashcode=block.Perhash+block.HashCode+block.TimeStamp+block.validator+strconv.Itoa(block.BMP)+strconv.Itoa(block.Index)
-		sha:=sha256.New()
-		sha.Write([]byte(hashcode))
-		hashed:=sha.Sum(nil)
-		return hex.EncodeToString(hashed)
-
-}
-
-//生成新的区块  adds是矿工的地址
-func GenerateNextblock(oldBlock Block,BMP int,adds string)Block  {
-	newBlock:=Block{}
-	newBlock.Index=oldBlock.Index+1
-	newBlock.TimeStamp=time.Now().String()
-	newBlock.HashCode=generateHashValue(newBlock)
-	newBlock.Perhash=oldBlock.HashCode
-	newBlock.validator=adds
-	newBlock.BMP=BMP
-	return newBlock
-
-}
-//点点币网路系统中的全节点
-type Node struct {
-	tokens int  //有多少币
-	adds string //地址
-}
-//存放全节点
-var n[2] Node  //节点 创建几个 就有几个用户
-var addr[3000] string  //
-
-func main() {
-	//存放两个炒币者
-	n[0]=Node{1000,&quot;abc123&quot;}  //第一个节点
-	n[1]=Node{2000,&quot;bcd234&quot;}
-	//以下为pos公式算法
-	var cnt =0
-	for i:=0;i&amp;lt;2;i++{
-		for j :=0;j&amp;lt;n[i].tokens;j++{  //addr 数组赋值
-			addr[cnt]=n[i].adds
-			cnt++
-		}
-	}
-	rand.Seed(time.Now().Unix())  //随机种子
-	//通过随机值[0-3000)
-	rd:=rand.Intn(3000)
-	var adds=addr[rd]
-
-	//生成创始区块
-	firstBlock:=Block{}
-	firstBlock.BMP=100
-	firstBlock.Perhash=&quot;0&quot;
-	firstBlock.TimeStamp=time.Now().String()
-	firstBlock.validator=&quot;abc123&quot;
-	firstBlock.Index=1
-	firstBlock.HashCode=generateHashValue(firstBlock)
-
-	//将创始区块添加的区块链
-	Blockchain=append(Blockchain,firstBlock)
-	//挖矿成功
-	var sceondBlock=GenerateNextblock(firstBlock,200,adds)
-	//把下一个区块存取区块链
-	Blockchain=append(Blockchain,sceondBlock)
-	fmt.Println(Blockchain)
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-</description>
-        <pubDate>Sat, 26 May 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/05/26/POS%E5%85%B1%E8%AF%86%E7%AE%97%E6%B3%95%E6%9D%83%E7%9B%8A%E8%AF%81%E6%98%8E/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/05/26/POS%E5%85%B1%E8%AF%86%E7%AE%97%E6%B3%95%E6%9D%83%E7%9B%8A%E8%AF%81%E6%98%8E/</guid>
-        
-        <category>共识算法</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>DPOS共识算法</title>
-        <description>&lt;h1 id=&quot;dpos共识算法&quot;&gt;Dpos共识算法&lt;/h1&gt;
-&lt;h2 id=&quot;什么是-dpos&quot;&gt;什么是 DPoS&lt;/h2&gt;
-
-&lt;p&gt;DPoS 即 Delegated Proof of Stake 译为股份授权证明。
-最早于2013年由比特股Bitshares提出，目的为解决PoW和PoS机制的不足&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;持币人可以进行投票,选出代表自己的受托人,受托人的权益是相等的,可以进行轮流挖矿的,并按照个人的持股比例获得“利息”&lt;/strong&gt;
-相较于PoW每10分钟产生一个区块，DPoS每3秒钟即可产生一个区块,效率大大提高.&lt;/p&gt;
-
-&lt;p&gt;###对恶意节点的惩罚
-注册成为候选受托人需要支付一笔保证金，就像是参与民意代表选举前缴纳的保证金一样，一般来说担任受托人约两周后才可达到损益平衡，这促进了受托人的稳定性，确保至少会挖满两周的矿。
-惩罚机制为：不按排程产生区块的节点将在下一轮被投票剔除，也会被没收之前缴纳的保证金。
-DPoS是效率较PoW和PoS更高、产生区块的速度更快；
-虽然恶意的节点将在下一轮投票被踢出，但单个恶意区块在短期仍有可能是有效的状态。
-短期虽然可能存在恶意区块，但长期下来，可以透过受托人的自主选择来回归链条的有效性
-假定现在总共有3个受托人A、Ｂ、Ｃ，D加入排程后，只要确认之前的区块中，有2/3以上个受托人遵循的链是哪条就可以了。&lt;/p&gt;
-
-&lt;p&gt;##DPoS的优缺点
-###优点
-能耗更低。DPoS机制将节点数量进一步减少到101个，在保证网络安全的前提下，整个网络的能耗进一步降低，网络运行成本最低。
-更加去中心化。目前，对于比特币而言，个人挖矿已经不现实了，比特币的算力都集中在几个大的矿池手里，每个矿池都是中心化的，就像DPoS的一个受托人，因此DPoS机制的加密货币更加去中心化。PoS机制的加密货币（比如未来币），要求用户开着客户端，事实上用户并不会天天开着电脑，因此真正的网络节点是由几个股东保持的，去中心化程度也不能与DPoS机制的加密货币相比。
-更快的确认速度。每个块的时间为10秒，一笔交易（在得到6-10个确认后）大概1分钟，一个完整的101个块的周期大概仅仅需要16分钟。而比特币（PoW机制）产生一个区块需要10分钟，一笔交易完成（6个区块确认后）需要1个小时。点点币（PoS机制）确认一笔交易大概也需要1小时。
-###缺点
-投票的积极性并不高。绝大多数持股人（90％+）从未参与投票。这是因为投票需要时间、精力以及技能，而这恰恰是大多数投资者所缺乏的。
-对于坏节点的处理存在诸多困难。社区选举不能及时有效的阻止一些破坏节点的出现，给网络造成安全隐患。&lt;/p&gt;
-
-&lt;p&gt;go语言实现Dpos共识算法&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;package main
-
-import (
-	&quot;strconv&quot;
-	&quot;crypto/sha256&quot;
-	&quot;encoding/hex&quot;
-	&quot;time&quot;
-	&quot;math/rand&quot;
-	&quot;fmt&quot;
-)
-
-//Dpos共识算法 原理
-
-type Block struct {
-	Index int
-	PreHash string
-	HashCode string
-	BMP int
-	Validator string   //区块验证者
-	TimeStamp string
-}
-
-//区块链 用数组维护区块
-
-var blockchian []Block
-
-//生成Block
-func generateNextBlock(oldBlock Block,BMP int,adds string)Block  {
-	newBlock:=Block{}
-	newBlock.Index=oldBlock.Index+1
-	newBlock.PreHash=oldBlock.HashCode
-	newBlock.BMP=BMP
-	newBlock.TimeStamp=time.Now().String()
-	newBlock.HashCode=generateHashValue(newBlock)
-	newBlock.Validator=adds
-
-	return newBlock
-}
-
-
-//产生区块的hash值
-func generateHashValue(block Block)string  {
-	var hashcode=block.PreHash+block.Validator+block.TimeStamp+
-		strconv.Itoa(block.Index)+strconv.Itoa(block.BMP)
-		sha:=sha256.New()
-		sha.Write([]byte(hashcode))
-		hashed:=sha.Sum(nil)
-		return hex.EncodeToString(hashed)
-
-}
-
-//存放代理人 代理人的地址信息
-var delgate =[]string {&quot;aaa&quot;,&quot;bbb&quot;,&quot;ccc&quot;,&quot;ddd&quot;}
-
-//随机调换委托人的位置
-func RandDelegate(){
-	rand.Seed(time.Now().Unix())
-	r:=rand.Intn(4)
-	t:=delgate[r]
-	delgate[r]=delgate[3]
-	delgate[3]=t
-}
-
-func main()  {
-	//创始区块
-	RandDelegate()
-	var firstBlock Block
-	blockchian=append(blockchian,firstBlock)  //把创始区块放到链里
-	//通过变量n按顺序让delegat作为矿工
-
-	n:=0
-
-	for{
-		//每三秒产生一个区块
-		time.Sleep(3*time.Second)
-		nextBlock:=generateNextBlock(firstBlock,1,delgate[n])   //区块验证者地址
-		n++
-		n=n%len(delgate) //轮流让受信人挖矿
-		firstBlock=nextBlock //创始=下一个区块
-		blockchian=append(blockchian,nextBlock) // 把新创建的区块加到链里
-		fmt.Println(blockchian)
-	}
-
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-</description>
-        <pubDate>Sat, 26 May 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/05/26/DPOS%E5%85%B1%E8%AF%86%E7%AE%97%E6%B3%95%E8%82%A1%E6%9D%83%E6%8E%88%E6%9D%83%E8%AF%81%E6%98%8E/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/05/26/DPOS%E5%85%B1%E8%AF%86%E7%AE%97%E6%B3%95%E8%82%A1%E6%9D%83%E6%8E%88%E6%9D%83%E8%AF%81%E6%98%8E/</guid>
-        
-        <category>共识算法</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>零知识证明</title>
-        <description>&lt;h1 id=&quot;零知识证明&quot;&gt;零知识证明&lt;/h1&gt;
-
-&lt;p&gt;什么是零知识证明
-零知识证明(Zero—Knowledge Proof)，是由S.Goldwasser、S.Micali及C.Rackoff在20世纪80年代初提出的。它指的是证明者能够在不向验证者提供任何有用的信息的情况下，使验证者相信某个论断是正确的。零知识证明实质上是一种涉及两方或更多方的协议，即两方或更多方完成一项任务所需采取的一系列步骤。证明者向验证者证明并使其相信自己知道或拥有某一消息，但证明过程不能向验证者泄漏任何关于被证明消息的信息。大量事实证明，零知识证明在密码学中非常有用。如果能够将零知识证明用于验证，将可以有效解决许多问题。&lt;/p&gt;
-
-&lt;h2 id=&quot;通俗来将就是不给对方透露任何信息让对方相信你又这个能力&quot;&gt;通俗来将就是,不给对方透露任何信息,让对方相信,你又这个能力&lt;/h2&gt;
-&lt;p&gt;比如有一个房间只能用钥匙打开,A要向B证明A有钥匙,
-B知道房间里有一件特殊的物体X其他人不知道,A可以通过告诉B,特殊物体的信息,来证明自己有钥匙可以进入到房间内&lt;/p&gt;
-
-</description>
-        <pubDate>Sun, 20 May 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/05/20/%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/05/20/%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E/</guid>
-        
-        <category>密码学</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>go语言实现椭圆曲线ECC加密算法,签名和验签</title>
-        <description>&lt;h1 id=&quot;go语言实现椭圆曲线ecc加密的签名和验签&quot;&gt;go语言实现椭圆曲线ECC加密的签名和验签&lt;/h1&gt;
-&lt;hr /&gt;
-&lt;p&gt;椭圆曲线加密算法，即：Elliptic Curve Cryptography，简称ECC，是基于椭圆曲线数学理论实现的一种非对称加密算法。相比RSA，ECC优势是可以使用更短的密钥，来实现与RSA相当或更高的安全。据研究，160位ECC加密安全性相当于1024位RSA加密，210位ECC加密安全性相当于2048位RSA加密。&lt;/p&gt;
-
-&lt;p&gt;　　椭圆曲线在密码学中的使用，是1985年由Neal Koblitz和Victor Miller分别独立提出的。
-　　
-—&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;验证签名就是通过明文进行hash运算,然后跟签名中明文的hash进行比对&lt;/strong&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;&lt;strong&gt;go语言实现&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;package main
-
-import (
-	&quot;crypto/ecdsa&quot;
-	&quot;crypto/elliptic&quot;
-	&quot;crypto/rand&quot;
-	&quot;crypto/sha256&quot;
-	&quot;math/big&quot;
-	&quot;fmt&quot;
-)
-
-//通过椭圆曲线完成签名和验证
-func main()  {
-	//声明明文
-	message:=[]byte(&quot;hello world&quot;)
-	//生成私钥   elliptic.P256椭圆曲线法则
-	privateKey,_:=ecdsa.GenerateKey(elliptic.P256(),rand.Reader)
-	//生成公钥
-	pub:=privateKey.PublicKey
-	//将明文进行hash散列 数组
-	digest:=sha256.Sum256(message)
-	//签名
-	r,s,_:=ecdsa.Sign(rand.Reader,privateKey,digest[:])//切片
-	//设置私钥参数类型为Curve是曲线类型
-	param:=privateKey.Curve.Params()
-	//获得私钥长度                   把参数里的位求出来/8 = 求出字节[]byte长度  有自动补码
-	curveOrderByteSize:=param.P.BitLen()/8
-	//求出s,r,的字节长度  签名返回值的字节长度
-	rByte,sByte:=r.Bytes(),s.Bytes()
-	fmt.Println(r,rByte)
-	//创建签名数组, 长度是字节的两倍
-	signature:=make([]byte,curveOrderByteSize*2)
-
-	//通过数组,保存了签名结果返回值
-	copy(signature[curveOrderByteSize-len(rByte):],rByte)
-	copy(signature[curveOrderByteSize*2-len(sByte):],sByte)
-	//认证
-	//将明文做hash散列,为了验证的对比
-	digest= sha256.Sum256(message)
-	//获得公钥长度
-	curveOrderByteSize=pub.Curve.Params().P.BitLen()/8
-	//创建俩个整形对象
-	r,s =new(big.Int),new(big.Int)
-	//设置证书值
-	r.SetBytes(signature[:curveOrderByteSize])
-	s.SetBytes(signature[curveOrderByteSize:])
-	//认证
-	e:=ecdsa.Verify(&amp;amp;pub,digest[:],r,s)
-	if e==true{
-		fmt.Println(&quot;ok&quot;)
-
-	}else {
-		fmt.Println(&quot;failed&quot;)
-	}
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;运行结果&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;如果验签成功返回 ok
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-</description>
-        <pubDate>Sun, 20 May 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/05/20/go%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BFECC%E7%AD%BE%E5%90%8D%E5%92%8C%E9%AA%8C%E7%AD%BE/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/05/20/go%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BFECC%E7%AD%BE%E5%90%8D%E5%92%8C%E9%AA%8C%E7%AD%BE/</guid>
-        
-        <category>密码学</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>go语言实现RSA加密算法,签名和验签</title>
-        <description>&lt;h1 id=&quot;go语言实现rsa签名和验签&quot;&gt;go语言实现RSA签名和验签&lt;/h1&gt;
-
-&lt;p&gt;签名通过私钥对明文进行hash MD5运算,进行签名
-验签通过公钥对明文进行hash MD5运算,进行验签&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;package main
-
-import (
-&quot;crypto/rsa&quot;
-&quot;crypto/rand&quot;
-&quot;crypto/md5&quot;
-&quot;crypto&quot;
-&quot;fmt&quot;
-	&quot;encoding/base64&quot;
-)
-
-//RSA 实现签名和验证签
-func main()  {
-	//生成私钥
-	priv,_:=rsa.GenerateKey(rand.Reader,1024)
-	//产生公钥
-	pub:=&amp;amp;priv.PublicKey
-	fmt.Println(pub)
-	//设置明文
-	plaintext:=[]byte(&quot;hello&quot;)
-
-	//先给明文做hash散列加密
-	h:=md5.New()
-	h.Write(plaintext)
-	hashed:=h.Sum(nil)
-
-	//签名
-	opts:=&amp;amp;rsa.PSSOptions{SaltLength:rsa.PSSSaltLengthAuto,Hash:crypto.MD5}  //签名算法
-	sig,_:=rsa.SignPSS(rand.Reader,priv,crypto.MD5,hashed,opts)
-	fmt.Println(base64.StdEncoding.EncodeToString(sig))
-	//认证
-	e:=rsa.VerifyPSS(pub,crypto.MD5,hashed,sig,opts)
-	if e==nil{
-		fmt.Println(&quot;认证成功&quot;)
-
-	}
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;运行结果&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;e的值为空,证明验证成功
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-</description>
-        <pubDate>Sun, 20 May 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/05/20/go%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0RSA%E5%8A%A0%E5%AF%86%E7%AD%BE%E5%90%8D%E5%92%8C%E9%AA%8C%E7%AD%BE/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/05/20/go%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0RSA%E5%8A%A0%E5%AF%86%E7%AD%BE%E5%90%8D%E5%92%8C%E9%AA%8C%E7%AD%BE/</guid>
-        
-        <category>密码学</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>go语言实现非对称RSA加密算法</title>
-        <description>&lt;h1 id=&quot;go实现非对称加密rsa&quot;&gt;go实现非对称加密RSA&lt;/h1&gt;
-&lt;hr /&gt;
-&lt;p&gt;RSA是一种公钥密码算法，它的名字是由它的三位开发者，即Ron Rivest、Adi Shamir 和 Leonard Adleman的姓氏的首字母组成的( Rivest-Shamir-Adleman )。&lt;/p&gt;
-
-&lt;p&gt;RSA可以被用于公钥密码和数字签名。
-　　
-—
-非对称加密会生成一对密钥
-&lt;strong&gt;公钥 用来加密明文和验证签名&lt;/strong&gt;
-&lt;strong&gt;密钥 用来解密密文和发送签名&lt;/strong&gt;
-可以先用openssl来生成一对密钥&lt;/p&gt;
-
-&lt;h2 id=&quot;openssl生成私钥&quot;&gt;openssl生成私钥&lt;/h2&gt;
-&lt;p&gt;打开终端&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;openssl genrsa -out rsa_private_key.pem 1024  
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;openssl生成公钥&quot;&gt;openssl生成公钥&lt;/h2&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;openssl rsa -in rsa_private_key.pem -pubout -out rsa_public_key.pem  
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;##go实现&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//公钥加密
-func RsaEncrypt(origData []byte) []byte {
-	block,_:=pem.Decode(publicKey) //把文件放在pem里转成block
-	pubInterface,_:=x509.ParsePKIXPublicKey(block.Bytes)//解析公钥
-	pub:=pubInterface.(*rsa.PublicKey) //设置刚才的公钥确实是Public 类型  类型断言
-	bts,_:=rsa.EncryptPKCS1v15(rand.Reader,pub,origData)//加密[]byte(&quot;hello world&quot;)
-	return bts
-}
-
-func RsaDecrypt(origData []byte)[]byte  {
-	//解密
-	block,_:=pem.Decode(pirvateKey) //私钥放在pem里转成block
-	//解析私钥
-	priv,_:=x509.ParsePKCS1PrivateKey(block.Bytes)
-	//解密
-	bts,_:=rsa.DecryptPKCS1v15(rand.Reader,priv,origData)
-	return bts
-
-}
-
-func main()  {
-	e:=RsaEncrypt([]byte(&quot;hello wold&quot;))
-	fmt.Println(&quot;密文&quot;,base64.StdEncoding.EncodeToString(e)) //字节码转换成字符串
-	r:=RsaDecrypt(e)
-	fmt.Println(string(r))
-
-
-}
-
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;运行结果&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;密文 blqAd7iBbtv67OjkgaL6JZKN4WZOsjvRK+vLmT9ZxEl5KK1aCXQBAhp024SKtAqXInzGHMyy2Y7+bEkvv5zmTulcaZUzxas7/azw0oS+Hu24m3NY8QMXcWlvAcEq481iWs8CJCda8b4l32bXD3CS/5oFNSx5KQW6z/hoeLrjk9kp9DisXcUnZq1mss1A7I5V0r2Iv/YJa9RNg29MCdH309lHV/NBAI2gkFUA33jnkHR/s3UEfR19fn9KfT06zMURm57qcyV78f3QcJhUvKyJPHxpM4Xyz+am6y/tVCIRzVCmACRd8Drj6ZUU8POc+MUyM9jhDrQtJJ7edQUwTI9A7A==
-hello wold
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-</description>
-        <pubDate>Sun, 20 May 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/05/20/go%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0RSA%E5%8A%A0%E5%AF%86/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/05/20/go%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0RSA%E5%8A%A0%E5%AF%86/</guid>
-        
-        <category>密码学</category>
         
         
       </item>

@@ -198,6 +198,153 @@
   <ol class="post-list">
     
     <li>
+      <h2 class="post-list__post-title post-title"><a href="/2018/06/02/%E5%8C%BA%E5%9D%97%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="访问 区块链数据结构 ">区块链数据结构 </a></h2>
+      <p class="excerpt">#区块数据结构在区块链中，区块是存储有价值信息的块。这是任何一种加密货币的本质。除此之外，区块还包含一些技术信息，比如它的版本、当前时间戳和前一区块的散列值（哈希值）Block（区块）是Ethereum的核心数据结构之一***** 所有账户的相关活动，以交易(Transaction)的格式存储，每个Block有一个交易对象的列表*** **每个交易的执行结果，由一个Receipt对象与其包含的一组Log对象记录***** 所有交易执行完后生成的Receipt列表，存储在Block中(经过压...&hellip;</p>
+      <div class="post-list__meta">        
+        <time datetime="2018-06-02 00:00:00 +0800" class="post-list__meta--date date">
+          <img src="/images/calendar.png" width="20px" /> 
+          2018-06-02</time> 
+        <div class = "tag-img-icon">
+          <img src="/images/tag-icon.svg" width="20px" /> 
+        </div>
+        <a href="/tags">
+          <div class = "post-list-icon-mate">
+            <span class="post-list__meta--tags-right">区块链</span>
+          </div>
+          <div class = "post-list-small-mate">
+          <a class="btn-border-small" href=/2018/06/02/%E5%8C%BA%E5%9D%97%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/>阅读全文 » </a>
+          </div>
+      </div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2018/06/02/%E4%BA%A4%E6%98%93%E7%9A%84Hash/" title="访问  交易的Hash "> 交易的Hash </a></h2>
+      <p class="excerpt">交易的Hash两个最常用的自定义数据类型common.Hash用来表示哈希值，common.Address表示地址# /commons/types.go  const (      HashLength = 32      AddressLength = 20  )  type Hash [HashLength]byte  type Address [AddressLength]byte  在Ethereum 代码里，所有用到的哈希值，都使用该Hash类型，长度为32bytes，即256 ...&hellip;</p>
+      <div class="post-list__meta">        
+        <time datetime="2018-06-02 00:00:00 +0800" class="post-list__meta--date date">
+          <img src="/images/calendar.png" width="20px" /> 
+          2018-06-02</time> 
+        <div class = "tag-img-icon">
+          <img src="/images/tag-icon.svg" width="20px" /> 
+        </div>
+        <a href="/tags">
+          <div class = "post-list-icon-mate">
+            <span class="post-list__meta--tags-right">区块链</span>
+          </div>
+          <div class = "post-list-small-mate">
+          <a class="btn-border-small" href=/2018/06/02/%E4%BA%A4%E6%98%93%E7%9A%84Hash/>阅读全文 » </a>
+          </div>
+      </div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2018/06/02/%E4%BA%A4%E6%98%93%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="访问 交易数据结构">交易数据结构</a></h2>
+      <p class="excerpt">#交易数据结构##区块链转账的基本概念和流程  用户输入转账的地址和转入的地址和转出的金额  系统通过转出的地址的私钥对转账信息进行签名（用于证明这笔交易确实由本人进行）  系统对交易信息进行验证  把这笔交易入到本地的txpool中（就是缓存交易池）  把交易信息广播给其它节点每条交易对应存储两条数据，一条是交易本身，一条是交易的元信息（meta）。交易以交易的hash为key、交易的RLP编码为value存储；元信息以txHash+txMetaSuffix为key、元信息的RLP编码为...&hellip;</p>
+      <div class="post-list__meta">        
+        <time datetime="2018-06-02 00:00:00 +0800" class="post-list__meta--date date">
+          <img src="/images/calendar.png" width="20px" /> 
+          2018-06-02</time> 
+        <div class = "tag-img-icon">
+          <img src="/images/tag-icon.svg" width="20px" /> 
+        </div>
+        <a href="/tags">
+          <div class = "post-list-icon-mate">
+            <span class="post-list__meta--tags-right">区块链</span>
+          </div>
+          <div class = "post-list-small-mate">
+          <a class="btn-border-small" href=/2018/06/02/%E4%BA%A4%E6%98%93%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/>阅读全文 » </a>
+          </div>
+      </div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2018/06/02/go-ethereum%E4%BB%A3%E7%A0%81%E9%98%85%E8%AF%BB%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" title="访问 以太坊源码解析-go-ethereum代码阅读环境搭建">以太坊源码解析-go-ethereum代码阅读环境搭建</a></h2>
+      <p class="excerpt">go-ethereum代码阅读环境搭建安装GO配置环境变量(GOROOT, GOPATH, GOBIN)下载源码：$ cd  $GOPATH; $ mkdir src$ cd src  #进入go项目目录，创建src目录, 并进入src目录$ git clone https://github.com/ethereum/go-ethereum使用vim或其他IDE打开即可##windows 10 64bit安装GO配置环境变量(GOROOT, GOPATH, GOBIN)安装git工具，请参...&hellip;</p>
+      <div class="post-list__meta">        
+        <time datetime="2018-06-02 00:00:00 +0800" class="post-list__meta--date date">
+          <img src="/images/calendar.png" width="20px" /> 
+          2018-06-02</time> 
+        <div class = "tag-img-icon">
+          <img src="/images/tag-icon.svg" width="20px" /> 
+        </div>
+        <a href="/tags">
+          <div class = "post-list-icon-mate">
+            <span class="post-list__meta--tags-right">区块链</span>
+          </div>
+          <div class = "post-list-small-mate">
+          <a class="btn-border-small" href=/2018/06/02/go-ethereum%E4%BB%A3%E7%A0%81%E9%98%85%E8%AF%BB%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/>阅读全文 » </a>
+          </div>
+      </div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2018/06/02/etcd-%E5%A4%9A%E5%8F%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%9B%86%E7%BE%A4/" title="访问 etcd 多台服务器集群">etcd 多台服务器集群</a></h2>
+      <p class="excerpt">etcd 多台服务器集群下载安装 etcd$ mkdir -p $GOPATH/src/github.com/coreos$ cd !$$ git clone https://github.com/coreos/etcd.git$ cd etcd$ ./build启动服务每个节点都要执行以下配置，HOST_1、HOST_2、HOST_3 分别设置为多台服务器的IPTOKEN=token-01CLUSTER_STATE=newNAME_1=machine-1NAME_2=machine-2N...&hellip;</p>
+      <div class="post-list__meta">        
+        <time datetime="2018-06-02 00:00:00 +0800" class="post-list__meta--date date">
+          <img src="/images/calendar.png" width="20px" /> 
+          2018-06-02</time> 
+        <div class = "tag-img-icon">
+          <img src="/images/tag-icon.svg" width="20px" /> 
+        </div>
+        <a href="/tags">
+          <div class = "post-list-icon-mate">
+            <span class="post-list__meta--tags-right">etcd</span>
+          </div>
+          <div class = "post-list-small-mate">
+          <a class="btn-border-small" href=/2018/06/02/etcd-%E5%A4%9A%E5%8F%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%9B%86%E7%BE%A4/>阅读全文 » </a>
+          </div>
+      </div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2018/06/02/etcd-%E4%B8%80%E4%B8%AA%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%80%E8%87%B4%E6%80%A7%E9%94%AE%E5%80%BC%E5%AD%98%E5%82%A8%E7%B3%BB%E7%BB%9F/" title="访问 etcd使用">etcd使用</a></h2>
+      <p class="excerpt">etcd - 一个分布式一致性键值存储系统etcd是一个分布式一致性键值存储系统，用于共享配置和服务发现，专注于：      简单:良好定义的，面向用户的API (gRPC)        安全： 带有可选客户端证书认证的自动TLS        快速:测试验证，每秒10000写入        可靠:使用Raft适当分布  etcd是Go编写，并使用Raft一致性算法来管理高可用复制日志，架构如下图所示：下载安装$ mkdir -p $GOPATH/src/github.com/core...&hellip;</p>
+      <div class="post-list__meta">        
+        <time datetime="2018-06-02 00:00:00 +0800" class="post-list__meta--date date">
+          <img src="/images/calendar.png" width="20px" /> 
+          2018-06-02</time> 
+        <div class = "tag-img-icon">
+          <img src="/images/tag-icon.svg" width="20px" /> 
+        </div>
+        <a href="/tags">
+          <div class = "post-list-icon-mate">
+            <span class="post-list__meta--tags-right">etcd</span>
+          </div>
+          <div class = "post-list-small-mate">
+          <a class="btn-border-small" href=/2018/06/02/etcd-%E4%B8%80%E4%B8%AA%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%80%E8%87%B4%E6%80%A7%E9%94%AE%E5%80%BC%E5%AD%98%E5%82%A8%E7%B3%BB%E7%BB%9F/>阅读全文 » </a>
+          </div>
+      </div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2018/06/02/TCP%E5%92%8CUDP%E7%9A%84%E5%8C%BA%E5%88%AB/" title="访问 TCP和UDP的区别">TCP和UDP的区别</a></h2>
+      <p class="excerpt">TCP和UDP的区别TCP UDPTCP与UDP基本区别  1.基于连接与无连接  2.TCP要求系统资源较多，UDP较少；   3.UDP程序结构较简单   4.流模式（TCP）与数据报模式(UDP);   5.TCP保证数据正确性，UDP可能丢包   6.TCP保证数据顺序，UDP不保证 　　UDP应用场景：  1.面向数据报方式  2.网络数据大多为短消息   3.拥有大量Client  4.对数据安全性无特殊要求  5.网络负担非常重，但对响应速度要求高tcp需要确认对方在线,才能...&hellip;</p>
+      <div class="post-list__meta">        
+        <time datetime="2018-06-02 00:00:00 +0800" class="post-list__meta--date date">
+          <img src="/images/calendar.png" width="20px" /> 
+          2018-06-02</time> 
+        <div class = "tag-img-icon">
+          <img src="/images/tag-icon.svg" width="20px" /> 
+        </div>
+        <a href="/tags">
+          <div class = "post-list-icon-mate">
+            <span class="post-list__meta--tags-right">go</span>
+          </div>
+          <div class = "post-list-small-mate">
+          <a class="btn-border-small" href=/2018/06/02/TCP%E5%92%8CUDP%E7%9A%84%E5%8C%BA%E5%88%AB/>阅读全文 » </a>
+          </div>
+      </div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
       <h2 class="post-list__post-title post-title"><a href="/2018/05/26/%E6%8B%9C%E5%8D%A0%E5%BA%AD%E5%B0%86%E5%86%9B%E5%92%8C%E4%BD%BF%E7%94%A8%E6%8B%9C%E5%8D%A0%E5%BA%AD%E5%AE%B9%E9%94%99%E7%AE%97%E6%B3%95/" title="访问 拜占庭将军问题PBFT实用拜占庭容错">拜占庭将军问题PBFT实用拜占庭容错</a></h2>
       <p class="excerpt">拜占庭将军问题BFT 拜占庭将军问题 30个节点当中必须有21个是可用的,才能完成这项任务客户端把信息”哈喽”给主节点AA发布信息”哈喽”给B,C,DB收到信息”哈喽”给A,C,DC收到信息”哈喽”给A,B,DD收到信息”哈喽”给A,B,CPBFT 实用拜占庭容错信息广播后ABCD每个节点都有收到的”哈喽”,再把”哈喽”返回给客户端,客户端收到ABCD回复的信息如果有有2条以上的 信息为”哈喽”,那最终结果就是”哈喽”go来实现package mainimport (	"os"	"fmt"...&hellip;</p>
       <div class="post-list__meta">        
@@ -470,153 +617,6 @@
       <hr class="post-list__divider" />
     </li>
     
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/2018/05/17/mac-%E5%88%9B%E5%BB%BA%E5%85%AC%E9%92%A5%E5%92%8C%E7%A7%81%E9%92%A5-%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86/" title="访问 mac 创建公钥和私钥 非对称加密和3DES">mac 创建公钥和私钥 非对称加密和3DES</a></h2>
-      <p class="excerpt">mac 创建公钥和私钥 非对称加密openssl工具 非对称加密mac 打开控制台 (产生公钥和私钥)打开openssl工具openssl 创建私钥genrsa -out rsa_private_key.pem 2048这行命令为设置私钥为PKCS8格式pkcs8 -topk8 -inform PEM -in rsa_private_key.pem -outform PEM产生公钥rsa -in rsa_private_key.pem -pubout -out rsa_public_key...&hellip;</p>
-      <div class="post-list__meta">        
-        <time datetime="2018-05-17 00:00:00 +0800" class="post-list__meta--date date">
-          <img src="/images/calendar.png" width="20px" /> 
-          2018-05-17</time> 
-        <div class = "tag-img-icon">
-          <img src="/images/tag-icon.svg" width="20px" /> 
-        </div>
-        <a href="/tags">
-          <div class = "post-list-icon-mate">
-            <span class="post-list__meta--tags-right">密码学</span>
-          </div>
-          <div class = "post-list-small-mate">
-          <a class="btn-border-small" href=/2018/05/17/mac-%E5%88%9B%E5%BB%BA%E5%85%AC%E9%92%A5%E5%92%8C%E7%A7%81%E9%92%A5-%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86/>阅读全文 » </a>
-          </div>
-      </div>
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/2018/05/17/hash%E6%95%A3%E5%88%97%E5%92%8C%E9%93%BE%E8%A1%A8/" title="访问 hash散列和链表 ">hash散列和链表 </a></h2>
-      <p class="excerpt">go语言hash散列和链表通过hash散列算法把输入的值,平均分配的一个长度位16的数组当中去//将key转换成数组下标的散列算法func HashCode(key string) int {	var index int = 0	index = int(key[0])	for k := 0; k &lt; len(key); k++ {		index *= (1103515245 + int(key[k]))	}	index &gt;&gt;= 27	index &amp;= 16 - 1...&hellip;</p>
-      <div class="post-list__meta">        
-        <time datetime="2018-05-17 00:00:00 +0800" class="post-list__meta--date date">
-          <img src="/images/calendar.png" width="20px" /> 
-          2018-05-17</time> 
-        <div class = "tag-img-icon">
-          <img src="/images/tag-icon.svg" width="20px" /> 
-        </div>
-        <a href="/tags">
-          <div class = "post-list-icon-mate">
-            <span class="post-list__meta--tags-right">hash</span>
-          </div>
-          <div class = "post-list-small-mate">
-          <a class="btn-border-small" href=/2018/05/17/hash%E6%95%A3%E5%88%97%E5%92%8C%E9%93%BE%E8%A1%A8/>阅读全文 » </a>
-          </div>
-      </div>
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/2018/05/15/%E6%98%9F%E4%BA%91%E9%93%BE%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BAmac%E7%89%88/" title="访问 Nebulas包调用">Nebulas包调用</a></h2>
-      <p class="excerpt">#星云链环境搭建mac版Golang环境搭建Components	Version	DescriptionGolang	&gt;= 1.9.2	The Go Programming Language我们会分别介绍Mac OSX和Linux两种系统下golang环境的搭建。Mac OSX在Mac OSX里，我们推荐使用Homebrew来安装Golang.安装brew install go配置环境变量export GOPATH=/path/to/workspace提示: 在golang的开发中，...&hellip;</p>
-      <div class="post-list__meta">        
-        <time datetime="2018-05-15 00:00:00 +0800" class="post-list__meta--date date">
-          <img src="/images/calendar.png" width="20px" /> 
-          2018-05-15</time> 
-        <div class = "tag-img-icon">
-          <img src="/images/tag-icon.svg" width="20px" /> 
-        </div>
-        <a href="/tags">
-          <div class = "post-list-icon-mate">
-            <span class="post-list__meta--tags-right">星云链</span>
-          </div>
-          <div class = "post-list-small-mate">
-          <a class="btn-border-small" href=/2018/05/15/%E6%98%9F%E4%BA%91%E9%93%BE%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BAmac%E7%89%88/>阅读全文 » </a>
-          </div>
-      </div>
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/2018/05/14/mac%E4%B8%8Bzookeeper%E5%AE%89%E8%A3%85/" title="访问 mac下zookeeper安装 ">mac下zookeeper安装 </a></h2>
-      <p class="excerpt">#安装zookeeper1.0 前提工作：安装jdk 配置环境变量，自行百度jdk下载地址：http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html###1.1 查看zookeeper信息$ brew info zookeeper###1.2 安装zookeeper  $ brew install zookeeper###1.3 启动服务$ zkServer$ zkServer s...&hellip;</p>
-      <div class="post-list__meta">        
-        <time datetime="2018-05-14 00:00:00 +0800" class="post-list__meta--date date">
-          <img src="/images/calendar.png" width="20px" /> 
-          2018-05-14</time> 
-        <div class = "tag-img-icon">
-          <img src="/images/tag-icon.svg" width="20px" /> 
-        </div>
-        <a href="/tags">
-          <div class = "post-list-icon-mate">
-            <span class="post-list__meta--tags-right">zookeeper</span>
-          </div>
-          <div class = "post-list-small-mate">
-          <a class="btn-border-small" href=/2018/05/14/mac%E4%B8%8Bzookeeper%E5%AE%89%E8%A3%85/>阅读全文 » </a>
-          </div>
-      </div>
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/2018/05/14/JSON%E5%A4%84%E7%90%86/" title="访问 json数据处理 ">json数据处理 </a></h2>
-      <p class="excerpt">json数据处理3.1 编码JSON使用json.Marshal()函数可以对一组数据进行JSON格式的编码。 json.Marshal()函数的声明如下：func Marshal(v interface{}) ([]byte, error)还有一个格式化输出：// MarshalIndent 很像 Marshal，只是用缩进对输出进行格式化func MarshalIndent(v interface{}, prefix, indent string) ([]byte, error)编码J...&hellip;</p>
-      <div class="post-list__meta">        
-        <time datetime="2018-05-14 00:00:00 +0800" class="post-list__meta--date date">
-          <img src="/images/calendar.png" width="20px" /> 
-          2018-05-14</time> 
-        <div class = "tag-img-icon">
-          <img src="/images/tag-icon.svg" width="20px" /> 
-        </div>
-        <a href="/tags">
-          <div class = "post-list-icon-mate">
-            <span class="post-list__meta--tags-right">json</span>
-          </div>
-          <div class = "post-list-small-mate">
-          <a class="btn-border-small" href=/2018/05/14/JSON%E5%A4%84%E7%90%86/>阅读全文 » </a>
-          </div>
-      </div>
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/2018/05/06/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E9%92%B1%E5%8C%85%E5%AE%89%E8%A3%85/" title="访问 星云链钱包安装">星云链钱包安装</a></h2>
-      <p class="excerpt">星云链钱包安装1.进入github克隆地址https://github.com/nebulasio/web-wallet新建文件夹打开命令行 输入命令git clone https://github.com/nebulasio/web-wallet.git2.点击index就可以进入钱包了3.创建钱包,输入密码,自动生成密钥,下面密码库文件4.谷歌浏览器插件钱包安装https://github.com/ChengOrangeJu/WebExtensionWallet下载压缩包,解压缩,然后...&hellip;</p>
-      <div class="post-list__meta">        
-        <time datetime="2018-05-06 00:00:00 +0800" class="post-list__meta--date date">
-          <img src="/images/calendar.png" width="20px" /> 
-          2018-05-06</time> 
-        <div class = "tag-img-icon">
-          <img src="/images/tag-icon.svg" width="20px" /> 
-        </div>
-        <a href="/tags">
-          <div class = "post-list-icon-mate">
-            <span class="post-list__meta--tags-right">星云链</span>
-          </div>
-          <div class = "post-list-small-mate">
-          <a class="btn-border-small" href=/2018/05/06/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E9%92%B1%E5%8C%85%E5%AE%89%E8%A3%85/>阅读全文 » </a>
-          </div>
-      </div>
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/2018/05/06/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E8%BD%AC%E8%B4%A6%E5%91%BD%E4%BB%A4/" title="访问 星云链转账">星云链转账</a></h2>
-      <p class="excerpt">#星云链转账###启动创始区块  ./neb -c conf/default/config.conf###启动挖矿  ./neb -c conf/example/miner.conf###查询账户状态  curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d ‘{“address”:”n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE”}’nonce...&hellip;</p>
-      <div class="post-list__meta">        
-        <time datetime="2018-05-06 00:00:00 +0800" class="post-list__meta--date date">
-          <img src="/images/calendar.png" width="20px" /> 
-          2018-05-06</time> 
-        <div class = "tag-img-icon">
-          <img src="/images/tag-icon.svg" width="20px" /> 
-        </div>
-        <a href="/tags">
-          <div class = "post-list-icon-mate">
-            <span class="post-list__meta--tags-right">星云链</span>
-          </div>
-          <div class = "post-list-small-mate">
-          <a class="btn-border-small" href=/2018/05/06/%E6%98%9F%E4%BA%91%E9%93%BENebulas%E8%BD%AC%E8%B4%A6%E5%91%BD%E4%BB%A4/>阅读全文 » </a>
-          </div>
-      </div>
-      <hr class="post-list__divider" />
-    </li>
-    
   </ol>
 
   <hr class="post-list__divider " />
@@ -628,7 +628,7 @@
 	</script>
 	
     
-    <span class="pagination__page-number">1 / 2</span>
+    <span class="pagination__page-number">1 / 3</span>
     
         <a class="older-posts pagination__older btn btn-small btn-tertiary" href="/page/2/#blog">更早 &rarr;</a>
     
