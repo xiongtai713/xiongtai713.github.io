@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>MySQL命令</title>
+  <meta name="description" content="go语言">
+  <meta name="author" content="黎跃春">
+
+  <meta name="keywords" content="go语言"
+  />
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="MySQL命令">
+  <meta name="twitter:description" content="go语言">
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="MySQL命令">
+  <meta property="og:description" content="go语言">
+  <meta property="og:site_name" content="go语言e"
+  />
+
+
+  <link rel="icon" type="image/png" href="/images/favicon.png" />
+  <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
+
+
+  <link rel="stylesheet" href=" /css/main.css ">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="canonical" href="http://localhost:4000/2018/06/09/MySQL%E5%91%BD%E4%BB%A4/">
+  <link rel="alternate" type="application/rss+xml" title="刘蛟区块链博客" href="http://localhost:4000 /feed.xml
+    ">
+
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+
+  <!-- 站点统计 -->
+  <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>
+  <!-- <script>(function() {var _53code = document.createElement("script");_53code.src = "https://tb.53kf.com/code/code/10174862/1";var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(_53code, s);})();</script> -->
+  <!-- 百度统计 -->
+  
+  <script>
+    var _hmt = _hmt || [];
+    (function () {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?f3290601666dc2ca016a38c340c144f1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+  
+
+  <!-- google 统计 -->
+  
+  <script>
+    (function (i, s, o, g, r, a, m) {
+      i['GoogleAnalyticsObject'] = r;
+      i[r] = i[r] || function () {
+        (i[r].q = i[r].q || []).push(arguments)
+      }, i[r].l = 1 * new Date();
+      a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0];
+      a.async = 1;
+      a.src = g;
+      m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'UA-104237177-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+
+  <script>
+    (function () {
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+</head>
+
+
+<body>
+
+  <span class="mobile btn-mobile-menu">        
+      <div class="nav_container">
+         <nav class="nav-menu-item" style = "float:right">
+            <i class="nav-menu-item">
+              <a href="/#blog" title="" class="blog-button">  博客主页
+              </a>
+            </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/archive" title="archive" class="btn-mobile-menu__icon">
+                      所有文章
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/tags" title="tags" class="btn-mobile-menu__icon">
+                      分类
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/about" title="about" class="btn-mobile-menu__icon">
+                      关于我
+                  </a>
+                </i>
+            
+          </nav>
+          
+      </div>
+    </span> <header class="panel-cover panel-cover--collapsed" style="background-image: url('/images/background-cover.jpg')">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+      <div class="panel-main__content">
+        <!-- 头像效果-start -->
+        <div class="ih-item circle effect right_to_left">
+          <a href="/#blog" title="前往 刘蛟区块链博客 的主页" class="blog-button">
+            <div class="img"><img src="/images/avatar.jpg" alt="img"></div>
+            <div class="info">
+              <div class="info-back">
+                <h2 style="font-size: 14px">
+                   微信:13611179034 
+                </h2>´
+                <p style="font-size: 6px">
+                   孔壹学院|链乎 
+                </p>
+              </div>
+            </div>
+          </a>
+        </div>
+        <!-- 头像效果-end -->
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for 刘蛟区块链博客" class="blog-button">刘蛟区块链博客</a></h1>
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">区块链工程师</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" /> 
+
+
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">博客主页</a></li>
+                
+                <li class="navigation__item"><a href="/archive" title="archive">所有文章</a></li>
+                
+                <li class="navigation__item"><a href="/tags" title="tags">分类</a></li>
+                
+                <li class="navigation__item"><a href="/about" title="about">关于我</a></li>
+                
+              </ul>
+            </nav>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:center;-webkit-justify-content:center">
+          <div style="display:flex;flex-direction:column;align-items:center;-webkit-flex-direction:column;-webkit-align-items:center;margin-right:10px">
+            <img src="/images/zhishixingqiu.png" style="width:120px;height:120px;margin-top:30px;margin-bottom:10px" />
+            <span class="panel-cover__subtitle panel-subtitle" style="font-size: 12px">扫一扫</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;-webkit-flex-direction:column;-webkit-align-items:center;margin-left:10px">
+            <img src="/images/lianhu.jpg" style="width:120px;height:120px;margin-top:30px;margin-bottom:10px" />
+            <span class="panel-cover__subtitle panel-subtitle" style="font-size: 12px">链乎公众号</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="panel-cover--overlay cover-clear"></div>
+  
+
+  </div>
+</header>
+
+
+  <div class="content-wrapper">
+    <div class="content-wrapper__inner">
+      <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title">MySQL命令</h1>
+    <div class="post-meta">
+      <img src="/images/calendar.png" width="20px"/>
+      <time datetime="2018-06-09 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2018-06-09</time>
+
+      <span id="busuanzi_container_page_pv"> | 阅读：<span id="busuanzi_value_page_pv"></span>次</span>
+    </p>
+    </div>
+  </header>
+
+  <section class="post">
+    <p>#命令 
+进入 mysql -u root -p
+输入密码</p>
+
+<p>忘记密码</p>
+
+<ol>
+  <li>点击系统偏好设置-&gt;最下边点MySQL，在弹出页面中，关闭服务</li>
+  <li>cd /usr/local/mysql/bin/</li>
+  <li>sudo su</li>
+  <li>./mysqld_safe –skip-grant-tables &amp;</li>
+  <li>回车后mysql会自动重启，在偏好设置中mysql的状态会变成running</li>
+  <li>./mysql</li>
+  <li>FLUSH PRIVILEGES;</li>
+  <li>SET PASSWORD FOR ‘root’@’localhost’ = PASSWORD(‘新密码’);</li>
+</ol>
+
+<h2 id="mysql-的dos命令">mysql 的dos命令</h2>
+
+<ol>
+  <li>
+    <p>查询数据库的版本</p>
+
+    <p>select version();</p>
+  </li>
+  <li>
+    <p>查询当前的时间</p>
+
+    <p>select now();</p>
+  </li>
+  <li>
+    <p>查询当前的数据库</p>
+
+    <p>show databases;</p>
+  </li>
+  <li>
+    <p>创建数据库：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>create database if not exists go default charset utf8 collate utf8_general_ci;
+</code></pre>
+    </div>
+
+    <p>若报错 <code class="highlighter-rouge">ERROR 1044 (42000): Access denied for user ''@'localhost' to database 'day0511'</code> 是权限问题，需 <code class="highlighter-rouge">mysql -u root -p</code> 进入MySQL。</p>
+  </li>
+  <li>
+    <p>切换数据库</p>
+
+    <p>use day0510(数据库名)</p>
+  </li>
+  <li>
+    <p>查询当前操作的数据库</p>
+
+    <p>select database();</p>
+  </li>
+  <li>
+    <p>删除数据库</p>
+
+    <p>drop database if exists day0511(数据库名);</p>
+  </li>
+  <li>
+    <p>查看该数据库下的数据表</p>
+
+    <p>show tables;</p>
+  </li>
+  <li>
+    <p>创建数据表</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>create table if not exists users( 
+id int(4) primary key auto_increment not null,
+age int(4) default 20,
+price float,
+name varchar(20) unique not null,
+password varchar(30) not null ); 
+</code></pre>
+    </div>
+    <p><strong>约束</strong>：</p>
+
+    <ol>
+      <li>
+        <p>主键约束：primary key</p>
+
+        <p>主键约束：要求该字段数值不允许空，而且数值唯一。(not null+unique)</p>
+
+        <p>主键约束用于唯一的标识表中的每一个行记录的。一个表中最多只能有一个主键约束。</p>
+
+        <p><strong>主键自增：</strong> auto_increment</p>
+
+        <p>要求该字段数值不允许空，而且数值唯一。所以我们通常会指定主键类型为整型，然后设置其自动增长，这样可以保证在插入数据时主键列的唯一和非空特性。</p>
+
+        <p>删除主键：</p>
+
+        <div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="k">alter</span> <span class="k">table</span> <span class="n">stu</span> <span class="k">drop</span> <span class="k">primary</span> <span class="k">key</span><span class="p">;</span>
+</code></pre>
+        </div>
+
+        <p>添加主键：</p>
+
+        <div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="k">alter</span> <span class="k">table</span> <span class="n">teachers</span> <span class="k">add</span> <span class="k">primary</span> <span class="k">key</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+</code></pre>
+        </div>
+
+        <p>修改表时设置主键自动增长：</p>
+
+        <div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="k">alter</span> <span class="k">table</span> <span class="n">stu</span> <span class="k">modify</span> <span class="n">sid</span>  <span class="n">int</span> <span class="n">auto_increment</span><span class="p">;</span>
+</code></pre>
+        </div>
+
+        <p>修改表时删除主键自动增长：</p>
+
+        <div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="k">alter</span> <span class="k">table</span> <span class="n">stu</span> <span class="k">modify</span> <span class="n">sid</span>  <span class="n">int</span><span class="p">;</span>
+</code></pre>
+        </div>
+      </li>
+      <li>
+        <p>默认值：default</p>
+      </li>
+      <li>
+        <p>非空约束：not null</p>
+
+        <p>如果某个字段添加了非空约束，那么该字段的数值不能为null，对于mysql而言，表示什么都没有，未知的。不是0，也不是空”“，更不是”NULL”。</p>
+
+        <p>删除非空约束：</p>
+
+        <div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="k">alter</span> <span class="k">table</span> <span class="n">stu</span> <span class="k">modify</span> <span class="n">sname</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>
+</code></pre>
+        </div>
+
+        <p>添加非空约束：</p>
+
+        <div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="k">alter</span> <span class="k">table</span> <span class="n">users</span> <span class="k">modify</span> <span class="n">name</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="k">not</span> <span class="k">null</span><span class="p">;</span>
+</code></pre>
+        </div>
+      </li>
+      <li>
+        <p>唯一性约束：unique</p>
+      </li>
+    </ol>
+
+    <p>唯一性约束强调所在的字段所有的数值都是唯一的。不允许重复。允许空值（多个）。</p>
+
+    <p>删除唯一约束：</p>
+
+    <div class="language-sql highlighter-rouge"><pre class="highlight"><code>   <span class="k">alter</span> <span class="k">table</span> <span class="n">users</span> <span class="k">modify</span> <span class="n">name</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>
+</code></pre>
+    </div>
+
+    <p>添加唯一约束：</p>
+
+    <div class="language-sql highlighter-rouge"><pre class="highlight"><code>   <span class="k">alter</span> <span class="k">table</span> <span class="n">users</span> <span class="k">modify</span> <span class="n">password</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span> <span class="k">unique</span><span class="p">;</span>
+</code></pre>
+    </div>
+
+    <ol>
+      <li>
+        <p>外键约束：foreign key（略）</p>
+
+        <p>​</p>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p>查看表结构</p>
+  </li>
+</ol>
+
+<p>desc users(表名);</p>
+
+<ol>
+  <li>
+    <p>查看表数据</p>
+
+    <p><code class="highlighter-rouge">select * from users;</code></p>
+  </li>
+  <li>
+    <p>查看建表时的语句</p>
+
+    <p>show create table users;</p>
+  </li>
+  <li>
+    <p>增加字段</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>alter table users add(
+note varchar(40),
+rtime date);
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>修改字段类型</p>
+
+    <p>注意事项：</p>
+
+    <p>A：如果数据表中没有数据(空表)，可以任意修改字段类型</p>
+
+    <p>B：如果数据表中有数据，只能修改兼容类型，注意长度。</p>
+
+    <p>alter table users modify password char(20);</p>
+  </li>
+  <li>
+    <p>更改字段的名字</p>
+
+    <p>alter table users change password pwd char(20);</p>
+  </li>
+  <li>
+    <p>更改表名</p>
+
+    <p>rename table users to user2;</p>
+  </li>
+  <li>
+    <p>删除表</p>
+
+    <p>drop table if exists user2;</p>
+
+    <p>​</p>
+  </li>
+</ol>
+
+<h2 id="修改数据">修改数据</h2>
+
+<ol>
+  <li>
+    <p>插入数据：</p>
+
+    <p>A：全列插入</p>
+
+    <p>insert into 表名 values(v1，v2，v3….)</p>
+
+    <p>Values后数值的个数，必须和字段的个数一致。</p>
+
+    <p>insert into user2 values(0,’三胖’,’123456’,’有点胖’,’2018-04-18’);</p>
+
+    <p>B：缺省插入</p>
+
+    <p>insert into 表名(字段1，字段2，字段3…)values (v1，v2，v3.。。)</p>
+
+    <p>自增的主键，自动添加数据。</p>
+
+    <p>insert into user2(username, note) values(‘老二’,’傻傻的’);</p>
+
+    <p>C：同时插入多条数据</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>insert into users
+values
+(0,'tom','tom666','猫','2018-03-21'),
+(0,'jerry','memeda','mouse','2017-10-10');
+</code></pre>
+    </div>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>insert into user2
+(name,pwd)
+values
+('jessica','987654'),
+('如花','654654');
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>更新数据</p>
+
+    <p>update 表名 set [更新的数据] where [更新的条件]</p>
+
+    <p>update users set username=’老四’ where uid=4;</p>
+
+    <p>update users set note=’酷酷的’ where username&lt;&gt;jessica;</p>
+
+    <p>update users set note=’大学生’ where age between 20 and 25;</p>
+
+    <p>update users set rtime=’2015-10-10’ where uid in(1,4,6);</p>
+
+    <p>update users set rtime=’2017-09-09’ where age=26 and note=’酷酷的’;</p>
+
+    <p>update users set rtime=’2013-1-14’ where pwd is NULL;</p>
+  </li>
+  <li>
+    <p>删除数据</p>
+
+    <p>delete from 表名 where [删除条件]</p>
+
+    <p>delete from users where uid=6;</p>
+  </li>
+  <li>
+    <p>查询数据</p>
+
+    <p>select 列名，列名，列名。。。From 表名</p>
+
+    <p>select * from users;</p>
+
+    <p>select age from users;</p>
+  </li>
+  <li>
+    <p>条件查询</p>
+
+    <p>select * from users where note=’大学生’;</p>
+
+    <p>select age from users where note=’大学生’;</p>
+
+    <p>select * from users where age=22 or note=’酷酷的’;</p>
+
+    <p>select * from users where age&gt;=25 and age&lt;=28;</p>
+
+    <blockquote>
+      <p>条件是可选的</p>
+
+      <ol>
+        <li>条件必须是boolean类型的值或者表达式</li>
+        <li>运算符：=,!=,&lt;&gt;,&gt;,&lt;,&gt;=,&lt;=,between..and, in(…),or ,and ,not, is null，is not null</li>
+        <li>is null 不是 = null(永远是false)</li>
+      </ol>
+    </blockquote>
+  </li>
+  <li>
+    <p>模糊查询</p>
+
+    <p>%通配符代表任意多个字符，_通配符代表任意一个字符</p>
+
+    <p>select * from users where note like(模糊关键字) ‘%学’;</p>
+
+    <p>select * from users where note like(模糊关键字)’%生’;</p>
+
+    <p>select * from users where note like(模糊关键字) ‘%酷%’;</p>
+
+    <p>select * from users where username like(模糊关键字) ‘老_’;</p>
+  </li>
+  <li>
+    <p>排序</p>
+
+    <p>select * from users order by(关键字) age asc; (从小到大)</p>
+
+    <p>select * from users order by age desc; (从大到小)</p>
+
+    <p>select * from users order by age,uid desc;</p>
+  </li>
+  <li>
+    <p>统计函数（聚合函数）</p>
+
+    <p>select count(pwd) from users(表名); (总数)</p>
+
+    <p>select max(age) from users; (最大)</p>
+
+    <p>select min(age) from users; (最小)</p>
+
+    <p>select sum(age) from users; (求和)</p>
+
+    <p>select avg(age) from users; (求平均值)</p>
+  </li>
+  <li>
+    <p>分页查询</p>
+
+    <p>select * from users limit 2,5;</p>
+  </li>
+  <li>
+    <p>去重查询</p>
+  </li>
+</ol>
+
+<p>select distinct note from users;</p>
+
+
+  </section>
+</article>
+
+
+<section class="post-comments">
+  <!--PC和WAP自适应版-->
+<div id="SOHUCS" sid=MySQL命令 ></div>
+<script type="text/javascript">
+(function(){
+var appid = 'cytfSz8yx';
+var conf = 'prod_ad710bf09d342725ed536beddc68aa27';
+var width = window.innerWidth || document.documentElement.clientWidth;
+if (width < 960) {
+window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="http://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("http://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+</section>
+
+ <section class="footer">
+  <footer>
+    <div class="footer_div">
+      <nav class="cover-navigation navigation--social">
+        <ul class="navigation">
+
+          
+          <!-- Weibo -->
+          <li class="navigation__item_social">
+            <a href="http://weibo.com/mobiledevelopment" title="@mobiledevelopment 的微博" target="_blank">
+              <i class='social fa fa-weibo fa-2x'></i>
+              <span class="label">Weibo</span>
+            </a>
+          </li>
+           
+          <!-- Github -->
+          <li class="navigation__item_social">
+            <a href="https://github.com/liyuechun" title="@liyuechun 的 Github" target="_blank">
+              <i class='social fa fa-github fa-2x'></i>
+              <span class="label">Github</span>
+            </a>
+          </li>
+            
+
+          <!-- RSS -->
+          <li class="navigation__item_social">
+            <a href="/feed.xml" rel="author" title="RSS" target="_blank">
+              <i class='social fa fa-rss fa-2x'></i>
+              <span class="label">RSS</span>
+            </a>
+          </li>
+
+          
+          <!-- Email -->
+          <li class="navigation__item_social">
+            <a href="mailto:836921287@qq.com" title="Contact me">
+              <i class='social fa fa-envelope fa-2x'></i>
+              <span class="label">Email</span>
+            </a>
+          </li>
+          
+
+        </ul>
+      </nav>
+
+    </div>
+
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <thead>
+        <tr id="bar_head">
+          <th colspan="11">友情链接</th>
+        </tr>
+      </thead>
+
+      <tr align="center" valign="middle">
+          <td><a href="http://www.kongyixueyuan.com">区块链技术视频网站</a></td>
+
+          <td><a href="https://www.ethereum.org">以太坊官网</a></td>
+
+          <td><a href="https://solidity.readthedocs.io/en/develop/">Solidity</a></td>
+
+          <td><a href="http://truffleframework.com/">Truffle FrameWork</a></td>
+
+          <td><a href="http://embark.readthedocs.io">Embark FrameWork</a></td>
+
+      </tr>
+      <tr align="center" valign="middle">
+
+          <td><a href="https://www.ibm.com/developerworks/community/groups/service/html/communityview?communityUuid=3302cc3b-074e-44da-90b1-5055f1dc0d9c&amp;lang=zh">IBM开源技术微讲堂</a></td>
+
+          <td><a href="https://www.bitcoin.com/">Bitcoin.com</a></td>
+
+          <td><a href="https://github.com/bitshares/bitshares1-core">bitshares1-core</a></td>
+
+          <td><a href="https://ipfs.io">ipfs官网</a></td>
+
+          <td><a href="http://ipfser.org">ipfs中文网</a></td>
+
+      </tr>
+    </table>
+
+    <div class="footer_div">
+      <p class="copyright text-muted">
+        Copyright &copy; 2018 刘蛟区块链博客 京ICP备15065741号. 区块链部落QQ群：348924182
+      </p>
+      <div align="right">
+        <link rel="stylesheet" href="http://cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <!-- 访问统计 -->
+        <span id="busuanzi_container_site_pv">
+            本站总访问量
+            <span id="busuanzi_value_site_pv"></span>次
+        </span>
+
+      </div>
+      <div>
+  </footer>
+</section>
+
+    </div>
+  </div>
+
+  <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
+
+<script type="text/javascript" src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  <script>
+    (function () {
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+</body>
+
+</html>

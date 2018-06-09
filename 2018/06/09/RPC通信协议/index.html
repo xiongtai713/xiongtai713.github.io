@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>go网络编程RPC</title>
+  <meta name="description" content="go语言">
+  <meta name="author" content="黎跃春">
+
+  <meta name="keywords" content="go语言"
+  />
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="go网络编程RPC">
+  <meta name="twitter:description" content="go语言">
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="go网络编程RPC">
+  <meta property="og:description" content="go语言">
+  <meta property="og:site_name" content="go语言e"
+  />
+
+
+  <link rel="icon" type="image/png" href="/images/favicon.png" />
+  <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
+
+
+  <link rel="stylesheet" href=" /css/main.css ">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="canonical" href="http://localhost:4000/2018/06/09/RPC%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/">
+  <link rel="alternate" type="application/rss+xml" title="刘蛟区块链博客" href="http://localhost:4000 /feed.xml
+    ">
+
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+
+  <!-- 站点统计 -->
+  <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>
+  <!-- <script>(function() {var _53code = document.createElement("script");_53code.src = "https://tb.53kf.com/code/code/10174862/1";var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(_53code, s);})();</script> -->
+  <!-- 百度统计 -->
+  
+  <script>
+    var _hmt = _hmt || [];
+    (function () {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?f3290601666dc2ca016a38c340c144f1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+  
+
+  <!-- google 统计 -->
+  
+  <script>
+    (function (i, s, o, g, r, a, m) {
+      i['GoogleAnalyticsObject'] = r;
+      i[r] = i[r] || function () {
+        (i[r].q = i[r].q || []).push(arguments)
+      }, i[r].l = 1 * new Date();
+      a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0];
+      a.async = 1;
+      a.src = g;
+      m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'UA-104237177-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+
+  <script>
+    (function () {
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+</head>
+
+
+<body>
+
+  <span class="mobile btn-mobile-menu">        
+      <div class="nav_container">
+         <nav class="nav-menu-item" style = "float:right">
+            <i class="nav-menu-item">
+              <a href="/#blog" title="" class="blog-button">  博客主页
+              </a>
+            </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/archive" title="archive" class="btn-mobile-menu__icon">
+                      所有文章
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/tags" title="tags" class="btn-mobile-menu__icon">
+                      分类
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/about" title="about" class="btn-mobile-menu__icon">
+                      关于我
+                  </a>
+                </i>
+            
+          </nav>
+          
+      </div>
+    </span> <header class="panel-cover panel-cover--collapsed" style="background-image: url('/images/background-cover.jpg')">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+      <div class="panel-main__content">
+        <!-- 头像效果-start -->
+        <div class="ih-item circle effect right_to_left">
+          <a href="/#blog" title="前往 刘蛟区块链博客 的主页" class="blog-button">
+            <div class="img"><img src="/images/avatar.jpg" alt="img"></div>
+            <div class="info">
+              <div class="info-back">
+                <h2 style="font-size: 14px">
+                   微信:13611179034 
+                </h2>´
+                <p style="font-size: 6px">
+                   孔壹学院|链乎 
+                </p>
+              </div>
+            </div>
+          </a>
+        </div>
+        <!-- 头像效果-end -->
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for 刘蛟区块链博客" class="blog-button">刘蛟区块链博客</a></h1>
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">区块链工程师</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" /> 
+
+
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">博客主页</a></li>
+                
+                <li class="navigation__item"><a href="/archive" title="archive">所有文章</a></li>
+                
+                <li class="navigation__item"><a href="/tags" title="tags">分类</a></li>
+                
+                <li class="navigation__item"><a href="/about" title="about">关于我</a></li>
+                
+              </ul>
+            </nav>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:center;-webkit-justify-content:center">
+          <div style="display:flex;flex-direction:column;align-items:center;-webkit-flex-direction:column;-webkit-align-items:center;margin-right:10px">
+            <img src="/images/zhishixingqiu.png" style="width:120px;height:120px;margin-top:30px;margin-bottom:10px" />
+            <span class="panel-cover__subtitle panel-subtitle" style="font-size: 12px">扫一扫</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;-webkit-flex-direction:column;-webkit-align-items:center;margin-left:10px">
+            <img src="/images/lianhu.jpg" style="width:120px;height:120px;margin-top:30px;margin-bottom:10px" />
+            <span class="panel-cover__subtitle panel-subtitle" style="font-size: 12px">链乎公众号</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="panel-cover--overlay cover-clear"></div>
+  
+
+  </div>
+</header>
+
+
+  <div class="content-wrapper">
+    <div class="content-wrapper__inner">
+      <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title">go网络编程RPC</h1>
+    <div class="post-meta">
+      <img src="/images/calendar.png" width="20px"/>
+      <time datetime="2018-06-09 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2018-06-09</time>
+
+      <span id="busuanzi_container_page_pv"> | 阅读：<span id="busuanzi_value_page_pv"></span>次</span>
+    </p>
+    </div>
+  </header>
+
+  <section class="post">
+    <h1 id="rpc通信协议">RPC通信协议</h1>
+<p>服务器和服务器之间的方法调用,
+rpc 不支持夸语言, 
+只能通过jsonrpc夸语言
+要调用服务器上的方法,
+先要服务器声明结构体,并且实现一些方法</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>//注册的结构体,将方法绑定到RPC服务
+type MyMath struct {
+
+}
+
+//提供方法所需要的参数
+type Param struct {  //因为只能接收一个值 所有要创建结构体
+	A int
+	B int
+}
+
+type ResponseData struct {
+	Mod int //商
+	Yushu int //余数
+}
+
+//这是提供给客户端调用的方法
+func (m *MyMath) Add(param Param,sum *int)error  {
+	*sum=param.A+param.B
+	return nil
+
+}
+
+func (m *MyMath) Div(param Param,data *ResponseData) error {
+	data.Mod=param.A/param.B
+	data.Yushu=param.A%param.B
+	return nil
+}
+</code></pre>
+</div>
+
+<p>结构体注册RPC服务里,
+然后把RPC服务绑定在http服务上,最后开始监听端口,看是否有别的服务端来链接端口调用方法</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>
+func main()  {
+	//注册rpc服务
+	err:=rpc.Register(new(MyMath))
+	if err!=nil{
+		fmt.Println("注册失败",err)
+	}
+	//将rpc的服务绑定到http包中
+	rpc.HandleHTTP()
+	fmt.Println("监听中")
+	//监听端口 客户端访问的时候访问的就是MyMath
+	http.ListenAndServe(":8888",nil)
+
+	/*
+	实现MyMath的方法,就是提供给客户端的服务
+	客户端可以直接调用MyMath里面的方法 ,这个方法有一定的要求
+	1.该方法必须属于MyMath
+	2.必须要有两个参数,第一个参数就是该方法的参数,第二个是返回值并且是一个指针(这样服务端才能修改),不管需要多少给参数,被调用方法只能接收一个参数
+	3.必须有一个返回值,返回值的类型是error的类型
+	 */
+}
+</code></pre>
+</div>
+
+<p>###调用端(第二个服务器)
+通过rpc.DialHTTP来链接,来链接服务器(第一个服务器),通过返回client来调用call方法,再通过call方法来调用服务器的方法(第一个服务器)</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>package rpc
+
+import (
+	"net/rpc"
+	"fmt"
+)
+
+//用作参数
+type Param struct {  //因为只能接收一个值 所有要创建结构体
+	A int
+	B int
+}
+//接收参数
+type ResponseData struct {
+	Mod int //商
+	Yushu int //余数
+}
+
+
+func main()  {
+	client, err := rpc.DialHTTP("tcp", ":8888")
+	if err!=nil{
+		fmt.Println(err)
+	}
+	fmt.Println("链接成功")
+	//调用rpc服务的方法,就相当于http.get请求
+	//MyMath就是服务端提供的方法的类,add就是对应的方法
+	sum:=0   //										参数1 传的值		参数2 返回的结果
+	err = client.Call("MyMath.Add", Param{23,9}, &amp;sum)
+	if err!=nil{
+
+	}
+	fmt.Println(sum)
+	div:=ResponseData{}
+
+	err = client.Call("MyMath.Div", Param{120,55}, &amp;div)
+	if err!=nil{
+
+	}
+	fmt.Println("商",div.Mod,"余数",div.Yushu)
+}
+
+</code></pre>
+</div>
+
+<p>###客户端通过第二台(总服务器)去调第三台服务器的方法
+可以通过浏览器(客户端)来通过总服务器,去调第三台服务器的方法,也可以用GET或者POST给总服务器传参数过来,GET直接url:port?k1=v1&amp;k2=v2,post把值存入body里传过来,再由总服务器进行调用并且把值回传给客户端</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>package main
+
+import (
+
+	"net/http"
+	"net/rpc/jsonrpc"
+	"fmt"
+	"log"
+	"strconv"
+)
+
+type Param struct {
+	//因为只能接收一个值 所有要创建结构体
+	A int
+	B int
+}
+//可以通过get和post方法来调用
+func add(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+	fmt.Println(r.FormValue("a"))
+	a,_:=strconv.Atoi(r.FormValue("a"))
+	fmt.Println(r.FormValue("b"))
+	b,_:=strconv.Atoi(r.FormValue("b"))
+	p:=Param{a,b}
+	sum:=linkRpc(p)  //调用别的服务上的方法
+	w.Write([]byte(strconv.Itoa(sum)))
+
+
+}
+//客户端链接总务器 通过/add来调 第二台服务器中的方法
+func main()  {
+	mux := http.NewServeMux()
+	mux.HandleFunc("/add",add)
+	http.ListenAndServe(":3000",mux)
+
+
+
+}
+
+func linkRpc(param Param) int {
+
+
+	//使用jsonrpc
+	client, err := jsonrpc.Dial("tcp", ":8888")
+	if err!= nil{
+
+		log.Fatal(err)
+	}
+	//远程调用方法
+	sum:=0
+	client.Call("MyMath.Add",param,&amp;sum)
+	fmt.Println(sum)
+	return sum
+}
+
+}
+</code></pre>
+</div>
+
+
+  </section>
+</article>
+
+
+<section class="post-comments">
+  <!--PC和WAP自适应版-->
+<div id="SOHUCS" sid=go网络编程RPC ></div>
+<script type="text/javascript">
+(function(){
+var appid = 'cytfSz8yx';
+var conf = 'prod_ad710bf09d342725ed536beddc68aa27';
+var width = window.innerWidth || document.documentElement.clientWidth;
+if (width < 960) {
+window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="http://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("http://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+</section>
+
+ <section class="footer">
+  <footer>
+    <div class="footer_div">
+      <nav class="cover-navigation navigation--social">
+        <ul class="navigation">
+
+          
+          <!-- Weibo -->
+          <li class="navigation__item_social">
+            <a href="http://weibo.com/mobiledevelopment" title="@mobiledevelopment 的微博" target="_blank">
+              <i class='social fa fa-weibo fa-2x'></i>
+              <span class="label">Weibo</span>
+            </a>
+          </li>
+           
+          <!-- Github -->
+          <li class="navigation__item_social">
+            <a href="https://github.com/liyuechun" title="@liyuechun 的 Github" target="_blank">
+              <i class='social fa fa-github fa-2x'></i>
+              <span class="label">Github</span>
+            </a>
+          </li>
+            
+
+          <!-- RSS -->
+          <li class="navigation__item_social">
+            <a href="/feed.xml" rel="author" title="RSS" target="_blank">
+              <i class='social fa fa-rss fa-2x'></i>
+              <span class="label">RSS</span>
+            </a>
+          </li>
+
+          
+          <!-- Email -->
+          <li class="navigation__item_social">
+            <a href="mailto:836921287@qq.com" title="Contact me">
+              <i class='social fa fa-envelope fa-2x'></i>
+              <span class="label">Email</span>
+            </a>
+          </li>
+          
+
+        </ul>
+      </nav>
+
+    </div>
+
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <thead>
+        <tr id="bar_head">
+          <th colspan="11">友情链接</th>
+        </tr>
+      </thead>
+
+      <tr align="center" valign="middle">
+          <td><a href="http://www.kongyixueyuan.com">区块链技术视频网站</a></td>
+
+          <td><a href="https://www.ethereum.org">以太坊官网</a></td>
+
+          <td><a href="https://solidity.readthedocs.io/en/develop/">Solidity</a></td>
+
+          <td><a href="http://truffleframework.com/">Truffle FrameWork</a></td>
+
+          <td><a href="http://embark.readthedocs.io">Embark FrameWork</a></td>
+
+      </tr>
+      <tr align="center" valign="middle">
+
+          <td><a href="https://www.ibm.com/developerworks/community/groups/service/html/communityview?communityUuid=3302cc3b-074e-44da-90b1-5055f1dc0d9c&amp;lang=zh">IBM开源技术微讲堂</a></td>
+
+          <td><a href="https://www.bitcoin.com/">Bitcoin.com</a></td>
+
+          <td><a href="https://github.com/bitshares/bitshares1-core">bitshares1-core</a></td>
+
+          <td><a href="https://ipfs.io">ipfs官网</a></td>
+
+          <td><a href="http://ipfser.org">ipfs中文网</a></td>
+
+      </tr>
+    </table>
+
+    <div class="footer_div">
+      <p class="copyright text-muted">
+        Copyright &copy; 2018 刘蛟区块链博客 京ICP备15065741号. 区块链部落QQ群：348924182
+      </p>
+      <div align="right">
+        <link rel="stylesheet" href="http://cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <!-- 访问统计 -->
+        <span id="busuanzi_container_site_pv">
+            本站总访问量
+            <span id="busuanzi_value_site_pv"></span>次
+        </span>
+
+      </div>
+      <div>
+  </footer>
+</section>
+
+    </div>
+  </div>
+
+  <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
+
+<script type="text/javascript" src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  <script>
+    (function () {
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+</body>
+
+</html>
