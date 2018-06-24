@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>jQuery</title>
+  <meta name="description" content="goweb">
+  <meta name="author" content="黎跃春">
+
+  <meta name="keywords" content="goweb"
+  />
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="jQuery">
+  <meta name="twitter:description" content="goweb">
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="jQuery">
+  <meta property="og:description" content="goweb">
+  <meta property="og:site_name" content="gowebe"
+  />
+
+
+  <link rel="icon" type="image/png" href="/images/favicon.png" />
+  <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
+
+
+  <link rel="stylesheet" href=" /css/main.css ">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="canonical" href="http://localhost:4000/2018/06/24/jQuery/">
+  <link rel="alternate" type="application/rss+xml" title="刘蛟区块链博客" href="http://localhost:4000 /feed.xml
+    ">
+
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+
+  <!-- 站点统计 -->
+  <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>
+  <!-- <script>(function() {var _53code = document.createElement("script");_53code.src = "https://tb.53kf.com/code/code/10174862/1";var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(_53code, s);})();</script> -->
+  <!-- 百度统计 -->
+  
+  <script>
+    var _hmt = _hmt || [];
+    (function () {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?f3290601666dc2ca016a38c340c144f1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+  
+
+  <!-- google 统计 -->
+  
+  <script>
+    (function (i, s, o, g, r, a, m) {
+      i['GoogleAnalyticsObject'] = r;
+      i[r] = i[r] || function () {
+        (i[r].q = i[r].q || []).push(arguments)
+      }, i[r].l = 1 * new Date();
+      a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0];
+      a.async = 1;
+      a.src = g;
+      m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'UA-104237177-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+
+  <script>
+    (function () {
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+</head>
+
+
+<body>
+
+  <span class="mobile btn-mobile-menu">        
+      <div class="nav_container">
+         <nav class="nav-menu-item" style = "float:right">
+            <i class="nav-menu-item">
+              <a href="/#blog" title="" class="blog-button">  博客主页
+              </a>
+            </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/archive" title="archive" class="btn-mobile-menu__icon">
+                      所有文章
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/tags" title="tags" class="btn-mobile-menu__icon">
+                      分类
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/about" title="about" class="btn-mobile-menu__icon">
+                      关于我
+                  </a>
+                </i>
+            
+          </nav>
+          
+      </div>
+    </span> <header class="panel-cover panel-cover--collapsed" style="background-image: url('/images/background-cover.jpg')">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+      <div class="panel-main__content">
+        <!-- 头像效果-start -->
+        <div class="ih-item circle effect right_to_left">
+          <a href="/#blog" title="前往 刘蛟区块链博客 的主页" class="blog-button">
+            <div class="img"><img src="/images/avatar.jpg" alt="img"></div>
+            <div class="info">
+              <div class="info-back">
+                <h2 style="font-size: 14px">
+                   微信:13611179034 
+                </h2>´
+                <p style="font-size: 6px">
+                   孔壹学院|链乎 
+                </p>
+              </div>
+            </div>
+          </a>
+        </div>
+        <!-- 头像效果-end -->
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for 刘蛟区块链博客" class="blog-button">刘蛟区块链博客</a></h1>
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">区块链工程师</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" /> 
+
+
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">博客主页</a></li>
+                
+                <li class="navigation__item"><a href="/archive" title="archive">所有文章</a></li>
+                
+                <li class="navigation__item"><a href="/tags" title="tags">分类</a></li>
+                
+                <li class="navigation__item"><a href="/about" title="about">关于我</a></li>
+                
+              </ul>
+            </nav>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:center;-webkit-justify-content:center">
+          <div style="display:flex;flex-direction:column;align-items:center;-webkit-flex-direction:column;-webkit-align-items:center;margin-right:10px">
+            <img src="/images/zhishixingqiu.png" style="width:120px;height:120px;margin-top:30px;margin-bottom:10px" />
+            <span class="panel-cover__subtitle panel-subtitle" style="font-size: 12px">扫一扫</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;-webkit-flex-direction:column;-webkit-align-items:center;margin-left:10px">
+            <img src="/images/lianhu.jpg" style="width:120px;height:120px;margin-top:30px;margin-bottom:10px" />
+            <span class="panel-cover__subtitle panel-subtitle" style="font-size: 12px">链乎公众号</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="panel-cover--overlay cover-clear"></div>
+  
+
+  </div>
+</header>
+
+
+  <div class="content-wrapper">
+    <div class="content-wrapper__inner">
+      <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title">jQuery</h1>
+    <div class="post-meta">
+      <img src="/images/calendar.png" width="20px"/>
+      <time datetime="2018-06-24 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2018-06-24</time>
+
+      <span id="busuanzi_container_page_pv"> | 阅读：<span id="busuanzi_value_page_pv"></span>次</span>
+    </p>
+    </div>
+  </header>
+
+  <section class="post">
+    <h1 id="jquery">jQuery</h1>
+
+<p>jQuery 是一个JavaScript库，通过 jQuery，您可以选取（查询） HTML 元素，并对它们执行操作，极大地简化了 JavaScript 编程。</p>
+
+<p>jQuery库包含以下功能：</p>
+
+<ul>
+  <li>HTML 元素选取</li>
+  <li>HTML 元素操作</li>
+  <li>CSS 操作</li>
+  <li>HTML 事件函数</li>
+  <li>JavaScript 特效和动画</li>
+  <li>HTML DOM 遍历和修改</li>
+  <li>AJAX</li>
+</ul>
+
+<p>可以通过以下方法在网页中添加 jQuery：</p>
+
+<ul>
+  <li>
+    <p>从 <a href="https://jquery.com/download/">jquery.com</a> 下载 jQuery 库，将下载的文件放在网页的同一目录下。</p>
+  </li>
+  <li>
+    <p>通过 CDN（内容分发网络） 引用它，百度、又拍云、新浪、谷歌和微软的服务器都存有 jQuery 。这里采用新浪 jQuery CDN库。如</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>&lt;script src="http://lib.sinaapp.com/js/jquery/1.7.2/jquery.min.js"&gt;&lt;/script&gt;
+</code></pre>
+    </div>
+  </li>
+</ul>
+
+<h2 id="一jquery基础">一、jQuery基础</h2>
+
+<h3 id="1-jquery-语法实例">1. jQuery 语法实例</h3>
+
+<ul>
+  <li>
+    <p>$(this).hide()</p>
+
+    <p>演示 jQuery hide() 函数，隐藏当前的 HTML 元素。</p>
+  </li>
+  <li>
+    <p>$(“#test”).hide()</p>
+
+    <p>演示 jQuery hide() 函数，隐藏 id=”test” 的元素。</p>
+  </li>
+  <li>
+    <p>$(“p”).hide()</p>
+
+    <p>演示 jQuery hide() 函数，隐藏所有 &lt;p&gt; 元素。</p>
+  </li>
+  <li>
+    <p>$(“.test”).hide()</p>
+
+    <p>演示 jQuery hide() 函数，隐藏所有 class=”test” 的元素。</p>
+  </li>
+</ul>
+
+<p>jQuery 使用的语法是 XPath 与 CSS 选择器语法的组合。</p>
+
+<h3 id="2-jquery-元素选择器">2. jQuery 元素选择器</h3>
+
+<p>jQuery 使用 CSS 选择器来选取 HTML 元素。</p>
+
+<p>$(“p”) 选取 &lt;p&gt; 元素。</p>
+
+<p>$(“p.intro”) 选取所有 class=”intro” 的 &lt;p&gt; 元素。</p>
+
+<p>$(“p#demo”) 选取所有 id=”demo” 的 &lt;p&gt; 元素。</p>
+
+<h3 id="3-jquery-属性选择器">3. jQuery 属性选择器</h3>
+
+<p>jQuery 使用 XPath 表达式来选择带有给定属性的元素。</p>
+
+<p>$(“[href]”) 选取所有带有 href 属性的元素。</p>
+
+<p>$(“[href=’#’]”) 选取所有带有 href 值等于 “#” 的元素。</p>
+
+<p>$(“[href!=’#’]”) 选取所有带有 href 值不等于 “#” 的元素。</p>
+
+<p>$(“[href$=’.jpg’]”) 选取所有 href 值以 “.jpg” 结尾的元素。</p>
+
+<h3 id="4-jquery-css-选择器">4. jQuery CSS 选择器</h3>
+
+<p>jQuery CSS 选择器可用于改变 HTML 元素的 CSS 属性。如下例子把所有 p 元素的背景颜色更改为红色：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$("p").css("background-color","red");
+</code></pre>
+</div>
+
+<h3 id="5-jquery-事件">5. jQuery 事件</h3>
+
+<p>下面是 jQuery 中事件方法的一些例子：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Event 函数</th>
+      <th>绑定函数至</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>$(document).ready(function)</td>
+      <td>将函数绑定到文档的就绪事件（当文档完成加载时）</td>
+    </tr>
+    <tr>
+      <td>$(selector).click(function)</td>
+      <td>触发或将函数绑定到被选元素的点击事件</td>
+    </tr>
+    <tr>
+      <td>$(selector).dblclick(function)</td>
+      <td>触发或将函数绑定到被选元素的双击事件</td>
+    </tr>
+    <tr>
+      <td>$(selector).focus(function)</td>
+      <td>触发或将函数绑定到被选元素的获得焦点事件</td>
+    </tr>
+    <tr>
+      <td>$(selector).mouseover(function)</td>
+      <td>触发或将函数绑定到被选元素的鼠标悬停事件</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>大部分html全局事件属性在jQuery中都能使用，只是jQuery中使用html全局事件属性时不能添加方法名前面的“on”。</p>
+
+<h2 id="二jquery操作html">二、jQuery操作html</h2>
+
+<h3 id="1-获取和设置">1. 获取和设置</h3>
+
+<p>常用方法text()、html()、val() 以及 attr()，四个简单实用的用于 DOM 操作的 jQuery 方法：</p>
+
+<ul>
+  <li>text() - 设置或返回所选元素的文本内容</li>
+  <li>html() - 设置或返回所选元素的内容（包括 HTML 标记）</li>
+  <li>val() - 设置或返回表单字段的值</li>
+  <li>attr() 方设置或返回属性值。</li>
+</ul>
+
+<ol>
+  <li>获取数据</li>
+</ol>
+
+<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"UTF-8"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"http://lib.sinaapp.com/js/jquery/1.7.2/jquery.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>    <span class="nt">&lt;script&gt;</span>
+        <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+            <span class="nx">$</span><span class="p">(</span><span class="s2">"#btn1"</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+                <span class="nx">alert</span><span class="p">(</span><span class="s2">"Text: "</span> <span class="o">+</span> <span class="nx">$</span><span class="p">(</span><span class="s2">"#test"</span><span class="p">).</span><span class="nx">text</span><span class="p">());</span>
+            <span class="p">});</span>
+            <span class="nx">$</span><span class="p">(</span><span class="s2">"#btn2"</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+                <span class="nx">alert</span><span class="p">(</span><span class="s2">"HTML: "</span> <span class="o">+</span> <span class="nx">$</span><span class="p">(</span><span class="s2">"#test"</span><span class="p">).</span><span class="nx">html</span><span class="p">());</span>
+            <span class="p">});</span>
+            <span class="nx">$</span><span class="p">(</span><span class="s2">"#btn3"</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+                <span class="nx">alert</span><span class="p">(</span><span class="s2">"Value: "</span> <span class="o">+</span> <span class="nx">$</span><span class="p">(</span><span class="s2">"#inputtest"</span><span class="p">).</span><span class="nx">val</span><span class="p">());</span>
+            <span class="p">});</span>
+            <span class="nx">$</span><span class="p">(</span><span class="s2">"#btn4"</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+                <span class="nx">alert</span><span class="p">(</span><span class="s2">"Value: "</span> <span class="o">+</span> <span class="nx">$</span><span class="p">(</span><span class="s2">"#kongyixueyuan"</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"href"</span><span class="p">))</span>
+            <span class="p">})</span>
+        <span class="p">});</span>
+    <span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+
+<span class="nt">&lt;body&gt;</span>
+<span class="nt">&lt;p</span> <span class="na">id=</span><span class="s">"test"</span><span class="nt">&gt;</span>这是段落中的<span class="nt">&lt;b&gt;</span>粗体<span class="nt">&lt;/b&gt;</span>文本。<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;button</span> <span class="na">id=</span><span class="s">"btn1"</span><span class="nt">&gt;</span>显示文本<span class="nt">&lt;/button&gt;</span>
+<span class="nt">&lt;button</span> <span class="na">id=</span><span class="s">"btn2"</span><span class="nt">&gt;</span>显示 HTML<span class="nt">&lt;/button&gt;</span>
+<span class="nt">&lt;p&gt;</span>姓名：<span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">id=</span><span class="s">"inputtest"</span> <span class="na">value=</span><span class="s">"米老鼠"</span><span class="nt">&gt;&lt;/p&gt;</span>
+<span class="nt">&lt;button</span> <span class="na">id=</span><span class="s">"btn3"</span><span class="nt">&gt;</span>显示值<span class="nt">&lt;/button&gt;</span>
+<span class="nt">&lt;p&gt;&lt;a</span> <span class="na">href=</span><span class="s">"http://www.kongyixueyuan.com"</span> <span class="na">id=</span><span class="s">"kongyixueyuan"</span><span class="nt">&gt;</span>孔壹学院<span class="nt">&lt;/a&gt;&lt;/p&gt;</span>
+<span class="nt">&lt;button</span> <span class="na">id=</span><span class="s">"btn4"</span><span class="nt">&gt;</span>显示属性值<span class="nt">&lt;/button&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+
+<span class="nt">&lt;/html&gt;</span>
+</code></pre>
+</div>
+
+<ol>
+  <li>设置数据</li>
+</ol>
+
+<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">"en"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"UTF-8"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;title&gt;</span>Title<span class="nt">&lt;/title&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"http://lib.sinaapp.com/js/jquery/1.7.2/jquery.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script&gt;</span>
+        <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+            <span class="nx">$</span><span class="p">(</span><span class="s2">"#btn1"</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+                <span class="nx">$</span><span class="p">(</span><span class="s2">"#test1"</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="s2">"Hello world!"</span><span class="p">);</span>
+            <span class="p">});</span>
+            <span class="nx">$</span><span class="p">(</span><span class="s2">"#btn2"</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+                <span class="nx">$</span><span class="p">(</span><span class="s2">"#test2"</span><span class="p">).</span><span class="nx">html</span><span class="p">(</span><span class="s2">"&lt;b&gt;Hello world!&lt;/b&gt;"</span><span class="p">);</span>
+            <span class="p">});</span>
+            <span class="nx">$</span><span class="p">(</span><span class="s2">"#btn3"</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+                <span class="nx">$</span><span class="p">(</span><span class="s2">"#test3"</span><span class="p">).</span><span class="nx">val</span><span class="p">(</span><span class="s2">"Dolly Duck"</span><span class="p">);</span>
+            <span class="p">});</span>
+            <span class="nx">$</span><span class="p">(</span><span class="s2">"#btn4"</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+                <span class="nx">$</span><span class="p">(</span><span class="s2">"#kongyixueyuan"</span><span class="p">).</span><span class="nx">attr</span><span class="p">({</span>
+                    <span class="s2">"href"</span> <span class="p">:</span> <span class="s2">"http://www.baidu.com"</span><span class="p">,</span>
+                    <span class="s2">"title"</span> <span class="p">:</span> <span class="s2">"百度"</span>
+                <span class="p">});</span>
+                <span class="nx">alert</span><span class="p">(</span><span class="s2">"id=\"kongyixueyuan\"的Value："</span> <span class="o">+</span> <span class="nx">$</span><span class="p">(</span><span class="s2">"#kongyixueyuan"</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"title"</span><span class="p">))</span>
+            <span class="p">});</span>
+        <span class="p">});</span>
+    <span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+
+<span class="nt">&lt;body&gt;</span>
+<span class="nt">&lt;p</span> <span class="na">id=</span><span class="s">"test1"</span><span class="nt">&gt;</span>这是段落。<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;p</span> <span class="na">id=</span><span class="s">"test2"</span><span class="nt">&gt;</span>这是另一个段落。<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;p&gt;</span>Input field: <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">id=</span><span class="s">"test3"</span> <span class="na">value=</span><span class="s">"Mickey Mouse"</span><span class="nt">&gt;&lt;/p&gt;</span>
+<span class="nt">&lt;p&gt;&lt;a</span> <span class="na">href=</span><span class="s">"http://www.kongyixueyuan.com"</span> <span class="na">id=</span><span class="s">"kongyixueyuan"</span> <span class="na">title=</span><span class="s">"孔壹学院"</span><span class="nt">&gt;</span>孔壹学院<span class="nt">&lt;/a&gt;&lt;/p&gt;</span>
+<span class="nt">&lt;button</span> <span class="na">id=</span><span class="s">"btn1"</span><span class="nt">&gt;</span>设置文本<span class="nt">&lt;/button&gt;</span>
+<span class="nt">&lt;button</span> <span class="na">id=</span><span class="s">"btn2"</span><span class="nt">&gt;</span>设置 HTML<span class="nt">&lt;/button&gt;</span>
+<span class="nt">&lt;button</span> <span class="na">id=</span><span class="s">"btn3"</span><span class="nt">&gt;</span>设置值<span class="nt">&lt;/button&gt;</span>
+<span class="nt">&lt;button</span> <span class="na">id=</span><span class="s">"btn4"</span><span class="nt">&gt;</span>改变 href 和 title 值<span class="nt">&lt;/button&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre>
+</div>
+
+<h3 id="2-添加新的-html-内容">2. 添加新的 HTML 内容</h3>
+
+<p>添加新内容的四个 jQuery 方法：</p>
+
+<ul>
+  <li>append() - 在被选元素的结尾插入内容</li>
+  <li>prepend() - 在被选元素的开头插入内容</li>
+  <li>after() - 在被选元素之后插入内容</li>
+  <li>before() - 在被选元素之前插入内容</li>
+</ul>
+
+<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">"en"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"UTF-8"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;title&gt;</span>Title<span class="nt">&lt;/title&gt;</span>
+    <span class="nt">&lt;style&gt;</span>
+        <span class="nf">#p1</span><span class="p">{</span>
+            <span class="nl">color</span><span class="p">:</span> <span class="m">#1abc9c</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nf">#div1</span><span class="p">{</span>
+            <span class="nl">color</span><span class="p">:</span> <span class="m">#8bc34a</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="nt">&lt;/style&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"http://lib.sinaapp.com/js/jquery/1.7.2/jquery.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script&gt;</span>
+        <span class="kd">function</span> <span class="nx">appendText</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">txt1</span><span class="o">=</span><span class="s2">"&lt;p&gt;Text1.&lt;/p&gt;"</span><span class="p">;</span>              <span class="c1">// 以 HTML 创建新元素</span>
+            <span class="kd">var</span> <span class="nx">txt2</span><span class="o">=</span><span class="nx">$</span><span class="p">(</span><span class="s2">"&lt;p&gt;&lt;/p&gt;"</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="s2">"Text2."</span><span class="p">);</span>  <span class="c1">// 以 jQuery 创建新元素</span>
+            <span class="kd">var</span> <span class="nx">txt3</span><span class="o">=</span><span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s2">"p"</span><span class="p">);</span>
+            <span class="nx">txt3</span><span class="p">.</span><span class="nx">innerHTML</span><span class="o">=</span><span class="s2">"Text3."</span><span class="p">;</span>               <span class="c1">// 通过 DOM 来创建文本</span>
+            <span class="nx">$</span><span class="p">(</span><span class="s2">"#p1"</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="nx">txt1</span><span class="p">,</span><span class="nx">txt2</span><span class="p">,</span><span class="nx">txt3</span><span class="p">);</span>        <span class="c1">// 追加新元素</span>
+        <span class="p">}</span>
+        <span class="kd">function</span> <span class="nx">afterText</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">txt1</span><span class="o">=</span><span class="s2">"&lt;b&gt;I &lt;/b&gt;"</span><span class="p">;</span>                    <span class="c1">// 以 HTML 创建元素</span>
+            <span class="kd">var</span> <span class="nx">txt2</span><span class="o">=</span><span class="nx">$</span><span class="p">(</span><span class="s2">"&lt;i&gt;&lt;/i&gt;"</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="s2">"love "</span><span class="p">);</span>     <span class="c1">// 通过 jQuery 创建元素</span>
+            <span class="kd">var</span> <span class="nx">txt3</span><span class="o">=</span><span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s2">"big"</span><span class="p">);</span>  <span class="c1">// 通过 DOM 创建元素</span>
+            <span class="nx">txt3</span><span class="p">.</span><span class="nx">innerHTML</span><span class="o">=</span><span class="s2">"jQuery!"</span><span class="p">;</span>
+            <span class="nx">$</span><span class="p">(</span><span class="s2">"div"</span><span class="p">).</span><span class="nx">after</span><span class="p">(</span><span class="nx">txt1</span><span class="p">,</span><span class="nx">txt2</span><span class="p">,</span><span class="nx">txt3</span><span class="p">);</span>          <span class="c1">// 在 img 之后插入新元素</span>
+        <span class="p">}</span>
+    <span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+
+<span class="nt">&lt;p</span> <span class="na">id=</span><span class="s">"p1"</span><span class="nt">&gt;</span>This is a paragraph.<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;br&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"div1"</span><span class="nt">&gt;</span>This is a div.<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;br&gt;</span>
+<span class="nt">&lt;button</span> <span class="na">onclick=</span><span class="s">"appendText()"</span><span class="nt">&gt;</span>追加文本<span class="nt">&lt;/button&gt;</span>
+<span class="nt">&lt;button</span> <span class="na">onclick=</span><span class="s">"afterText()"</span><span class="nt">&gt;</span>在div后面添加文本<span class="nt">&lt;/button&gt;</span>
+
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre>
+</div>
+
+<h3 id="3-删除元素内容">3. 删除元素/内容</h3>
+
+<p>如需删除元素和内容，一般可使用以下两个 jQuery 方法：</p>
+
+<ul>
+  <li>remove() - 删除被选元素（及其子元素）</li>
+  <li>empty() - 从被选元素中删除子元素</li>
+</ul>
+
+<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">"en"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"UTF-8"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;title&gt;</span>Title<span class="nt">&lt;/title&gt;</span>
+    <span class="nt">&lt;style&gt;</span>
+        <span class="nf">#p1</span><span class="p">{</span>
+            <span class="nl">color</span><span class="p">:</span> <span class="m">#1abc9c</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nf">#div1</span><span class="p">{</span>
+            <span class="nl">color</span><span class="p">:</span> <span class="m">#8bc34a</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="nt">&lt;/style&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"http://lib.sinaapp.com/js/jquery/1.7.2/jquery.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script&gt;</span>
+        <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+            <span class="nx">$</span><span class="p">(</span><span class="s2">"#button1"</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+                <span class="nx">$</span><span class="p">(</span><span class="s2">"p"</span><span class="p">).</span><span class="nx">remove</span><span class="p">(</span><span class="s2">".italic"</span><span class="p">);</span>
+            <span class="p">});</span>
+            <span class="nx">$</span><span class="p">(</span><span class="s2">"#button2"</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+                <span class="nx">$</span><span class="p">(</span><span class="s2">"#div1"</span><span class="p">).</span><span class="nx">empty</span><span class="p">();</span>
+            <span class="p">});</span>
+        <span class="p">});</span>
+    <span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+
+<span class="nt">&lt;body&gt;</span>
+
+<span class="nt">&lt;p&gt;</span>This is a paragraph in the div.<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">"italic"</span><span class="nt">&gt;&lt;i&gt;</span>This is another<span class="nt">&lt;span&gt;</span>子元素<span class="nt">&lt;/span&gt;</span> paragraph in the div.<span class="nt">&lt;/i&gt;&lt;/p&gt;</span>
+<span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">"italic"</span><span class="nt">&gt;&lt;i&gt;</span>This is another paragraph in the div.<span class="nt">&lt;/i&gt;&lt;/p&gt;</span>
+<span class="nt">&lt;button</span> <span class="na">id=</span><span class="s">"button1"</span><span class="nt">&gt;</span>删除 class="italic" 的所有 p 元素<span class="nt">&lt;/button&gt;</span>
+<span class="nt">&lt;br&gt;</span>
+<span class="nt">&lt;br&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"div1"</span> <span class="na">style=</span><span class="s">"height:100px;width:300px;border:1px solid black;background-color:yellow;"</span><span class="nt">&gt;</span>
+
+    这是 div 中的一些文本。
+    <span class="nt">&lt;p&gt;</span>这是在 div 中的一个段落。<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p&gt;</span>这是在 div 中的另外一个段落。<span class="nt">&lt;/p&gt;</span>
+
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;button</span> <span class="na">id=</span><span class="s">"button2"</span><span class="nt">&gt;</span>清空 id="div1" 的所有子元素<span class="nt">&lt;/button&gt;</span>
+
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre>
+</div>
+
+<h3 id="4增加和删除-css类">4.增加和删除 CSS类</h3>
+
+<p>jQuery 拥有若干进行 CSS 操作的方法。主要学习下面两个：</p>
+
+<ul>
+  <li>addClass()- 向被选元素添加一个或多个类</li>
+  <li>removeClass() - 从被选元素删除一个或多个类</li>
+</ul>
+
+<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"UTF-8"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"http://lib.sinaapp.com/js/jquery/1.7.2/jquery.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script&gt;</span>
+        <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+            <span class="nx">$</span><span class="p">(</span><span class="s2">"#button1"</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+                <span class="nx">$</span><span class="p">(</span><span class="s2">"h1,p"</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s2">"blue"</span><span class="p">);</span>
+                <span class="nx">$</span><span class="p">(</span><span class="s2">"div"</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s2">"important blue"</span><span class="p">);</span>
+            <span class="p">});</span>
+            <span class="nx">$</span><span class="p">(</span><span class="s2">"#button2"</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+                <span class="nx">$</span><span class="p">(</span><span class="s2">"p,div"</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s2">"blue important"</span><span class="p">);</span>
+            <span class="p">});</span>
+        <span class="p">});</span>
+    <span class="nt">&lt;/script&gt;</span>
+    <span class="nt">&lt;style </span><span class="na">type=</span><span class="s">"text/css"</span><span class="nt">&gt;</span>
+        <span class="nc">.important</span>
+        <span class="p">{</span>
+            <span class="nl">font-weight</span><span class="p">:</span><span class="nb">bold</span><span class="p">;</span>
+            <span class="nl">font-size</span><span class="p">:</span> <span class="nb">xx-large</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nc">.blue</span>
+        <span class="p">{</span>
+            <span class="nl">color</span><span class="p">:</span><span class="no">blue</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="nt">&lt;/style&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+
+<span class="nt">&lt;h1&gt;</span>标题 1<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;h2&gt;</span>标题 2<span class="nt">&lt;/h2&gt;</span>
+<span class="nt">&lt;p&gt;</span>这是一个段落。<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;p&gt;</span>这是另一个段落。<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;div&gt;</span>这是非常重要的文本！<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;br&gt;</span>
+<span class="nt">&lt;button</span> <span class="na">id=</span><span class="s">"button1"</span><span class="nt">&gt;</span>向元素添加类<span class="nt">&lt;/button&gt;</span>
+<span class="nt">&lt;button</span> <span class="na">id=</span><span class="s">"button2"</span><span class="nt">&gt;</span>从元素中移除 class<span class="nt">&lt;/button&gt;</span>
+
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre>
+</div>
+
+<h3 id="5-获取和设置css样式属性值">5. 获取和设置css样式属性值</h3>
+
+<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"UTF-8"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"http://lib.sinaapp.com/js/jquery/1.7.2/jquery.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script&gt;</span>
+        <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+            <span class="nx">$</span><span class="p">(</span><span class="s2">"#button1"</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+                <span class="nx">alert</span><span class="p">(</span><span class="s2">"背景颜色 = "</span> <span class="o">+</span> <span class="nx">$</span><span class="p">(</span><span class="s2">"#p2"</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s2">"background-color"</span><span class="p">));</span>
+            <span class="p">});</span>
+            <span class="nx">$</span><span class="p">(</span><span class="s2">"#button2"</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+                <span class="nx">$</span><span class="p">(</span><span class="s2">"p"</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s2">"background-color"</span><span class="p">,</span><span class="s2">"purple"</span><span class="p">);</span>
+            <span class="p">});</span>
+            <span class="nx">$</span><span class="p">(</span><span class="s2">"#button3"</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+                <span class="nx">$</span><span class="p">(</span><span class="s2">"p"</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">"background-color"</span><span class="p">:</span><span class="s2">"yellow"</span><span class="p">,</span><span class="s2">"font-size"</span><span class="p">:</span><span class="s2">"200%"</span><span class="p">});</span>
+            <span class="p">});</span>
+        <span class="p">});</span>
+    <span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+
+<span class="nt">&lt;body&gt;</span>
+<span class="nt">&lt;h2&gt;</span>这是一个标题<span class="nt">&lt;/h2&gt;</span>
+<span class="nt">&lt;p</span> <span class="na">style=</span><span class="s">"background-color:#ff0000"</span><span class="nt">&gt;</span>这是一个段落。<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;p</span> <span class="na">id=</span><span class="s">"p2"</span> <span class="na">style=</span><span class="s">"background-color:#00ff00"</span><span class="nt">&gt;</span>这是一个段落。<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;p</span> <span class="na">style=</span><span class="s">"background-color:#0000ff"</span><span class="nt">&gt;</span>这是一个段落。<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;button</span> <span class="na">id=</span><span class="s">"button1"</span><span class="nt">&gt;</span>返回 p2 元素的 background-color <span class="nt">&lt;/button&gt;</span>
+<span class="nt">&lt;button</span> <span class="na">id=</span><span class="s">"button2"</span><span class="nt">&gt;</span>设置 p 元素的 background-color <span class="nt">&lt;/button&gt;</span>
+<span class="nt">&lt;button</span> <span class="na">id=</span><span class="s">"button3"</span><span class="nt">&gt;</span>为 p 元素设置多个样式<span class="nt">&lt;/button&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre>
+</div>
+
+
+  </section>
+</article>
+
+
+<section class="post-comments">
+  <!--PC和WAP自适应版-->
+<div id="SOHUCS" sid=jQuery ></div>
+<script type="text/javascript">
+(function(){
+var appid = 'cytfSz8yx';
+var conf = 'prod_ad710bf09d342725ed536beddc68aa27';
+var width = window.innerWidth || document.documentElement.clientWidth;
+if (width < 960) {
+window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="http://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("http://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+</section>
+
+ <section class="footer">
+  <footer>
+    <div class="footer_div">
+      <nav class="cover-navigation navigation--social">
+        <ul class="navigation">
+
+          
+          <!-- Weibo -->
+          <li class="navigation__item_social">
+            <a href="http://weibo.com/mobiledevelopment" title="@mobiledevelopment 的微博" target="_blank">
+              <i class='social fa fa-weibo fa-2x'></i>
+              <span class="label">Weibo</span>
+            </a>
+          </li>
+           
+          <!-- Github -->
+          <li class="navigation__item_social">
+            <a href="https://github.com/liyuechun" title="@liyuechun 的 Github" target="_blank">
+              <i class='social fa fa-github fa-2x'></i>
+              <span class="label">Github</span>
+            </a>
+          </li>
+            
+
+          <!-- RSS -->
+          <li class="navigation__item_social">
+            <a href="/feed.xml" rel="author" title="RSS" target="_blank">
+              <i class='social fa fa-rss fa-2x'></i>
+              <span class="label">RSS</span>
+            </a>
+          </li>
+
+          
+          <!-- Email -->
+          <li class="navigation__item_social">
+            <a href="mailto:836921287@qq.com" title="Contact me">
+              <i class='social fa fa-envelope fa-2x'></i>
+              <span class="label">Email</span>
+            </a>
+          </li>
+          
+
+        </ul>
+      </nav>
+
+    </div>
+
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <thead>
+        <tr id="bar_head">
+          <th colspan="11">友情链接</th>
+        </tr>
+      </thead>
+
+      <tr align="center" valign="middle">
+          <td><a href="http://www.kongyixueyuan.com">区块链技术视频网站</a></td>
+
+          <td><a href="https://www.ethereum.org">以太坊官网</a></td>
+
+          <td><a href="https://solidity.readthedocs.io/en/develop/">Solidity</a></td>
+
+          <td><a href="http://truffleframework.com/">Truffle FrameWork</a></td>
+
+          <td><a href="http://embark.readthedocs.io">Embark FrameWork</a></td>
+
+      </tr>
+      <tr align="center" valign="middle">
+
+          <td><a href="https://www.ibm.com/developerworks/community/groups/service/html/communityview?communityUuid=3302cc3b-074e-44da-90b1-5055f1dc0d9c&amp;lang=zh">IBM开源技术微讲堂</a></td>
+
+          <td><a href="https://www.bitcoin.com/">Bitcoin.com</a></td>
+
+          <td><a href="https://github.com/bitshares/bitshares1-core">bitshares1-core</a></td>
+
+          <td><a href="https://ipfs.io">ipfs官网</a></td>
+
+          <td><a href="http://ipfser.org">ipfs中文网</a></td>
+
+      </tr>
+    </table>
+
+    <div class="footer_div">
+      <p class="copyright text-muted">
+        Copyright &copy; 2018 刘蛟区块链博客 京ICP备15065741号. 区块链部落QQ群：348924182
+      </p>
+      <div align="right">
+        <link rel="stylesheet" href="http://cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <!-- 访问统计 -->
+        <span id="busuanzi_container_site_pv">
+            本站总访问量
+            <span id="busuanzi_value_site_pv"></span>次
+        </span>
+
+      </div>
+      <div>
+  </footer>
+</section>
+
+    </div>
+  </div>
+
+  <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
+
+<script type="text/javascript" src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  <script>
+    (function () {
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>JavaScript</title>
+  <meta name="description" content="goweb">
+  <meta name="author" content="黎跃春">
+
+  <meta name="keywords" content="goweb"
+  />
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="JavaScript">
+  <meta name="twitter:description" content="goweb">
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="JavaScript">
+  <meta property="og:description" content="goweb">
+  <meta property="og:site_name" content="gowebe"
+  />
+
+
+  <link rel="icon" type="image/png" href="/images/favicon.png" />
+  <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
+
+
+  <link rel="stylesheet" href=" /css/main.css ">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="canonical" href="http://localhost:4000/2018/06/24/JavaScript/">
+  <link rel="alternate" type="application/rss+xml" title="刘蛟区块链博客" href="http://localhost:4000 /feed.xml
+    ">
+
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+
+  <!-- 站点统计 -->
+  <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>
+  <!-- <script>(function() {var _53code = document.createElement("script");_53code.src = "https://tb.53kf.com/code/code/10174862/1";var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(_53code, s);})();</script> -->
+  <!-- 百度统计 -->
+  
+  <script>
+    var _hmt = _hmt || [];
+    (function () {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?f3290601666dc2ca016a38c340c144f1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+  
+
+  <!-- google 统计 -->
+  
+  <script>
+    (function (i, s, o, g, r, a, m) {
+      i['GoogleAnalyticsObject'] = r;
+      i[r] = i[r] || function () {
+        (i[r].q = i[r].q || []).push(arguments)
+      }, i[r].l = 1 * new Date();
+      a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0];
+      a.async = 1;
+      a.src = g;
+      m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'UA-104237177-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+
+  <script>
+    (function () {
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+</head>
+
+
+<body>
+
+  <span class="mobile btn-mobile-menu">        
+      <div class="nav_container">
+         <nav class="nav-menu-item" style = "float:right">
+            <i class="nav-menu-item">
+              <a href="/#blog" title="" class="blog-button">  博客主页
+              </a>
+            </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/archive" title="archive" class="btn-mobile-menu__icon">
+                      所有文章
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/tags" title="tags" class="btn-mobile-menu__icon">
+                      分类
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/about" title="about" class="btn-mobile-menu__icon">
+                      关于我
+                  </a>
+                </i>
+            
+          </nav>
+          
+      </div>
+    </span> <header class="panel-cover panel-cover--collapsed" style="background-image: url('/images/background-cover.jpg')">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+      <div class="panel-main__content">
+        <!-- 头像效果-start -->
+        <div class="ih-item circle effect right_to_left">
+          <a href="/#blog" title="前往 刘蛟区块链博客 的主页" class="blog-button">
+            <div class="img"><img src="/images/avatar.jpg" alt="img"></div>
+            <div class="info">
+              <div class="info-back">
+                <h2 style="font-size: 14px">
+                   微信:13611179034 
+                </h2>´
+                <p style="font-size: 6px">
+                   孔壹学院|链乎 
+                </p>
+              </div>
+            </div>
+          </a>
+        </div>
+        <!-- 头像效果-end -->
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for 刘蛟区块链博客" class="blog-button">刘蛟区块链博客</a></h1>
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">区块链工程师</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" /> 
+
+
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">博客主页</a></li>
+                
+                <li class="navigation__item"><a href="/archive" title="archive">所有文章</a></li>
+                
+                <li class="navigation__item"><a href="/tags" title="tags">分类</a></li>
+                
+                <li class="navigation__item"><a href="/about" title="about">关于我</a></li>
+                
+              </ul>
+            </nav>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:center;-webkit-justify-content:center">
+          <div style="display:flex;flex-direction:column;align-items:center;-webkit-flex-direction:column;-webkit-align-items:center;margin-right:10px">
+            <img src="/images/zhishixingqiu.png" style="width:120px;height:120px;margin-top:30px;margin-bottom:10px" />
+            <span class="panel-cover__subtitle panel-subtitle" style="font-size: 12px">扫一扫</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;-webkit-flex-direction:column;-webkit-align-items:center;margin-left:10px">
+            <img src="/images/lianhu.jpg" style="width:120px;height:120px;margin-top:30px;margin-bottom:10px" />
+            <span class="panel-cover__subtitle panel-subtitle" style="font-size: 12px">链乎公众号</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="panel-cover--overlay cover-clear"></div>
+  
+
+  </div>
+</header>
+
+
+  <div class="content-wrapper">
+    <div class="content-wrapper__inner">
+      <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title">JavaScript</h1>
+    <div class="post-meta">
+      <img src="/images/calendar.png" width="20px"/>
+      <time datetime="2018-06-24 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2018-06-24</time>
+
+      <span id="busuanzi_container_page_pv"> | 阅读：<span id="busuanzi_value_page_pv"></span>次</span>
+    </p>
+    </div>
+  </header>
+
+  <section class="post">
+    <h3 id="1-javascript">1. JavaScript</h3>
+
+<p>JavaScript 是属于脚本语言！与java没有一点关系。JavaScript 是可插入 HTML 页面的编程代码。</p>
+
+<p>JavaScript 是最流行的脚本语言，用来把网页改进设计、改变 HTML、验证表单、检测浏览器、创建cookies、对事件作出反应，以及更多的应用。</p>
+
+<p>HTML 中的脚本必须位于 <script> 与 </script> 标签之间。脚本可被放置在 HTML 页面的 &lt;body&gt; 和 &lt;head&gt; 部分中。</p>
+
+<p>老旧的实例可能会在 &lt; script&gt; 标签中使用 type=”text/javascript”。现在已经不必这样做了。JavaScript 是所有现代浏览器以及 HTML5 中的默认脚本语言。</p>
+
+<p>通常，我们需要在某个事件发生时执行代码，比如当用户点击按钮时。如果我们把 JavaScript 代码放入函数中，就可以在事件发生时调用该函数。</p>
+
+<p>也可以把脚本保存到外部文件中。外部文件通常包含被多个网页使用的代码。外部 JavaScript 文件的文件扩展名是 .js。</p>
+
+<p>如需使用外部文件，请在 &lt; script&gt; 标签的 “src” 属性中设置该 .js 文件，如：</p>
+
+<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt; script </span><span class="na">src=</span><span class="s">"myScript.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+</code></pre>
+</div>
+
+<p>常用方法：</p>
+
+<h5 id="documentwrite">document.write()</h5>
+
+<p>向文档输出写内容。如果在文档已完成加载后执行 document.write，整个 HTML 页面将被覆盖：</p>
+
+<h5 id="alert">alert()</h5>
+
+<p>用于显示带有一条指定消息和一个 OK 按钮的警告框。</p>
+
+<h2 id="2-变量">2. 变量</h2>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var carname;
+carname="Volvo";
+
+var pi=3.14;
+var name="Bill Gates";
+var answer='Yes I am!';
+</code></pre>
+</div>
+
+<h2 id="3-类型">3. 类型</h2>
+
+<p><strong>字符串、数字、布尔、数组、对象、Null、Undefined</strong></p>
+
+<p>当您声明新变量时，可以使用关键词 “new” 来声明其类型：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var carname=new String;
+var x=      new Number;
+var y=      new Boolean;
+var cars=   new Array;
+var person= new Object;
+</code></pre>
+</div>
+
+<p>Undefined 这个值表示变量不含有值。</p>
+
+<p>可以通过将变量的值设置为 null 来清空变量。</p>
+
+<p>实例</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>cars=null;
+person=null;
+</code></pre>
+</div>
+
+<h2 id="4-字符串">4. 字符串</h2>
+
+<p>字符串就是用<code class="highlighter-rouge">''</code>或<code class="highlighter-rouge">""</code>括起来的字符表示。多行字符串</p>
+
+<p>由于多行字符串用<code class="highlighter-rouge">\n</code>写起来比较费事，所以最新的ES6标准新增了一种多行字符串的表示方法，用反引号 <em><code class="highlighter-rouge">* ... *</code></em> 表示。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var name = '小明';
+var age = 20;
+var message = '你好, ' + name + ', 你今年' + age + '岁了!';
+alert(message);
+</code></pre>
+</div>
+
+<p>如果有很多变量需要连接，用<code class="highlighter-rouge">+</code>号就比较麻烦。ES6新增了一种模板字符串，表示方法和上面的多行字符串一样，但是它会自动替换字符串中的变量：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var name = '小明';
+var age = 20;
+var message = `你好, ${name}, 你今年${age}岁了!`;
+alert(message);
+</code></pre>
+</div>
+
+<p>字符串是不可变的，如果对字符串的某个索引赋值，不会有任何错误，但是，也没有任何效果：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var s = 'Test';
+s[0] = 'X';
+alert(s); // s仍然为'Test'
+</code></pre>
+</div>
+
+<p>String 类定义了大量操作字符串的方法，例如从字符串中提取字符或子串，或者检索字符或子串。String 对象的 length 属性声明了该字符串中的字符数。</p>
+
+<p>需要注意的是，JavaScript 的字符串是不可变的（immutable），String 类定义的方法都不能改变字符串的内容。像 String.toUpperCase() 这样的方法，返回的是全新的字符串，而不是修改原始字符串。</p>
+
+<h3 id="touppercase">toUpperCase</h3>
+
+<p><code class="highlighter-rouge">toUpperCase()</code>把一个字符串全部变为大写：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var s = 'Hello';
+s.toUpperCase(); // 返回'HELLO'
+</code></pre>
+</div>
+
+<h3 id="tolowercase">toLowerCase</h3>
+
+<p><code class="highlighter-rouge">toLowerCase()</code>把一个字符串全部变为小写：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var s = 'Hello';
+var lower = s.toLowerCase(); // 返回'hello'并赋值给变量lower
+lower; // 'hello'
+</code></pre>
+</div>
+
+<h3 id="indexof">indexOf</h3>
+
+<p><code class="highlighter-rouge">indexOf()</code>会搜索指定字符串出现的位置：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var s = 'hello, world';
+s.indexOf('world'); // 返回7
+s.indexOf('World'); // 没有找到指定的子串，返回-1
+</code></pre>
+</div>
+
+<h3 id="substring">substring</h3>
+
+<p><code class="highlighter-rouge">substring()</code>返回指定索引区间的子串：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var s = 'hello, world'
+s.substring(0, 5); // 从索引0开始到5（不包括5），返回'hello'
+s.substring(7); // 从索引7开始到结束，返回'world'
+</code></pre>
+</div>
+
+<h2 id="5-数组">5. 数组</h2>
+
+<p>JavaScript的<code class="highlighter-rouge">Array</code>可以包含任意数据类型，并通过索引来访问每个元素。</p>
+
+<p>要取得<code class="highlighter-rouge">Array</code>的长度，直接访问<code class="highlighter-rouge">length</code>属性：</p>
+
+<div class="language-js highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">,</span> <span class="s1">'Hello'</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="kc">true</span><span class="p">];</span>
+<span class="nx">arr</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="c1">// 6</span>
+</code></pre>
+</div>
+
+<p>下面的代码创建名为 cars 的数组：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var cars=new Array();
+cars[0]="Audi";
+cars[1]="BMW";
+cars[2]="Volvo";
+</code></pre>
+</div>
+
+<p>或者 (condensed array):</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var cars=new Array("Audi","BMW","Volvo");
+</code></pre>
+</div>
+
+<p>或者 (literal array):</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var cars=["Audi","BMW","Volvo"];
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">Array</code>可以通过索引把对应的元素修改为新的值，因此，对<code class="highlighter-rouge">Array</code>的索引进行赋值会直接修改这个<code class="highlighter-rouge">Array</code>：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var arr = ['A', 'B', 'C'];
+arr[1] = 99;
+arr; // arr现在变为['A', 99, 'C']
+</code></pre>
+</div>
+
+<p><em>请注意</em>，如果通过索引赋值时，索引超过了范围，同样会引起<code class="highlighter-rouge">Array</code>大小的变化：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var arr = [1, 2, 3];
+arr[5] = 'x';
+arr; // arr变为[1, 2, 3, undefined, undefined, 'x']
+</code></pre>
+</div>
+
+<p>大多数其他编程语言不允许直接改变数组的大小，越界访问索引会报错。然而，JavaScript的<code class="highlighter-rouge">Array</code>却不会有任何错误。在编写代码时，不建议直接修改<code class="highlighter-rouge">Array</code>的大小，访问索引时要确保索引不会越界。</p>
+
+<h3 id="indexof-1">indexOf</h3>
+
+<p>与String类似，<code class="highlighter-rouge">Array</code>也可以通过<code class="highlighter-rouge">indexOf()</code>来搜索一个指定的元素的位置：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var arr = [10, 20, '30', 'xyz'];
+arr.indexOf(10); // 元素10的索引为0
+arr.indexOf(20); // 元素20的索引为1
+arr.indexOf(30); // 元素30没有找到，返回-1
+arr.indexOf('30'); // 元素'30'的索引为2
+</code></pre>
+</div>
+
+<p>注意了，数字<code class="highlighter-rouge">30</code>和字符串<code class="highlighter-rouge">'30'</code>是不同的元素。</p>
+
+<h3 id="slice">slice</h3>
+
+<p><code class="highlighter-rouge">slice()</code>就是对应String的<code class="highlighter-rouge">substring()</code>版本，它截取<code class="highlighter-rouge">Array</code>的部分元素，然后返回一个新的<code class="highlighter-rouge">Array</code>：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var arr = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+arr.slice(0, 3); // 从索引0开始，到索引3结束，但不包括索引3: ['A', 'B', 'C']
+arr.slice(3); // 从索引3开始到结束: ['D', 'E', 'F', 'G']
+</code></pre>
+</div>
+
+<p>注意到<code class="highlighter-rouge">slice()</code>的起止参数包括开始索引，不包括结束索引。</p>
+
+<p>如果不给<code class="highlighter-rouge">slice()</code>传递任何参数，它就会从头到尾截取所有元素。利用这一点，我们可以很容易地复制一个<code class="highlighter-rouge">Array</code>：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var arr = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+var aCopy = arr.slice();
+aCopy; // ['A', 'B', 'C', 'D', 'E', 'F', 'G']
+aCopy === arr; // false
+</code></pre>
+</div>
+
+<h3 id="push和pop">push和pop</h3>
+
+<p><code class="highlighter-rouge">push()</code>向<code class="highlighter-rouge">Array</code>的末尾添加若干元素，<code class="highlighter-rouge">pop()</code>则把<code class="highlighter-rouge">Array</code>的最后一个元素删除掉：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var arr = [1, 2];
+arr.push('A', 'B'); // 返回Array新的长度: 4
+arr; // [1, 2, 'A', 'B']
+arr.pop(); // pop()返回'B'
+arr; // [1, 2, 'A']
+arr.pop(); arr.pop(); arr.pop(); // 连续pop 3次
+arr; // []
+arr.pop(); // 空数组继续pop不会报错，而是返回undefined
+arr; // []
+</code></pre>
+</div>
+
+<h3 id="unshift和shift">unshift和shift</h3>
+
+<p>如果要往<code class="highlighter-rouge">Array</code>的头部添加若干元素，使用<code class="highlighter-rouge">unshift()</code>方法，<code class="highlighter-rouge">shift()</code>方法则把<code class="highlighter-rouge">Array</code>的第一个元素删掉：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var arr = [1, 2];
+arr.unshift('A', 'B'); // 返回Array新的长度: 4
+arr; // ['A', 'B', 1, 2]
+arr.shift(); // 'A'
+arr; // ['B', 1, 2]
+arr.shift(); arr.shift(); arr.shift(); // 连续shift 3次
+arr; // []
+arr.shift(); // 空数组继续shift不会报错，而是返回undefined
+arr; // []
+</code></pre>
+</div>
+
+<h3 id="sort">sort</h3>
+
+<p><code class="highlighter-rouge">sort()</code>可以对当前<code class="highlighter-rouge">Array</code>进行排序，它会直接修改当前<code class="highlighter-rouge">Array</code>的元素位置，直接调用时，按照默认顺序排序：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var arr = ['B', 'C', 'A'];
+arr.sort();
+arr; // ['A', 'B', 'C']
+</code></pre>
+</div>
+
+<p>能否按照我们自己指定的顺序排序呢？完全可以，我们将在后面的函数中讲到。</p>
+
+<h3 id="reverse">reverse</h3>
+
+<p><code class="highlighter-rouge">reverse()</code>把整个<code class="highlighter-rouge">Array</code>的元素给掉个个，也就是反转：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var arr = ['one', 'two', 'three'];
+arr.reverse(); 
+arr; // ['three', 'two', 'one']
+</code></pre>
+</div>
+
+<h3 id="splice">splice</h3>
+
+<p><code class="highlighter-rouge">splice()</code>方法是修改<code class="highlighter-rouge">Array</code>的“万能方法”，它可以从指定的索引开始删除若干元素，然后再从该位置添加若干元素：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var arr = ['Microsoft', 'Apple', 'Yahoo', 'AOL', 'Excite', 'Oracle'];
+// 从索引2开始删除3个元素,然后再添加两个元素:
+arr.splice(2, 3, 'Google', 'Facebook'); // 返回删除的元素 ['Yahoo', 'AOL', 'Excite']
+arr; // ['Microsoft', 'Apple', 'Google', 'Facebook', 'Oracle']
+// 只删除,不添加:
+arr.splice(2, 2); // ['Google', 'Facebook']
+arr; // ['Microsoft', 'Apple', 'Oracle']
+// 只添加,不删除:
+arr.splice(2, 0, 'Google', 'Facebook'); // 返回[],因为没有删除任何元素
+arr; // ['Microsoft', 'Apple', 'Google', 'Facebook', 'Oracle']
+</code></pre>
+</div>
+
+<h3 id="concat">concat</h3>
+
+<p><code class="highlighter-rouge">concat()</code>方法把当前的<code class="highlighter-rouge">Array</code>和另一个<code class="highlighter-rouge">Array</code>连接起来，并返回一个新的<code class="highlighter-rouge">Array</code>：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var arr = ['A', 'B', 'C'];
+var added = arr.concat([1, 2, 3]);
+added; // ['A', 'B', 'C', 1, 2, 3]
+arr; // ['A', 'B', 'C']
+</code></pre>
+</div>
+
+<p><em>请注意</em>，<code class="highlighter-rouge">concat()</code>方法并没有修改当前<code class="highlighter-rouge">Array</code>，而是返回了一个新的<code class="highlighter-rouge">Array</code>。</p>
+
+<p>实际上，<code class="highlighter-rouge">concat()</code>方法可以接收任意个元素和<code class="highlighter-rouge">Array</code>，并且自动把<code class="highlighter-rouge">Array</code>拆开，然后全部添加到新的<code class="highlighter-rouge">Array</code>里：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var arr = ['A', 'B', 'C'];
+arr.concat(1, 2, [3, 4]); // ['A', 'B', 'C', 1, 2, 3, 4]
+</code></pre>
+</div>
+
+<h3 id="join">join</h3>
+
+<p><code class="highlighter-rouge">join()</code>方法是一个非常实用的方法，它把当前<code class="highlighter-rouge">Array</code>的每个元素都用指定的字符串连接起来，然后返回连接后的字符串：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var arr = ['A', 'B', 'C', 1, 2, 3];
+arr.join('-'); // 'A-B-C-1-2-3'
+</code></pre>
+</div>
+
+<p>如果<code class="highlighter-rouge">Array</code>的元素不是字符串，将自动转换为字符串后再连接。</p>
+
+<h3 id="多维数组">多维数组</h3>
+
+<p>如果数组的某个元素又是一个<code class="highlighter-rouge">Array</code>，则可以形成多维数组，例如：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var arr = [[1, 2, 3], [400, 500, 600], '-'];
+</code></pre>
+</div>
+
+<p>上述<code class="highlighter-rouge">Array</code>包含3个元素，其中头两个元素本身也是<code class="highlighter-rouge">Array</code>。</p>
+
+<p>练习：如何通过索引取到<code class="highlighter-rouge">500</code>这个值：</p>
+
+<p><code class="highlighter-rouge">var arr = [[1, 2, 3], [400, 500, 600], '-'];</code></p>
+
+<h2 id="6-javascript-对象">6. JavaScript 对象</h2>
+
+<p>对象由花括号分隔。在括号内部，对象的属性以名称和值对的形式 (name : value) 来定义。属性由逗号分隔：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var person={firstname:"Bill", lastname:"Gates", id:5566};
+</code></pre>
+</div>
+
+<p>上面例子中的对象 (person) 有三个属性：firstname、lastname 以及 id。</p>
+
+<p>空格和折行无关紧要。声明可横跨多行：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var person={
+firstname : "Bill",
+lastname  : "Gates",
+id        :  5566
+};
+</code></pre>
+</div>
+
+<p>对象属性有两种寻址方式：</p>
+
+<p>实例</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>name=person.lastname;
+name=person["lastname"];
+</code></pre>
+</div>
+
+<p>若有这样的属性名<code class="highlighter-rouge">middle-school</code>不是一个有效的变量，就需要用<code class="highlighter-rouge">''</code>括起来。访问这个属性也无法使用<code class="highlighter-rouge">.</code>操作符，必须用<code class="highlighter-rouge">['middle-school']</code>来访问：</p>
+
+<p>由于JavaScript的对象是动态类型，你可以自由地给一个对象添加或删除属性：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var xiaoming = {
+    name: '小明'
+};
+xiaoming.age; // undefined
+xiaoming.age = 18; // 新增一个age属性
+xiaoming.age; // 18
+delete xiaoming.age; // 删除age属性
+xiaoming.age; // undefined
+delete xiaoming['name']; // 删除name属性
+xiaoming.name; // undefined
+delete xiaoming.school; // 删除一个不存在的school属性也不会报错
+</code></pre>
+</div>
+
+<p>如果我们要检测<code class="highlighter-rouge">xiaoming</code>是否拥有某一属性，可以用<code class="highlighter-rouge">in</code>操作符：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var xiaoming = {
+    name: '小明',
+    birth: 1990,
+    school: 'No.1 Middle School',
+    height: 1.70,
+    weight: 65,
+    score: null
+};
+'name' in xiaoming; // true
+'grade' in xiaoming; // false
+</code></pre>
+</div>
+
+<p>不过要小心，如果<code class="highlighter-rouge">in</code>判断一个属性存在，这个属性不一定是<code class="highlighter-rouge">xiaoming</code>的，它可能是<code class="highlighter-rouge">xiaoming</code>继承得到的：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>'toString' in xiaoming; // true
+</code></pre>
+</div>
+
+<p>因为<code class="highlighter-rouge">toString</code>定义在<code class="highlighter-rouge">object</code>对象中，而所有对象最终都会在原型链上指向<code class="highlighter-rouge">object</code>，所以<code class="highlighter-rouge">xiaoming</code>也拥有<code class="highlighter-rouge">toString</code>属性。</p>
+
+<p>要判断一个属性是否是<code class="highlighter-rouge">xiaoming</code>自身拥有的，而不是继承得到的，可以用<code class="highlighter-rouge">hasOwnProperty()</code>方法：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var xiaoming = {
+    name: '小明'
+};
+xiaoming.hasOwnProperty('name'); // true
+xiaoming.hasOwnProperty('toString'); // false
+</code></pre>
+</div>
+
+<h2 id="7-分支语句">7. 分支语句</h2>
+
+<h3 id="ifelse">if.else</h3>
+
+<div class="language-js highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">age</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">age</span> <span class="o">&gt;=</span> <span class="mi">18</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">alert</span><span class="p">(</span><span class="s1">'adult'</span><span class="p">);</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">age</span> <span class="o">&gt;=</span> <span class="mi">6</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">alert</span><span class="p">(</span><span class="s1">'teenager'</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">alert</span><span class="p">(</span><span class="s1">'kid'</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<h3 id="for">for</h3>
+
+<p>计算1+2+3+…+10000</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var x = 0;
+var i;
+for (i=1; i&lt;=10000; i++) {
+    x = x + i;
+}
+x; // 50005000
+</code></pre>
+</div>
+
+<h3 id="for--in">for … in</h3>
+
+<p><code class="highlighter-rouge">for</code>循环的一个变体是<code class="highlighter-rouge">for ... in</code>循环，它可以把一个对象的所有属性依次循环出来：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var o = {
+    name: 'Jack',
+    age: 20,
+    city: 'Beijing'
+};
+for (var key in o) {
+    console.log(key); // 'name', 'age', 'city'
+}
+
+var a = ['A', 'B', 'C'];
+for (var i in a) {
+    console.log(i); // '0', '1', '2'
+    console.log(a[i]); // 'A', 'B', 'C'
+}
+</code></pre>
+</div>
+
+<h3 id="while">while</h3>
+
+<p><code class="highlighter-rouge">for</code>循环在已知循环的初始和结束条件时非常有用。而上述忽略了条件的<code class="highlighter-rouge">for</code>循环容易让人看不清循环的逻辑，此时用<code class="highlighter-rouge">while</code>循环更佳。</p>
+
+<p><code class="highlighter-rouge">while</code>循环只有一个判断条件，条件满足，就不断循环，条件不满足时则退出循环。比如我们要计算100以内所有奇数之和，可以用while循环实现：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var x = 0;
+var n = 99;
+while (n &gt; 0) {
+    x = x + n;
+    n = n - 2;
+}
+x; // 2500
+</code></pre>
+</div>
+
+<p>在循环内部变量<code class="highlighter-rouge">n</code>不断自减，直到变为<code class="highlighter-rouge">-1</code>时，不再满足<code class="highlighter-rouge">while</code>条件，循环退出。</p>
+
+<h3 id="do--while">do … while</h3>
+
+<p>最后一种循环是<code class="highlighter-rouge">do { ... } while()</code>循环，它和<code class="highlighter-rouge">while</code>循环的唯一区别在于，不是在每次循环开始的时候判断条件，而是在每次循环完成的时候判断条件：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var n = 0;
+do {
+    n = n + 1;
+} while (n &lt; 100);
+n; // 100
+</code></pre>
+</div>
+
+<p>用<code class="highlighter-rouge">do { ... } while()</code>循环要小心，循环体会至少执行1次，而<code class="highlighter-rouge">for</code>和<code class="highlighter-rouge">while</code>循环则可能一次都不执行。</p>
+
+<h2 id="8-map和set">8. map和set</h2>
+
+<p><code class="highlighter-rouge">Map</code>和<code class="highlighter-rouge">Set</code>是ES6标准新增的数据类型，请根据浏览器的支持情况决定是否要使用。</p>
+
+<h3 id="map">Map</h3>
+
+<p><code class="highlighter-rouge">Map</code>是一组键值对的结构，具有极快的查找速度。</p>
+
+<p>举个例子，假设要根据同学的名字查找对应的成绩，如果用<code class="highlighter-rouge">Array</code>实现，需要两个<code class="highlighter-rouge">Array</code>：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var names = ['Michael', 'Bob', 'Tracy'];
+var scores = [95, 75, 85];
+</code></pre>
+</div>
+
+<p>给定一个名字，要查找对应的成绩，就先要在names中找到对应的位置，再从scores取出对应的成绩，Array越长，耗时越长。</p>
+
+<p>如果用Map实现，只需要一个“名字”-“成绩”的对照表，直接根据名字查找成绩，无论这个表有多大，查找速度都不会变慢。用JavaScript写一个Map如下：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var m = new Map([['Michael', 95], ['Bob', 75], ['Tracy', 85]]);
+m.get('Michael'); // 95
+</code></pre>
+</div>
+
+<p>初始化<code class="highlighter-rouge">Map</code>需要一个二维数组，或者直接初始化一个空<code class="highlighter-rouge">Map</code>。<code class="highlighter-rouge">Map</code>具有以下方法：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var m = new Map(); // 空Map
+m.set('Adam', 67); // 添加新的key-value
+m.set('Bob', 59);
+m.has('Adam'); // 是否存在key 'Adam': true
+m.get('Adam'); // 67
+m.delete('Adam'); // 删除key 'Adam'
+m.get('Adam'); // undefined
+</code></pre>
+</div>
+
+<p>由于一个key只能对应一个value，所以，多次对一个key放入value，后面的值会把前面的值冲掉：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var m = new Map();
+m.set('Adam', 67);
+m.set('Adam', 88);
+m.get('Adam'); // 88
+</code></pre>
+</div>
+
+<h3 id="set">Set</h3>
+
+<p><code class="highlighter-rouge">Set</code>和<code class="highlighter-rouge">Map</code>类似，也是一组key的集合，但不存储value。由于key不能重复，所以，在<code class="highlighter-rouge">Set</code>中，没有重复的key。</p>
+
+<p>要创建一个<code class="highlighter-rouge">Set</code>，需要提供一个<code class="highlighter-rouge">Array</code>作为输入，或者直接创建一个空<code class="highlighter-rouge">Set</code>：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var s1 = new Set(); // 空Set
+var s2 = new Set([1, 2, 3]); // 含1, 2, 3
+</code></pre>
+</div>
+
+<p>重复元素在<code class="highlighter-rouge">Set</code>中自动被过滤：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var s = new Set([1, 2, 3, 3, '3']);
+s; // Set {1, 2, 3, "3"}
+</code></pre>
+</div>
+
+<p>注意数字<code class="highlighter-rouge">3</code>和字符串<code class="highlighter-rouge">'3'</code>是不同的元素。</p>
+
+<p>通过<code class="highlighter-rouge">add(key)</code>方法可以添加元素到<code class="highlighter-rouge">Set</code>中，可以重复添加，但不会有效果：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>s.add(4);
+s; // Set {1, 2, 3, 4}
+s.add(4);
+s; // 仍然是 Set {1, 2, 3, 4}
+</code></pre>
+</div>
+
+<p>通过<code class="highlighter-rouge">delete(key)</code>方法可以删除元素：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var s = new Set([1, 2, 3]);
+s; // Set {1, 2, 3}
+s.delete(3);
+s; // Set {1, 2}
+</code></pre>
+</div>
+
+
+  </section>
+</article>
+
+
+<section class="post-comments">
+  <!--PC和WAP自适应版-->
+<div id="SOHUCS" sid=JavaScript ></div>
+<script type="text/javascript">
+(function(){
+var appid = 'cytfSz8yx';
+var conf = 'prod_ad710bf09d342725ed536beddc68aa27';
+var width = window.innerWidth || document.documentElement.clientWidth;
+if (width < 960) {
+window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="http://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("http://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+</section>
+
+ <section class="footer">
+  <footer>
+    <div class="footer_div">
+      <nav class="cover-navigation navigation--social">
+        <ul class="navigation">
+
+          
+          <!-- Weibo -->
+          <li class="navigation__item_social">
+            <a href="http://weibo.com/mobiledevelopment" title="@mobiledevelopment 的微博" target="_blank">
+              <i class='social fa fa-weibo fa-2x'></i>
+              <span class="label">Weibo</span>
+            </a>
+          </li>
+           
+          <!-- Github -->
+          <li class="navigation__item_social">
+            <a href="https://github.com/liyuechun" title="@liyuechun 的 Github" target="_blank">
+              <i class='social fa fa-github fa-2x'></i>
+              <span class="label">Github</span>
+            </a>
+          </li>
+            
+
+          <!-- RSS -->
+          <li class="navigation__item_social">
+            <a href="/feed.xml" rel="author" title="RSS" target="_blank">
+              <i class='social fa fa-rss fa-2x'></i>
+              <span class="label">RSS</span>
+            </a>
+          </li>
+
+          
+          <!-- Email -->
+          <li class="navigation__item_social">
+            <a href="mailto:836921287@qq.com" title="Contact me">
+              <i class='social fa fa-envelope fa-2x'></i>
+              <span class="label">Email</span>
+            </a>
+          </li>
+          
+
+        </ul>
+      </nav>
+
+    </div>
+
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <thead>
+        <tr id="bar_head">
+          <th colspan="11">友情链接</th>
+        </tr>
+      </thead>
+
+      <tr align="center" valign="middle">
+          <td><a href="http://www.kongyixueyuan.com">区块链技术视频网站</a></td>
+
+          <td><a href="https://www.ethereum.org">以太坊官网</a></td>
+
+          <td><a href="https://solidity.readthedocs.io/en/develop/">Solidity</a></td>
+
+          <td><a href="http://truffleframework.com/">Truffle FrameWork</a></td>
+
+          <td><a href="http://embark.readthedocs.io">Embark FrameWork</a></td>
+
+      </tr>
+      <tr align="center" valign="middle">
+
+          <td><a href="https://www.ibm.com/developerworks/community/groups/service/html/communityview?communityUuid=3302cc3b-074e-44da-90b1-5055f1dc0d9c&amp;lang=zh">IBM开源技术微讲堂</a></td>
+
+          <td><a href="https://www.bitcoin.com/">Bitcoin.com</a></td>
+
+          <td><a href="https://github.com/bitshares/bitshares1-core">bitshares1-core</a></td>
+
+          <td><a href="https://ipfs.io">ipfs官网</a></td>
+
+          <td><a href="http://ipfser.org">ipfs中文网</a></td>
+
+      </tr>
+    </table>
+
+    <div class="footer_div">
+      <p class="copyright text-muted">
+        Copyright &copy; 2018 刘蛟区块链博客 京ICP备15065741号. 区块链部落QQ群：348924182
+      </p>
+      <div align="right">
+        <link rel="stylesheet" href="http://cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <!-- 访问统计 -->
+        <span id="busuanzi_container_site_pv">
+            本站总访问量
+            <span id="busuanzi_value_site_pv"></span>次
+        </span>
+
+      </div>
+      <div>
+  </footer>
+</section>
+
+    </div>
+  </div>
+
+  <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
+
+<script type="text/javascript" src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  <script>
+    (function () {
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+</body>
+
+</html>

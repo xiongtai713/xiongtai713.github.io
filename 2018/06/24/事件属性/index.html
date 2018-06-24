@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>事件</title>
+  <meta name="description" content="goweb">
+  <meta name="author" content="黎跃春">
+
+  <meta name="keywords" content="goweb"
+  />
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="事件">
+  <meta name="twitter:description" content="goweb">
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="事件">
+  <meta property="og:description" content="goweb">
+  <meta property="og:site_name" content="gowebe"
+  />
+
+
+  <link rel="icon" type="image/png" href="/images/favicon.png" />
+  <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
+
+
+  <link rel="stylesheet" href=" /css/main.css ">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="canonical" href="http://localhost:4000/2018/06/24/%E4%BA%8B%E4%BB%B6%E5%B1%9E%E6%80%A7/">
+  <link rel="alternate" type="application/rss+xml" title="刘蛟区块链博客" href="http://localhost:4000 /feed.xml
+    ">
+
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+
+  <!-- 站点统计 -->
+  <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>
+  <!-- <script>(function() {var _53code = document.createElement("script");_53code.src = "https://tb.53kf.com/code/code/10174862/1";var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(_53code, s);})();</script> -->
+  <!-- 百度统计 -->
+  
+  <script>
+    var _hmt = _hmt || [];
+    (function () {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?f3290601666dc2ca016a38c340c144f1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+  
+
+  <!-- google 统计 -->
+  
+  <script>
+    (function (i, s, o, g, r, a, m) {
+      i['GoogleAnalyticsObject'] = r;
+      i[r] = i[r] || function () {
+        (i[r].q = i[r].q || []).push(arguments)
+      }, i[r].l = 1 * new Date();
+      a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0];
+      a.async = 1;
+      a.src = g;
+      m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'UA-104237177-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+
+  <script>
+    (function () {
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+</head>
+
+
+<body>
+
+  <span class="mobile btn-mobile-menu">        
+      <div class="nav_container">
+         <nav class="nav-menu-item" style = "float:right">
+            <i class="nav-menu-item">
+              <a href="/#blog" title="" class="blog-button">  博客主页
+              </a>
+            </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/archive" title="archive" class="btn-mobile-menu__icon">
+                      所有文章
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/tags" title="tags" class="btn-mobile-menu__icon">
+                      分类
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/about" title="about" class="btn-mobile-menu__icon">
+                      关于我
+                  </a>
+                </i>
+            
+          </nav>
+          
+      </div>
+    </span> <header class="panel-cover panel-cover--collapsed" style="background-image: url('/images/background-cover.jpg')">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+      <div class="panel-main__content">
+        <!-- 头像效果-start -->
+        <div class="ih-item circle effect right_to_left">
+          <a href="/#blog" title="前往 刘蛟区块链博客 的主页" class="blog-button">
+            <div class="img"><img src="/images/avatar.jpg" alt="img"></div>
+            <div class="info">
+              <div class="info-back">
+                <h2 style="font-size: 14px">
+                   微信:13611179034 
+                </h2>´
+                <p style="font-size: 6px">
+                   孔壹学院|链乎 
+                </p>
+              </div>
+            </div>
+          </a>
+        </div>
+        <!-- 头像效果-end -->
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for 刘蛟区块链博客" class="blog-button">刘蛟区块链博客</a></h1>
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">区块链工程师</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" /> 
+
+
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">博客主页</a></li>
+                
+                <li class="navigation__item"><a href="/archive" title="archive">所有文章</a></li>
+                
+                <li class="navigation__item"><a href="/tags" title="tags">分类</a></li>
+                
+                <li class="navigation__item"><a href="/about" title="about">关于我</a></li>
+                
+              </ul>
+            </nav>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:center;-webkit-justify-content:center">
+          <div style="display:flex;flex-direction:column;align-items:center;-webkit-flex-direction:column;-webkit-align-items:center;margin-right:10px">
+            <img src="/images/zhishixingqiu.png" style="width:120px;height:120px;margin-top:30px;margin-bottom:10px" />
+            <span class="panel-cover__subtitle panel-subtitle" style="font-size: 12px">扫一扫</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;-webkit-flex-direction:column;-webkit-align-items:center;margin-left:10px">
+            <img src="/images/lianhu.jpg" style="width:120px;height:120px;margin-top:30px;margin-bottom:10px" />
+            <span class="panel-cover__subtitle panel-subtitle" style="font-size: 12px">链乎公众号</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="panel-cover--overlay cover-clear"></div>
+  
+
+  </div>
+</header>
+
+
+  <div class="content-wrapper">
+    <div class="content-wrapper__inner">
+      <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title">事件</h1>
+    <div class="post-meta">
+      <img src="/images/calendar.png" width="20px"/>
+      <time datetime="2018-06-24 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2018-06-24</time>
+
+      <span id="busuanzi_container_page_pv"> | 阅读：<span id="busuanzi_value_page_pv"></span>次</span>
+    </p>
+    </div>
+  </header>
+
+  <section class="post">
+    <h1 id="html-事件属性">HTML 事件属性</h1>
+
+<p>HTML 4 增加了使事件在浏览器中触发动作的能力，比如当用户点击元素时启动 JavaScript。下面列出了添加到 HTML 元素以定义事件动作的全局事件属性。</p>
+
+<h2 id="window-事件属性">Window 事件属性</h2>
+
+<p>针对 window 对象触发的事件（应用到 &lt; body&gt; 标签）：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>属性</th>
+      <th>值</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>onafterprint</td>
+      <td>script</td>
+      <td>文档打印之后运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>onbeforeprint</td>
+      <td>script</td>
+      <td>文档打印之前运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>onbeforeunload</td>
+      <td>script</td>
+      <td>文档卸载之前运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>onerror</td>
+      <td>script</td>
+      <td>在错误发生时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>onhaschange</td>
+      <td>script</td>
+      <td>当文档已改变时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>onload</td>
+      <td>script</td>
+      <td>页面结束加载之后触发。</td>
+    </tr>
+    <tr>
+      <td>onmessage</td>
+      <td>script</td>
+      <td>在消息被触发时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>onoffline</td>
+      <td>script</td>
+      <td>当文档离线时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>ononline</td>
+      <td>script</td>
+      <td>当文档上线时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>onpagehide</td>
+      <td>script</td>
+      <td>当窗口隐藏时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>onpageshow</td>
+      <td>script</td>
+      <td>当窗口成为可见时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>onpopstate</td>
+      <td>script</td>
+      <td>当窗口历史记录改变时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>onredo</td>
+      <td>script</td>
+      <td>当文档执行撤销（redo）时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>onresize</td>
+      <td>script</td>
+      <td>当浏览器窗口被调整大小时触发。</td>
+    </tr>
+    <tr>
+      <td>onstorage</td>
+      <td>script</td>
+      <td>在 Web Storage 区域更新后运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>onundo</td>
+      <td>script</td>
+      <td>在文档执行 undo 时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>onunload</td>
+      <td>script</td>
+      <td>一旦页面已下载时触发（或者浏览器窗口已被关闭）。</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="form-事件">Form 事件</h2>
+
+<p>由 HTML 表单内的动作触发的事件（应用到几乎所有 HTML 元素，但最常用在 form 元素中）：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>属性</th>
+      <th>值</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>onblur</td>
+      <td>script</td>
+      <td>元素失去焦点时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>onchange</td>
+      <td>script</td>
+      <td>在元素值被改变时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>oncontextmenu</td>
+      <td>script</td>
+      <td>当上下文菜单被触发时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>onfocus</td>
+      <td>script</td>
+      <td>当元素获得焦点时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>onformchange</td>
+      <td>script</td>
+      <td>在表单改变时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>onforminput</td>
+      <td>script</td>
+      <td>当表单获得用户输入时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>oninput</td>
+      <td>script</td>
+      <td>当元素获得用户输入时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>oninvalid</td>
+      <td>script</td>
+      <td>当元素无效时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>onreset</td>
+      <td>script</td>
+      <td>当表单中的重置按钮被点击时触发。HTML5 中不支持。</td>
+    </tr>
+    <tr>
+      <td>onselect</td>
+      <td>script</td>
+      <td>在元素中文本被选中后触发。</td>
+    </tr>
+    <tr>
+      <td>onsubmit</td>
+      <td>script</td>
+      <td>在提交表单时触发。</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="keyboard-事件">Keyboard 事件</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>属性</th>
+      <th>值</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>onkeydown</td>
+      <td>script</td>
+      <td>在用户按下按键时触发。</td>
+    </tr>
+    <tr>
+      <td>onkeypress</td>
+      <td>script</td>
+      <td>在用户敲击按钮时触发。</td>
+    </tr>
+    <tr>
+      <td>onkeyup</td>
+      <td>script</td>
+      <td>当用户释放按键时触发。</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="mouse-事件">Mouse 事件</h2>
+
+<p>由鼠标或类似用户动作触发的事件：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>属性</th>
+      <th>值</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>onclick</td>
+      <td>script</td>
+      <td>元素上发生鼠标点击时触发。</td>
+    </tr>
+    <tr>
+      <td>ondblclick</td>
+      <td>script</td>
+      <td>元素上发生鼠标双击时触发。</td>
+    </tr>
+    <tr>
+      <td>ondrag</td>
+      <td>script</td>
+      <td>元素被拖动时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>ondragend</td>
+      <td>script</td>
+      <td>在拖动操作末端运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>ondragenter</td>
+      <td>script</td>
+      <td>当元素元素已被拖动到有效拖放区域时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>ondragleave</td>
+      <td>script</td>
+      <td>当元素离开有效拖放目标时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>ondragover</td>
+      <td>script</td>
+      <td>当元素在有效拖放目标上正在被拖动时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>ondragstart</td>
+      <td>script</td>
+      <td>在拖动操作开端运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>ondrop</td>
+      <td>script</td>
+      <td>当被拖元素正在被拖放时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>onmousedown</td>
+      <td>script</td>
+      <td>当元素上按下鼠标按钮时触发。</td>
+    </tr>
+    <tr>
+      <td>onmousemove</td>
+      <td>script</td>
+      <td>当鼠标指针移动到元素上时触发。</td>
+    </tr>
+    <tr>
+      <td>onmouseout</td>
+      <td>script</td>
+      <td>当鼠标指针移出元素时触发。</td>
+    </tr>
+    <tr>
+      <td>onmouseover</td>
+      <td>script</td>
+      <td>当鼠标指针移动到元素上时触发。</td>
+    </tr>
+    <tr>
+      <td>onmouseup</td>
+      <td>script</td>
+      <td>当在元素上释放鼠标按钮时触发。</td>
+    </tr>
+    <tr>
+      <td>onmousewheel</td>
+      <td>script</td>
+      <td>当鼠标滚轮正在被滚动时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>onscroll</td>
+      <td>script</td>
+      <td>当元素滚动条被滚动时运行的脚本。</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="media-事件">Media 事件</h2>
+
+<p>由媒介（比如视频、图像和音频）触发的事件（适用于所有 HTML 元素，但常见于媒介元素中，比如 &lt; audio&gt;、&lt; embed&gt;、&lt; img&gt;、&lt; object&gt; 以及 &lt; video&gt;）:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>属性</th>
+      <th>值</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>onabort</td>
+      <td>script</td>
+      <td>在退出时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>oncanplay</td>
+      <td>script</td>
+      <td>当文件就绪可以开始播放时运行的脚本（缓冲已足够开始时）。</td>
+    </tr>
+    <tr>
+      <td>oncanplaythrough</td>
+      <td>script</td>
+      <td>当媒介能够无需因缓冲而停止即可播放至结尾时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>ondurationchange</td>
+      <td>script</td>
+      <td>当媒介长度改变时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>onemptied</td>
+      <td>script</td>
+      <td>当发生故障并且文件突然不可用时运行的脚本（比如连接意外断开时）。</td>
+    </tr>
+    <tr>
+      <td>onended</td>
+      <td>script</td>
+      <td>当媒介已到达结尾时运行的脚本（可发送类似“感谢观看”之类的消息）。</td>
+    </tr>
+    <tr>
+      <td>onerror</td>
+      <td>script</td>
+      <td>当在文件加载期间发生错误时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>onloadeddata</td>
+      <td>script</td>
+      <td>当媒介数据已加载时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>onloadedmetadata</td>
+      <td>script</td>
+      <td>当元数据（比如分辨率和时长）被加载时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>onloadstart</td>
+      <td>script</td>
+      <td>在文件开始加载且未实际加载任何数据前运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>onpause</td>
+      <td>script</td>
+      <td>当媒介被用户或程序暂停时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>onplay</td>
+      <td>script</td>
+      <td>当媒介已就绪可以开始播放时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>onplaying</td>
+      <td>script</td>
+      <td>当媒介已开始播放时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>onprogress</td>
+      <td>script</td>
+      <td>当浏览器正在获取媒介数据时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>onratechange</td>
+      <td>script</td>
+      <td>每当回放速率改变时运行的脚本（比如当用户切换到慢动作或快进模式）。</td>
+    </tr>
+    <tr>
+      <td>onreadystatechange</td>
+      <td>script</td>
+      <td>每当就绪状态改变时运行的脚本（就绪状态监测媒介数据的状态）。</td>
+    </tr>
+    <tr>
+      <td>onseeked</td>
+      <td>script</td>
+      <td>当 seeking 属性设置为 false（指示定位已结束）时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>onseeking</td>
+      <td>script</td>
+      <td>当 seeking 属性设置为 true（指示定位是活动的）时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>onstalled</td>
+      <td>script</td>
+      <td>在浏览器不论何种原因未能取回媒介数据时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>onsuspend</td>
+      <td>script</td>
+      <td>在媒介数据完全加载之前不论何种原因终止取回媒介数据时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>ontimeupdate</td>
+      <td>script</td>
+      <td>当播放位置改变时（比如当用户快进到媒介中一个不同的位置时）运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>onvolumechange</td>
+      <td>script</td>
+      <td>每当音量改变时（包括将音量设置为静音）时运行的脚本。</td>
+    </tr>
+    <tr>
+      <td>onwaiting</td>
+      <td>script</td>
+      <td>当媒介已停止播放但打算继续播放时（比如当媒介暂停已缓冲更多数据）运行脚本</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="重点事件">重点事件：</h4>
+
+<p>onload、onresize、onchange、onfocus、onblur()、onsubmit、onkeyup、onclick、ondblclick、onmousemove、onmouseout。</p>
+
+<h2 id="示例代码">示例代码</h2>
+
+<h3 id="1-onload">1. onload</h3>
+
+<p>onload 属性在文档对象加载完成后触发。onload 通常使用于 &lt;body&gt; 元素中，用于在页面完全载入后执行指定的脚本(包括图片，脚本，css文件等)。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>html
+<span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;title&gt;</span>孔壹学院<span class="nt">&lt;/title&gt;</span>
+    <span class="nt">&lt;script&gt;</span>
+        <span class="kd">function</span> <span class="nx">load</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="nx">alert</span><span class="p">(</span><span class="s2">"页面已经载入！"</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+
+<span class="nt">&lt;body</span> <span class="na">onload=</span><span class="s">"load()"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;h1&gt;</span>Hello World!<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+
+<span class="nt">&lt;/html&gt;</span>
+</code></pre>
+</div>
+
+<h3 id="2-onchange">2. onchange</h3>
+
+<p>onchange 属性在元素值改变时触发。onchange 属性可适用于 <input />, &lt; textarea&gt;, 和 &lt; select&gt; 元素。</p>
+
+<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">"en"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"UTF-8"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;title&gt;</span>Title<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+<span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">name=</span><span class="s">"txt"</span> <span class="na">value=</span><span class="s">"Hello"</span> <span class="na">onchange=</span><span class="s">"checkField(this.value)"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;br&gt;</span>
+<span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">name=</span><span class="s">"txt2"</span> <span class="na">value=</span><span class="s">"world"</span> <span class="na">onchange=</span><span class="s">"checkField(this.value)"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+    <span class="kd">function</span> <span class="nx">checkField</span><span class="p">(</span><span class="nx">str</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">alert</span><span class="p">(</span><span class="nx">str</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre>
+</div>
+
+<h3 id="3-onkeyup">3. onkeyup</h3>
+
+<p>onkeyup 属性在用户松开按键（在键盘上）时触发。</p>
+
+<p><strong>提示：</strong> 与 onkeyup 事件相关的事件触发顺序:</p>
+
+<ol>
+  <li>onkeydown</li>
+  <li>onkeypress</li>
+  <li>onkeyup</li>
+</ol>
+
+<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">"en"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"UTF-8"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;title&gt;</span>Title<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">onkeyup=</span><span class="s">"displayResult()"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;br&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">style=</span><span class="s">"background-color: #8bc34a"</span> <span class="na">onkeyup=</span><span class="s">"displayResult()"</span><span class="nt">&gt;</span>按我啊<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;div</span> <span class="nt">&gt;</span>你按我呢<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+    <span class="kd">function</span> <span class="nx">displayResult</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">alert</span><span class="p">(</span><span class="s2">"按了按钮"</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre>
+</div>
+
+<h3 id="4-onclick">4. onclick</h3>
+
+<p>onclick 属性在单击鼠标时触发。</p>
+
+<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;title&gt;</span>W3Cschool教程(w3cschool.cn)<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+
+<span class="nt">&lt;h1&gt;</span>我的第一段 JavaScript<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;p</span> <span class="na">id=</span><span class="s">"demo"</span><span class="nt">&gt;</span>
+    JavaScript 能改变 HTML 元素的样式。
+<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+    <span class="kd">function</span> <span class="nx">myFunction</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nx">x</span><span class="o">=</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">"demo"</span><span class="p">)</span> <span class="c1">// 找到元素</span>
+        <span class="nx">x</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">color</span><span class="o">=</span><span class="s2">"#ff0000"</span><span class="p">;</span>          <span class="c1">// 改变样式</span>
+    <span class="p">}</span>
+<span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">onclick=</span><span class="s">"myFunction()"</span><span class="nt">&gt;</span>点击这里<span class="nt">&lt;/button&gt;</span>
+
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre>
+</div>
+
+<h3 id="5-onmousemoveonmouseout">5. onmousemove、onmouseout</h3>
+
+<p>onmousemove 属性在鼠标指针移动到元素时触发。</p>
+
+<p>onmouseout 属性在鼠标指针移除元素时触发。</p>
+
+<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;script&gt;</span>
+        <span class="kd">function</span> <span class="nx">bigImg</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nx">x</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">height</span><span class="o">=</span><span class="s2">"64px"</span><span class="p">;</span>
+            <span class="nx">x</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">width</span><span class="o">=</span><span class="s2">"64px"</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kd">function</span> <span class="nx">normalImg</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nx">x</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">height</span><span class="o">=</span><span class="s2">"32px"</span><span class="p">;</span>
+            <span class="nx">x</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">width</span><span class="o">=</span><span class="s2">"32px"</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+
+<span class="nt">&lt;img</span> <span class="na">onmousemove=</span><span class="s">"bigImg(this)"</span> <span class="na">onmouseout=</span><span class="s">"normalImg(this)"</span> <span class="na">border=</span><span class="s">"0"</span> <span class="na">src=</span><span class="s">"img.png"</span> <span class="na">alt=</span><span class="s">"Smiley"</span> <span class="na">width=</span><span class="s">"32"</span> <span class="na">height=</span><span class="s">"32"</span><span class="nt">&gt;</span>
+
+<span class="nt">&lt;p&gt;</span>当用户将鼠标移动到图片时触发 bigImg() 函数。该函数使图片变大。<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;p&gt;</span>当用户将鼠标移开时触发normalImg() 函数。该函数使图片变回原来大写。<span class="nt">&lt;/p&gt;</span>
+
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre>
+</div>
+
+
+  </section>
+</article>
+
+
+<section class="post-comments">
+  <!--PC和WAP自适应版-->
+<div id="SOHUCS" sid=事件 ></div>
+<script type="text/javascript">
+(function(){
+var appid = 'cytfSz8yx';
+var conf = 'prod_ad710bf09d342725ed536beddc68aa27';
+var width = window.innerWidth || document.documentElement.clientWidth;
+if (width < 960) {
+window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="http://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("http://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+</section>
+
+ <section class="footer">
+  <footer>
+    <div class="footer_div">
+      <nav class="cover-navigation navigation--social">
+        <ul class="navigation">
+
+          
+          <!-- Weibo -->
+          <li class="navigation__item_social">
+            <a href="http://weibo.com/mobiledevelopment" title="@mobiledevelopment 的微博" target="_blank">
+              <i class='social fa fa-weibo fa-2x'></i>
+              <span class="label">Weibo</span>
+            </a>
+          </li>
+           
+          <!-- Github -->
+          <li class="navigation__item_social">
+            <a href="https://github.com/liyuechun" title="@liyuechun 的 Github" target="_blank">
+              <i class='social fa fa-github fa-2x'></i>
+              <span class="label">Github</span>
+            </a>
+          </li>
+            
+
+          <!-- RSS -->
+          <li class="navigation__item_social">
+            <a href="/feed.xml" rel="author" title="RSS" target="_blank">
+              <i class='social fa fa-rss fa-2x'></i>
+              <span class="label">RSS</span>
+            </a>
+          </li>
+
+          
+          <!-- Email -->
+          <li class="navigation__item_social">
+            <a href="mailto:836921287@qq.com" title="Contact me">
+              <i class='social fa fa-envelope fa-2x'></i>
+              <span class="label">Email</span>
+            </a>
+          </li>
+          
+
+        </ul>
+      </nav>
+
+    </div>
+
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <thead>
+        <tr id="bar_head">
+          <th colspan="11">友情链接</th>
+        </tr>
+      </thead>
+
+      <tr align="center" valign="middle">
+          <td><a href="http://www.kongyixueyuan.com">区块链技术视频网站</a></td>
+
+          <td><a href="https://www.ethereum.org">以太坊官网</a></td>
+
+          <td><a href="https://solidity.readthedocs.io/en/develop/">Solidity</a></td>
+
+          <td><a href="http://truffleframework.com/">Truffle FrameWork</a></td>
+
+          <td><a href="http://embark.readthedocs.io">Embark FrameWork</a></td>
+
+      </tr>
+      <tr align="center" valign="middle">
+
+          <td><a href="https://www.ibm.com/developerworks/community/groups/service/html/communityview?communityUuid=3302cc3b-074e-44da-90b1-5055f1dc0d9c&amp;lang=zh">IBM开源技术微讲堂</a></td>
+
+          <td><a href="https://www.bitcoin.com/">Bitcoin.com</a></td>
+
+          <td><a href="https://github.com/bitshares/bitshares1-core">bitshares1-core</a></td>
+
+          <td><a href="https://ipfs.io">ipfs官网</a></td>
+
+          <td><a href="http://ipfser.org">ipfs中文网</a></td>
+
+      </tr>
+    </table>
+
+    <div class="footer_div">
+      <p class="copyright text-muted">
+        Copyright &copy; 2018 刘蛟区块链博客 京ICP备15065741号. 区块链部落QQ群：348924182
+      </p>
+      <div align="right">
+        <link rel="stylesheet" href="http://cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <!-- 访问统计 -->
+        <span id="busuanzi_container_site_pv">
+            本站总访问量
+            <span id="busuanzi_value_site_pv"></span>次
+        </span>
+
+      </div>
+      <div>
+  </footer>
+</section>
+
+    </div>
+  </div>
+
+  <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
+
+<script type="text/javascript" src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  <script>
+    (function () {
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+</body>
+
+</html>
