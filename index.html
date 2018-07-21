@@ -198,6 +198,174 @@
   <ol class="post-list">
     
     <li>
+      <h2 class="post-list__post-title post-title"><a href="/2018/07/21/%E9%93%BE%E7%A0%81%E7%9A%84%E7%BC%96%E5%86%99/" title="访问 fabric链码">fabric链码</a></h2>
+      <p class="excerpt">链码的编写和调用##链码接口与结构依赖包链码实现需要引入如下依赖包      “github.com/hyperledger/fabric/core/chaincode/shim”          shim包提供了链码与账本交互的中间层      链码通过shim.ChaincodeStub提供的方法来读取和修改账本状态            “github.com/hyperledger/fabric/protos/peer”          peer.Response: 响应信息 ...&hellip;</p>
+      <div class="post-list__meta">        
+        <time datetime="2018-07-21 00:00:00 +0800" class="post-list__meta--date date">
+          <img src="/images/calendar.png" width="20px" /> 
+          2018-07-21</time> 
+        <div class = "tag-img-icon">
+          <img src="/images/tag-icon.svg" width="20px" /> 
+        </div>
+        <a href="/tags">
+          <div class = "post-list-icon-mate">
+            <span class="post-list__meta--tags-right">fabric</span>
+          </div>
+          <div class = "post-list-small-mate">
+          <a class="btn-border-small" href=/2018/07/21/%E9%93%BE%E7%A0%81%E7%9A%84%E7%BC%96%E5%86%99/>阅读全文 » </a>
+          </div>
+      </div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2018/07/21/%E9%93%BE%E7%A0%81API%E7%9A%84%E5%AE%9E%E4%BE%8B/" title="访问 fabric链码实例">fabric链码实例</a></h2>
+      <p class="excerpt">链码API的实例把数据存储在fabric网络中 PutState//-c '{"Args":["add","姓名","ID","医院名称"]}'func add(stub shim.ChaincodeStubInterface,args []string)peer.Response  {	if len(args)!=3{		return shim.Error("错误")	}	person:=Person{		Name:args[0],		ID:args[1],		Time:time.Now...&hellip;</p>
+      <div class="post-list__meta">        
+        <time datetime="2018-07-21 00:00:00 +0800" class="post-list__meta--date date">
+          <img src="/images/calendar.png" width="20px" /> 
+          2018-07-21</time> 
+        <div class = "tag-img-icon">
+          <img src="/images/tag-icon.svg" width="20px" /> 
+        </div>
+        <a href="/tags">
+          <div class = "post-list-icon-mate">
+            <span class="post-list__meta--tags-right">fabric</span>
+          </div>
+          <div class = "post-list-small-mate">
+          <a class="btn-border-small" href=/2018/07/21/%E9%93%BE%E7%A0%81API%E7%9A%84%E5%AE%9E%E4%BE%8B/>阅读全文 » </a>
+          </div>
+      </div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2018/07/21/%E9%93%BE%E7%A0%81API/" title="访问 链码API">链码API</a></h2>
+      <p class="excerpt">链码API账本状态交互API链码需要将数据记录在分布式账本中.需要记录的数据称为状态, 以K-V对的形式存储账本状态交互API可以对账本状态进行操作GetState(key string)  ([]byte,  error)  通过Key来返回数组的特定值PutState(key string, value []byte)  error	账本中写入特定的键和值DelState(key string)  error		从账本中移除指定的键和值GetStateByRange(startKey,...&hellip;</p>
+      <div class="post-list__meta">        
+        <time datetime="2018-07-21 00:00:00 +0800" class="post-list__meta--date date">
+          <img src="/images/calendar.png" width="20px" /> 
+          2018-07-21</time> 
+        <div class = "tag-img-icon">
+          <img src="/images/tag-icon.svg" width="20px" /> 
+        </div>
+        <a href="/tags">
+          <div class = "post-list-icon-mate">
+            <span class="post-list__meta--tags-right">fabric</span>
+          </div>
+          <div class = "post-list-small-mate">
+          <a class="btn-border-small" href=/2018/07/21/%E9%93%BE%E7%A0%81API/>阅读全文 » </a>
+          </div>
+      </div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2018/07/21/%E6%93%8D%E4%BD%9Ccli%E8%8A%82%E7%82%B9/" title="访问 fabric-cli节点操作">fabric-cli节点操作</a></h2>
+      <p class="excerpt">操作cli节点自动生成组织结构 ./byfn.sh -m generate启动网路docker-compose -f docker-compose-cli.yaml up -d关闭网路docker-compose -f docker-compose-cli.yaml down进入cli操作节点docker exec -it cli bash退出cli容器exit列出当前节点已加入的通道		peer channel list	在CLI容器中查看当前操作的是哪个节点		echo $CORE_P...&hellip;</p>
+      <div class="post-list__meta">        
+        <time datetime="2018-07-21 00:00:00 +0800" class="post-list__meta--date date">
+          <img src="/images/calendar.png" width="20px" /> 
+          2018-07-21</time> 
+        <div class = "tag-img-icon">
+          <img src="/images/tag-icon.svg" width="20px" /> 
+        </div>
+        <a href="/tags">
+          <div class = "post-list-icon-mate">
+            <span class="post-list__meta--tags-right">fabric</span>
+          </div>
+          <div class = "post-list-small-mate">
+          <a class="btn-border-small" href=/2018/07/21/%E6%93%8D%E4%BD%9Ccli%E8%8A%82%E7%82%B9/>阅读全文 » </a>
+          </div>
+      </div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2018/07/21/%E5%A4%9A%E9%80%9A%E9%81%93%E8%B0%83%E7%94%A8/" title="访问 fabric多通道应用">fabric多通道应用</a></h2>
+      <p class="excerpt">多通道调用1. 首先创建应用通道交易配置文件2. 创建组织锚节点更新文件3. 启动网络并进入CLI节点4. 创建指定的新的应用通道5. 将节点加入至通道中###临时变量 同到名称$ export CHANNEL_NAME=mychannel2###创建新通道配置文件$ sudo ../bin/configtxgen -profile TwoOrgsChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID...&hellip;</p>
+      <div class="post-list__meta">        
+        <time datetime="2018-07-21 00:00:00 +0800" class="post-list__meta--date date">
+          <img src="/images/calendar.png" width="20px" /> 
+          2018-07-21</time> 
+        <div class = "tag-img-icon">
+          <img src="/images/tag-icon.svg" width="20px" /> 
+        </div>
+        <a href="/tags">
+          <div class = "post-list-icon-mate">
+            <span class="post-list__meta--tags-right">fabric</span>
+          </div>
+          <div class = "post-list-small-mate">
+          <a class="btn-border-small" href=/2018/07/21/%E5%A4%9A%E9%80%9A%E9%81%93%E8%B0%83%E7%94%A8/>阅读全文 » </a>
+          </div>
+      </div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2018/07/21/%E4%BD%BF%E7%94%A8%E5%BC%80%E5%8F%91%E6%A8%A1%E5%BC%8F%E6%B5%8B%E8%AF%95%E9%93%BE%E7%A0%81/" title="访问 fabric使用开发模式测试链码">fabric使用开发模式测试链码</a></h2>
+      <p class="excerpt">使用开发模式测试链码给予权限将当前的登录用户添加到docker组中		$ sudo usermod -aG docker liu		添加完成之后要注销1.先进入chaincode-docker-devmode文件夹下cd ~/hyfa/fabric-samples/chaincode-docker-devmode/2.在这个文件夹下启动网路sudo docker-compose -f docker-compose-simple.yaml up -d3.启动网路后进入cli客户端sudo d...&hellip;</p>
+      <div class="post-list__meta">        
+        <time datetime="2018-07-21 00:00:00 +0800" class="post-list__meta--date date">
+          <img src="/images/calendar.png" width="20px" /> 
+          2018-07-21</time> 
+        <div class = "tag-img-icon">
+          <img src="/images/tag-icon.svg" width="20px" /> 
+        </div>
+        <a href="/tags">
+          <div class = "post-list-icon-mate">
+            <span class="post-list__meta--tags-right">fabric</span>
+          </div>
+          <div class = "post-list-small-mate">
+          <a class="btn-border-small" href=/2018/07/21/%E4%BD%BF%E7%94%A8%E5%BC%80%E5%8F%91%E6%A8%A1%E5%BC%8F%E6%B5%8B%E8%AF%95%E9%93%BE%E7%A0%81/>阅读全文 » </a>
+          </div>
+      </div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2018/07/21/fabric%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B(%E8%87%AA%E5%8A%A8%E6%A8%A1%E5%BC%8F%E5%92%8C%E6%89%8B%E5%8A%A8%E6%A8%A1%E5%BC%8F)/" title="访问 fabric自动启动和手动启动">fabric自动启动和手动启动</a></h2>
+      <p class="excerpt">fabric开发流程(自动模式和手动模式)1.部署区块链网路,把组织添加到应用通道里,只要在通一通道里,跨联盟也可用通过oderer节点进行交易2.部署智能合约(链码),通过调用智能合约,来触发合约内容###fabric网路启动过程		1. 生成组织结构及身份证书		2. 生成Orderer的初始区块		3. 生成应用通道交易配置文件		4. 生成各组织的锚节点更新文件		5. 启动网络		6. 进入CLI容器		7. 创建应用通道		8. 将当前节点加入到指定的通道中		9. 安装链码	...&hellip;</p>
+      <div class="post-list__meta">        
+        <time datetime="2018-07-21 00:00:00 +0800" class="post-list__meta--date date">
+          <img src="/images/calendar.png" width="20px" /> 
+          2018-07-21</time> 
+        <div class = "tag-img-icon">
+          <img src="/images/tag-icon.svg" width="20px" /> 
+        </div>
+        <a href="/tags">
+          <div class = "post-list-icon-mate">
+            <span class="post-list__meta--tags-right">fabric</span>
+          </div>
+          <div class = "post-list-small-mate">
+          <a class="btn-border-small" href=/2018/07/21/fabric%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B(%E8%87%AA%E5%8A%A8%E6%A8%A1%E5%BC%8F%E5%92%8C%E6%89%8B%E5%8A%A8%E6%A8%A1%E5%BC%8F)/>阅读全文 » </a>
+          </div>
+      </div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2018/07/21/fabric-ca%E5%BA%94%E7%94%A8/" title="访问 fabric-ca应用">fabric-ca应用</a></h2>
+      <p class="excerpt">fabric-ca应用先安装 参照文档5-fabric应用与配置初始化目录,新建一个文件夹把fabric-ca当做服务器文件夹##fabric-ca服务器启动: 	1. 使用init进行初始化(只做初始化)2. 使用start启动 (初始化和启动同时做)初始化$ fabric-ca-server init -b admin:pass-b admin:pass  指定用户名和密码快速启动并初始化一个fabric-ca-server服务$ fabric-ca-server start -b a...&hellip;</p>
+      <div class="post-list__meta">        
+        <time datetime="2018-07-21 00:00:00 +0800" class="post-list__meta--date date">
+          <img src="/images/calendar.png" width="20px" /> 
+          2018-07-21</time> 
+        <div class = "tag-img-icon">
+          <img src="/images/tag-icon.svg" width="20px" /> 
+        </div>
+        <a href="/tags">
+          <div class = "post-list-icon-mate">
+            <span class="post-list__meta--tags-right">fabric</span>
+          </div>
+          <div class = "post-list-small-mate">
+          <a class="btn-border-small" href=/2018/07/21/fabric-ca%E5%BA%94%E7%94%A8/>阅读全文 » </a>
+          </div>
+      </div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
       <h2 class="post-list__post-title post-title"><a href="/2018/07/13/etcd%E5%A4%9A%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/" title="访问 etcd 服务器搭建集群">etcd 服务器搭建集群</a></h2>
       <p class="excerpt">etcd多服务器集群搭建下面三台不同的服务器搭建三个节点系统：ubuntu16.06 x64node1:10.0.151.251node2:10.0.151.218node3:10.0.151.2171、启动节点node1启动TOKEN=token-01CLUSTER_STATE=newNAME_1=machine-1NAME_2=machine-2NAME_3=machine-3HOST_1=10.0.151.251HOST_2=10.0.151.218HOST_3=10.0.151.2...&hellip;</p>
       <div class="post-list__meta">        
@@ -444,174 +612,6 @@
           </div>
           <div class = "post-list-small-mate">
           <a class="btn-border-small" href=/2018/06/24/DOM/>阅读全文 » </a>
-          </div>
-      </div>
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/2018/06/24/CSS/" title="访问 CSS">CSS</a></h2>
-      <p class="excerpt">CSS：即层叠样式表(英文全称：Cascading Style Sheets)是一种用来表现HTML（标准通用标记语言的一个应用）或XML（标准通用标记语言的一个子集）等文件样式的计算机语言。CSS不仅可以静态地修饰网页，还可以配合各种脚本语言动态地对网页各元素进行格式化。我们在写html页面的时候，除了写html的结构之外，为了让网页更友好或者说显示的更美观，我们就需要进行页面的修改，这也是为什么我们需要写css的原因。那我们要如何写css代码呢？比如说width,height等。需要先...&hellip;</p>
-      <div class="post-list__meta">        
-        <time datetime="2018-06-24 00:00:00 +0800" class="post-list__meta--date date">
-          <img src="/images/calendar.png" width="20px" /> 
-          2018-06-24</time> 
-        <div class = "tag-img-icon">
-          <img src="/images/tag-icon.svg" width="20px" /> 
-        </div>
-        <a href="/tags">
-          <div class = "post-list-icon-mate">
-            <span class="post-list__meta--tags-right">goweb</span>
-          </div>
-          <div class = "post-list-small-mate">
-          <a class="btn-border-small" href=/2018/06/24/CSS/>阅读全文 » </a>
-          </div>
-      </div>
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/2018/06/24/AJAX/" title="访问 AJAX">AJAX</a></h2>
-      <p class="excerpt">AJAXAJAX 是与服务器交换数据的技术，它在不重载全部页面的情况下，实现了对部分网页的更新。在不重载整个网页的情况下，AJAX 通过后台加载数据，并在网页上进行显示。XMLHttpRequest 是 AJAX 的基础。所有现代浏览器均支持 XMLHttpRequest 对象（IE5 和 IE6 使用 ActiveXObject）。XMLHttpRequest 用于在后台与服务器交换数据。这意味着可以在不重新加载整个网页的情况下，对网页的某部分进行更新。特别注意：由于AJAX请求换了域名...&hellip;</p>
-      <div class="post-list__meta">        
-        <time datetime="2018-06-24 00:00:00 +0800" class="post-list__meta--date date">
-          <img src="/images/calendar.png" width="20px" /> 
-          2018-06-24</time> 
-        <div class = "tag-img-icon">
-          <img src="/images/tag-icon.svg" width="20px" /> 
-        </div>
-        <a href="/tags">
-          <div class = "post-list-icon-mate">
-            <span class="post-list__meta--tags-right">goweb</span>
-          </div>
-          <div class = "post-list-small-mate">
-          <a class="btn-border-small" href=/2018/06/24/AJAX/>阅读全文 » </a>
-          </div>
-      </div>
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/2018/06/09/%E6%9C%89%E4%BA%86HTTP%E4%B8%BA%E4%BD%95%E8%BF%98%E6%9C%89RPC/" title="访问 http,socket,RPC,TCP区别">http,socket,RPC,TCP区别</a></h2>
-      <p class="excerpt">有了HTTP为何还有RPC？论复杂度，RPC框架肯定是高于简单的HTTP接口的。但毋庸置疑，HTTP接口由于受限于HTTP协议，需要带HTTP请求头，导致传输起来效率或者说安全性不如RPC。下面展示了一个请求头，无用数据过多，响应头类似GET /search/suggest/initial_page/ HTTP/1.1Host	www.toutiao.comContent-Type	application/x-www-form-urlencodedAccept-Encoding	gzip,...&hellip;</p>
-      <div class="post-list__meta">        
-        <time datetime="2018-06-09 00:00:00 +0800" class="post-list__meta--date date">
-          <img src="/images/calendar.png" width="20px" /> 
-          2018-06-09</time> 
-        <div class = "tag-img-icon">
-          <img src="/images/tag-icon.svg" width="20px" /> 
-        </div>
-        <a href="/tags">
-          <div class = "post-list-icon-mate">
-            <span class="post-list__meta--tags-right">go语言</span>
-          </div>
-          <div class = "post-list-small-mate">
-          <a class="btn-border-small" href=/2018/06/09/%E6%9C%89%E4%BA%86HTTP%E4%B8%BA%E4%BD%95%E8%BF%98%E6%9C%89RPC/>阅读全文 » </a>
-          </div>
-      </div>
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/2018/06/09/reflection-%E5%8F%8D%E5%B0%84%E4%B8%BB%E8%A6%81%E4%BD%9C%E7%94%A8/" title="访问 go语言 reflection 反射">go语言 reflection 反射</a></h2>
-      <p class="excerpt">reflection 反射主要作用通过rValue:=reflect.ValueOf可以操作值1.动态修改数据 rValue.Elem().setXXX()2.动态调用方法 rValuse.Method(0).call()/可以通过数量或者方法名称调用通过reflect.TypeOf可以操纵类型1.类型判断 2.查看结构体方法 名称,方法数量,有几个参数,有几个返回值3.reflect.Ptr(int string) 确定是否是指针(或者整型 字符串等等)共用1.类型转换(struct-M...&hellip;</p>
-      <div class="post-list__meta">        
-        <time datetime="2018-06-09 00:00:00 +0800" class="post-list__meta--date date">
-          <img src="/images/calendar.png" width="20px" /> 
-          2018-06-09</time> 
-        <div class = "tag-img-icon">
-          <img src="/images/tag-icon.svg" width="20px" /> 
-        </div>
-        <a href="/tags">
-          <div class = "post-list-icon-mate">
-            <span class="post-list__meta--tags-right">go语言</span>
-          </div>
-          <div class = "post-list-small-mate">
-          <a class="btn-border-small" href=/2018/06/09/reflection-%E5%8F%8D%E5%B0%84%E4%B8%BB%E8%A6%81%E4%BD%9C%E7%94%A8/>阅读全文 » </a>
-          </div>
-      </div>
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/2018/06/09/http%E7%BC%96%E7%A8%8BPOST/" title="访问 go网络编程POST">go网络编程POST</a></h2>
-      <p class="excerpt">http编程POSTPOST通过body来给服务器发送数据,给服务器发送请求和GET很像,但是函数内会多两个参数,一个contentType,用来表示post提交数据的格式一般分为4种1.application/x-www-form-urlencoded表单格式以这种格式提交到服务器的数据服务器可以通过ParseForm()来解析和GET提交到服务器用法差不多   FORM就是一个表单2.text/html或者text/plain这俩种方式提交到服务器,会直接到r.body里,需要通过切片...&hellip;</p>
-      <div class="post-list__meta">        
-        <time datetime="2018-06-09 00:00:00 +0800" class="post-list__meta--date date">
-          <img src="/images/calendar.png" width="20px" /> 
-          2018-06-09</time> 
-        <div class = "tag-img-icon">
-          <img src="/images/tag-icon.svg" width="20px" /> 
-        </div>
-        <a href="/tags">
-          <div class = "post-list-icon-mate">
-            <span class="post-list__meta--tags-right">go语言</span>
-          </div>
-          <div class = "post-list-small-mate">
-          <a class="btn-border-small" href=/2018/06/09/http%E7%BC%96%E7%A8%8BPOST/>阅读全文 » </a>
-          </div>
-      </div>
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/2018/06/09/http%E7%BC%96%E7%A8%8B-Get-%E6%96%B9%E6%B3%95/" title="访问 go网络编程GET">go网络编程GET</a></h2>
-      <p class="excerpt">http编程 Get 方法客户端给服务器发送请求,服务器根据请求给予回应go有三种Get请求方法###第一种直接GET这种方法直接接收服务器的回应,得到服务器回应后,把body里的数据读取出来package mainimport (	"net/http"	"sanqi/0604socket/help"	"fmt"	"io/ioutil")func main()  {	//获取服务器的数据	resp, err := http.Get("https://www.baidu.com")	help...&hellip;</p>
-      <div class="post-list__meta">        
-        <time datetime="2018-06-09 00:00:00 +0800" class="post-list__meta--date date">
-          <img src="/images/calendar.png" width="20px" /> 
-          2018-06-09</time> 
-        <div class = "tag-img-icon">
-          <img src="/images/tag-icon.svg" width="20px" /> 
-        </div>
-        <a href="/tags">
-          <div class = "post-list-icon-mate">
-            <span class="post-list__meta--tags-right">go语言</span>
-          </div>
-          <div class = "post-list-small-mate">
-          <a class="btn-border-small" href=/2018/06/09/http%E7%BC%96%E7%A8%8B-Get-%E6%96%B9%E6%B3%95/>阅读全文 » </a>
-          </div>
-      </div>
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/2018/06/09/go%E7%BD%91%E8%B7%AF%E7%BC%96%E7%A8%8B%E6%80%BB%E7%BB%93/" title="访问 go网络编程总结">go网络编程总结</a></h2>
-      <p class="excerpt">总结###Socket 服务端 (tcp或udp)  net.Listen(“tcp”,”ip:port”) 监听  –&gt;  conn:= lister.Accept()  等待链接–&gt;conn read||conn.Write 或者写###Socket 客户端 (tcp或udp)                    客户端 conn:=net.Dial(“tcp”,”ip:port”) 链接服务器 –&gt; conn read                 conn.W...&hellip;</p>
-      <div class="post-list__meta">        
-        <time datetime="2018-06-09 00:00:00 +0800" class="post-list__meta--date date">
-          <img src="/images/calendar.png" width="20px" /> 
-          2018-06-09</time> 
-        <div class = "tag-img-icon">
-          <img src="/images/tag-icon.svg" width="20px" /> 
-        </div>
-        <a href="/tags">
-          <div class = "post-list-icon-mate">
-            <span class="post-list__meta--tags-right">go语言</span>
-          </div>
-          <div class = "post-list-small-mate">
-          <a class="btn-border-small" href=/2018/06/09/go%E7%BD%91%E8%B7%AF%E7%BC%96%E7%A8%8B%E6%80%BB%E7%BB%93/>阅读全文 » </a>
-          </div>
-      </div>
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/2018/06/09/RPC%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/" title="访问 go网络编程RPC">go网络编程RPC</a></h2>
-      <p class="excerpt">RPC通信协议服务器和服务器之间的方法调用,rpc 不支持夸语言, 只能通过jsonrpc夸语言要调用服务器上的方法,先要服务器声明结构体,并且实现一些方法//注册的结构体,将方法绑定到RPC服务type MyMath struct {}//提供方法所需要的参数type Param struct {  //因为只能接收一个值 所有要创建结构体	A int	B int}type ResponseData struct {	Mod int //商	Yushu int //余数}//这是提供给客...&hellip;</p>
-      <div class="post-list__meta">        
-        <time datetime="2018-06-09 00:00:00 +0800" class="post-list__meta--date date">
-          <img src="/images/calendar.png" width="20px" /> 
-          2018-06-09</time> 
-        <div class = "tag-img-icon">
-          <img src="/images/tag-icon.svg" width="20px" /> 
-        </div>
-        <a href="/tags">
-          <div class = "post-list-icon-mate">
-            <span class="post-list__meta--tags-right">go语言</span>
-          </div>
-          <div class = "post-list-small-mate">
-          <a class="btn-border-small" href=/2018/06/09/RPC%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/>阅读全文 » </a>
           </div>
       </div>
       <hr class="post-list__divider" />
